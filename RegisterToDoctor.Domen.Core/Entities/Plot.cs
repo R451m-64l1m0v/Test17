@@ -9,6 +9,9 @@ namespace RegisterToDoctor.Domen.Core.Entities
 {
     public class Plot : BaseEntity
     {
+        /// <summary>
+        /// Номер участка
+        /// </summary>
         public int Number {  get; set; }
 
         public ICollection<Doctor> Doctors { get; set; }

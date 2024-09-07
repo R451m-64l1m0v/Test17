@@ -36,7 +36,7 @@ namespace RegisterToDoctor.Infrastructure.Data
             return DbContext.Set<T>().FirstOrDefault(x => x.Id == id);
         }
 
-        public void Insert(T t)
+        public void Create(T t)
         {
             DbContext.Set<T>().Add(t);
             DbContext.SaveChanges();

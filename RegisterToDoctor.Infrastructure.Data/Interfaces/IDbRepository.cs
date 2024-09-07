@@ -16,7 +16,7 @@ namespace RegisterToDoctor.Infrastructure.Data.Interfaces
 
         IEnumerable<T> GetAll();
         T GetById(Guid id);
-        void Insert(T t);
+        void Create(T t);
         void Delete(T t);
         void Update(T t);
     }

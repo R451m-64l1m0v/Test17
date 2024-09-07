@@ -18,7 +18,7 @@ namespace RegisterToDoctor.Infrastructure.Data.Context
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,11 +26,7 @@ namespace RegisterToDoctor.Infrastructure.Data.Context
             modelBuilder.Entity<Doctor>()
                 .HasOne(p => p.Office)                
                 .WithMany(b => b.Doctors);
-
-            modelBuilder.Entity<Doctor>()
-                .HasOne(p => p.Plot)
-                .WithMany(b => b.Doctors);
-
+            
             modelBuilder.Entity<Doctor>()
                 .HasOne(p => p.Plot)
                 .WithMany(b => b.Doctors);
@@ -47,7 +43,6 @@ namespace RegisterToDoctor.Infrastructure.Data.Context
                 .HasOne(p => p.MedicalCard)
                 .WithOne(b => b.Patient)
                 .HasForeignKey<MedicalCard>(p => p.PatientId);
-
         }
 
     }

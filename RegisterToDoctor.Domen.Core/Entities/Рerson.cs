@@ -27,6 +27,6 @@ namespace RegisterToDoctor.Domen.Core.Entities
         /// <summary>
         /// Дата рождения
         /// </summary>
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
     }
 }

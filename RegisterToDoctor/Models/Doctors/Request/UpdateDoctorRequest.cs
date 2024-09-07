@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
-using RegisterToDoctor.Domen.Core.Entities;
+﻿using RegisterToDoctor.Domen.Core.Entities;
 using RegisterToDoctor.Models.Doctors.Base;
 
 namespace RegisterToDoctor.Models.Doctors.Request
 {
-    public class CreateDoctorRequest : РersonBase
+    public class UpdateDoctorRequest : РersonBase
     {
         public int NumberOffice { get; set; }
 
         public string Specialization { get; set; }
 
-        public int  NumberPlot { get; set; }
+        public int NumberPlot { get; set; }
     }
 }
