@@ -2,11 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Attributes;
 using RegisterToDoctor.Domen.Core.Entities;
+using RegisterToDoctor.Helpers;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Doctors.Request;
 using RegisterToDoctor.Models.Doctors.Response;
+using System;
+using System.Globalization;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RegisterToDoctor.Services
 {
@@ -18,7 +23,7 @@ namespace RegisterToDoctor.Services
         private readonly IOfficeService _officeService;
         private readonly IPlotService _plotService;
 
-        public DoctorService(IUnitOfWork uow, 
+        public DoctorService(IUnitOfWork uow,
             ISpecializationService specializationService,
             IOfficeService officeService,
             IPlotService plotService)
@@ -34,15 +39,19 @@ namespace RegisterToDoctor.Services
             try
             {
                 var specialization = await _specializationService.CheckSpecialization(createDoctor.Specialization);
-                
+
                 var office = await _officeService.CheckOffice(createDoctor.NumberOffice);
-                
-                var plot = await _plotService.CheckPlot(createDoctor.NumberPlot);               
-                
+
+                var plot = await _plotService.CheckPlot(createDoctor.NumberPlot);
+
                 if (string.IsNullOrWhiteSpace(createDoctor.FirstName) ||
-                    string.IsNullOrWhiteSpace(createDoctor.LastName) ||
-                    string.IsNullOrWhiteSpace(createDoctor.MiddleName))
-                    throw new ArgumentException($"Ошибка не заполнены поля ФИО");
+                    string.IsNullOrWhiteSpace(createDoctor.LastName))
+                    throw new ArgumentException($"Ошибка не заполнены поля Фамилии или Имени");
+
+                if (string.IsNullOrWhiteSpace(createDoctor.MiddleName))
+                {
+                    createDoctor.MiddleName = null;
+                }
 
                 var doctor = new Doctor
                 {
@@ -63,42 +72,103 @@ namespace RegisterToDoctor.Services
             catch (Exception)
             {
                 throw;
-            }           
+            }
         }
 
         public async Task<DoctorResponse> GetById(Guid doctorId)
         {
-            var doctors = await _docRepository.Entity
-                .Where(x => x.Id == doctorId)
-                .Include(x => x.Office)
-                .Include(x => x.Plot)
-                .Include(x => x.Specialization)
-                .ToListAsync();
+            var doctor = await _docRepository.Entity
+                .FirstOrDefaultAsync(x => x.Id == doctorId);
 
-            if (!doctors.Any())
+            if (doctor == null)
             {
                 return null;
             }
 
-            var doctor = doctors.FirstOrDefault();
-
             var doctorResponse = new DoctorResponse
             {
+                Id = doctor.Id,
                 FirstName = doctor.FirstName,
                 LastName = doctor.LastName,
                 MiddleName = doctor.MiddleName,
-                NumberOffice = doctor.Office.Number,
-                NumberPlot = doctor.Plot.Number,
-                Specialization = doctor.Specialization.Name,
+                OfficeId = doctor.OfficeId,
+                PlotId = doctor.PlotId,
+                SpecializationId = doctor.SpecializationId,
             };
 
             return doctorResponse;
         }
 
-        public Task<DoctorByFilterResponse> GetDoctorsByFilter(DoctorByFilterRequest doctorByFilterRequest)
+        public async Task<List<DoctorByFilterResponse>> GetDoctorsByFilter(DoctorByFilterRequest doctorByFilterRequest)
         {
+            try
+            {
+                if (doctorByFilterRequest.PageNumber == 0)
+                    throw new ArgumentException($"Ошибка не указан {nameof(doctorByFilterRequest.PageNumber)}");
 
-            throw new NotImplementedException();
+                if (doctorByFilterRequest.PageSize == 0)
+                    throw new ArgumentException($"Ошибка не указан {nameof(doctorByFilterRequest.PageSize)}");
+
+                var isSortField = DoctorHelper.CheckingSortingField(doctorByFilterRequest.SortField);
+
+                if (!isSortField)
+                {
+                    throw new ArgumentException($"Ошибка поля {doctorByFilterRequest.SortField} не найдено");
+                }
+
+                var doctors = _docRepository.Entity
+                    .Include(v => v.Office)
+                    .Include(v => v.Specialization)
+                    .Include(v => v.Plot)
+                    .AsQueryable();
+
+                if (!string.IsNullOrEmpty(doctorByFilterRequest.SortField))
+                {
+                    var parameter = Expression.Parameter(typeof(Doctor), "e");
+                    var property = Expression.Property(parameter, doctorByFilterRequest.SortField);
+                    var conversion = Expression.Convert(property, typeof(object));
+                    var orderByExpression = Expression.Lambda<Func<Doctor, object>>(conversion, parameter);
+
+                    if (doctorByFilterRequest?.Ascending ?? false)
+                    {
+                        doctors = doctors.OrderByDescending(orderByExpression);
+                    }
+                    else
+                    {
+                        doctors = doctors.OrderBy(orderByExpression);
+                        
+                    }
+                }
+
+                doctors = doctors
+                    .Skip((doctorByFilterRequest.PageNumber - 1) * doctorByFilterRequest.PageSize)
+                    .Take(doctorByFilterRequest.PageSize);
+
+                var doctorsByFilter = new List<DoctorByFilterResponse>();
+
+                foreach (var doctor in doctors)
+                {
+                    var doctorByFilter = new DoctorByFilterResponse
+                    {
+                        Id = doctor.Id,
+                        FirstName = doctor.FirstName,
+                        LastName = doctor.LastName,
+                        MiddleName = doctor.MiddleName,
+                        NumberOffice = doctor.Office.Number,
+                        Specialization = doctor.Specialization.Name,
+                        NumberPlot = doctor.Plot.Number,
+                    };
+
+                    doctorsByFilter.Add(doctorByFilter);
+                }
+
+                return doctorsByFilter;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }                      
         }
 
         public async Task<UpdateDoctorResponse> Update(UpdateDoctorRequest updateDoctor)
@@ -106,11 +176,11 @@ namespace RegisterToDoctor.Services
             try
             {
                 var specialization = await _specializationService.CheckSpecialization(updateDoctor.Specialization);
-                
+
                 var office = await _officeService.CheckOffice(updateDoctor.NumberOffice);
-                
-                var plot = await _plotService.CheckPlot(updateDoctor.NumberPlot);                
-                
+
+                var plot = await _plotService.CheckPlot(updateDoctor.NumberPlot);
+
                 if (string.IsNullOrWhiteSpace(updateDoctor.FirstName) ||
                     string.IsNullOrWhiteSpace(updateDoctor.LastName) ||
                     string.IsNullOrWhiteSpace(updateDoctor.MiddleName))

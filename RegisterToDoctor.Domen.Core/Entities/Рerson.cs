@@ -22,7 +22,7 @@ namespace RegisterToDoctor.Domen.Core.Entities
         /// <summary>
         /// Отчество
         /// </summary>
-        public string MiddleName { get; set; }
+        public string? MiddleName { get; set; }
 
         /// <summary>
         /// Дата рождения

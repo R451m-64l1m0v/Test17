@@ -9,6 +9,6 @@ namespace RegisterToDoctor.Interfaces
         Task<CreateDoctorResponse> Create(CreateDoctorRequest createDoctor);
         Task<UpdateDoctorResponse> Update(UpdateDoctorRequest updateDoctor);
         Task<DoctorResponse> GetById(Guid doctorId);
-        Task<DoctorByFilterResponse> GetDoctorsByFilter(DoctorByFilterRequest doctorByFilterRequest);
+        Task<List<DoctorByFilterResponse>> GetDoctorsByFilter(DoctorByFilterRequest doctorByFilterRequest);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Models.Doctors.Base;
+using RegisterToDoctor.Models.Abstractions;
 
 namespace RegisterToDoctor.Models.Doctors.Request
 {

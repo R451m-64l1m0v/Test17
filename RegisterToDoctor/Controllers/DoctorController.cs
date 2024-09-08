@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Domen.Core.Entities;
 using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Doctors.Request;
+using RegisterToDoctor.Models.Doctors.Response;
 
 namespace RegisterToDoctor.Controllers
 {
@@ -51,7 +52,7 @@ namespace RegisterToDoctor.Controllers
 
                 if (isSecceed.Exception != null)
                 {
-                    return BadRequest($"Ошибка добавления доктора- {isSecceed.Exception}");
+                    return BadRequest($"Ошибка - {isSecceed.Exception}");
                 }
 
                 return Ok("Док добавлен");
@@ -60,12 +61,12 @@ namespace RegisterToDoctor.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Ошибка добавления доктора- {e.Message}");
+                return BadRequest($"Ошибка - {e.Message}");
             }
         }
 
 
-        [HttpGet("get_by_Id")]
+        [HttpGet("id")]
         public async Task<IActionResult> GetById(Guid doctorId)
         {
             try
@@ -82,29 +83,25 @@ namespace RegisterToDoctor.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Ошибка добавления доктора- {e.Message}");
+                return BadRequest($"Ошибка - {e.Message}");
             }
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Doctor>>> GetDoctorsByFilter(
+        public async Task<ActionResult<List<DoctorByFilterResponse>>> GetDoctorsByFilter(
             DoctorByFilterRequest doctorByFilterRequest)         
         {
-
-            var doctors = await _doctorService.GetDoctorsByFilter(doctorByFilterRequest);
-
-            //var query = _context.Records.AsQueryable();
-            //
-            ////Сортировка
-            //query = descending ? query.OrderByDescending(e => EF.Property<object>(e, sortBy))
-            //                    : query.OrderBy(e => EF.Property<object>(e, sortBy));
-            //
-            ////Пагинация
-            //query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
-            //
-            //var records = await query.ToListAsync();
-            var listdoc = new List<Doctor>();
-            return Ok(listdoc);
+            try
+            {
+                var doctors = await _doctorService.GetDoctorsByFilter(doctorByFilterRequest);
+                
+                return Ok(doctors);
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Ошибка - {e.Message}");                
+            }
+            
         }
     }
 

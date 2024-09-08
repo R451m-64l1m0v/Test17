@@ -6,15 +6,15 @@ namespace RegisterToDoctor.Models.Doctors.Request
     public class DoctorByFilterRequest
     {
         [FromQuery]
-        public string sortField { get; set; }
+        public string SortField { get; set; }
 
         [FromQuery]
-        public bool ascending {  get; set; }
+        public bool Ascending {  get; set; }
 
         [FromQuery]
-        public int pageNumber { get; set; }
+        public int PageNumber { get; set; }
 
         [FromQuery]
-        public int pageSize { get; set; }
+        public int PageSize { get; set; }
     }
 }

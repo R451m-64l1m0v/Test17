@@ -4,6 +4,7 @@ namespace RegisterToDoctor.Models.Doctors.Response
 {
     public class DoctorByFilterResponse
     {
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

@@ -1,13 +1,14 @@
-﻿using RegisterToDoctor.Models.Doctors.Base;
+﻿using RegisterToDoctor.Models.Abstractions;
 
 namespace RegisterToDoctor.Models.Doctors.Response
 {
     public class DoctorResponse : РersonBase
     {
-        public int NumberOffice { get; set; }
+        public Guid Id { get; set; }
+        public Guid OfficeId { get; set; }
 
-        public string Specialization { get; set; }
+        public Guid SpecializationId { get; set; }
 
-        public int NumberPlot { get; set; }
+        public Guid PlotId { get; set; }
     }
 }

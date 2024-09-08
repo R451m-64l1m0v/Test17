@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RegisterToDoctor.Domen.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,12 @@ namespace RegisterToDoctor.Domen.Core.Entities
         /// <summary>
         /// Адресс
         /// </summary>
-        public string Address { get; set; }
+        public string? Address { get; set; }
         
         /// <summary>
         /// Пол
         /// </summary>
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
 
         /// <summary>
         /// Участок

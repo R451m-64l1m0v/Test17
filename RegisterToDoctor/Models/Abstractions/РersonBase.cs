@@ -1,4 +1,4 @@
-﻿namespace RegisterToDoctor.Models.Doctors.Base
+﻿namespace RegisterToDoctor.Models.Abstractions
 {
     public abstract class РersonBase
     {
