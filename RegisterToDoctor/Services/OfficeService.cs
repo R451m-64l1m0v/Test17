@@ -31,7 +31,7 @@ namespace RegisterToDoctor.Services
                     return existsOffice;
                 }
 
-                var office = await CreateOffice(numberOffice);
+                var office = CreateOffice(numberOffice);
 
                 return office;
             }
@@ -42,7 +42,7 @@ namespace RegisterToDoctor.Services
 
         }
 
-        private async Task<Office> CreateOffice(int numberOffice)
+        private Office CreateOffice(int numberOffice)
         {
             try
             {

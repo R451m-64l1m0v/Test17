@@ -30,7 +30,7 @@ namespace RegisterToDoctor.Services
                     return existsSpecialization;
                 }
 
-                var specialization = await CreateSpecialization(specializationName);
+                var specialization = CreateSpecialization(specializationName);
 
                 return specialization;
             }
@@ -41,14 +41,14 @@ namespace RegisterToDoctor.Services
 
         }
 
-        private async Task<Specialization> CreateSpecialization(string specializationName)
+        private Specialization CreateSpecialization(string specializationName)
         {
             try
             {               
                 var specialization = new Specialization
                 {
                     Id = Guid.NewGuid(),
-                    Name = specializationName,
+                    Name = specializationName.ToLower(),
                 };
 
                 _specializationRepository.Create(specialization);
@@ -66,7 +66,7 @@ namespace RegisterToDoctor.Services
         {
             var specialization = _specializationRepository
                 .GetAll()
-                .FirstOrDefault(x => x.Name.ToLower() == specializationName.ToLower());                                 
+                .FirstOrDefault(x => x.Name == specializationName.ToLower());                                 
 
             return specialization;
         }

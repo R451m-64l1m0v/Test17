@@ -4,6 +4,7 @@ using RegisterToDoctor.Domen.Core.Entities;
 using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Doctors.Request;
 using RegisterToDoctor.Models.Doctors.Response;
+using System.Numerics;
 
 namespace RegisterToDoctor.Controllers
 {
@@ -33,7 +34,7 @@ namespace RegisterToDoctor.Controllers
                     return BadRequest($"Ошибка добавления доктора- {isSecceed.Exception}");
                 }
             
-                return Ok("Док добавлен");
+                return Ok($"Док добавлен {isSecceed}");
                 
                 throw new Exception();
             }
@@ -50,12 +51,17 @@ namespace RegisterToDoctor.Controllers
             {
                 var isSecceed = _doctorService.Update(createDoctor);
 
+                if (isSecceed == null)
+                {
+                    return NotFound();
+                }
+
                 if (isSecceed.Exception != null)
                 {
                     return BadRequest($"Ошибка - {isSecceed.Exception}");
-                }
+                }                               
 
-                return Ok("Док добавлен");
+                return Ok($"Док обновлен {isSecceed}");
 
                 throw new Exception();
             }
@@ -64,7 +70,6 @@ namespace RegisterToDoctor.Controllers
                 return BadRequest($"Ошибка - {e.Message}");
             }
         }
-
 
         [HttpGet("id")]
         public async Task<IActionResult> GetById(Guid doctorId)

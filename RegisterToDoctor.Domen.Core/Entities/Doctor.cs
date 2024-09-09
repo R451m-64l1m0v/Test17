@@ -8,8 +8,19 @@ namespace RegisterToDoctor.Domen.Core.Entities
 {
     public class Doctor : Рerson
     {
+        /// <summary>
+        /// Id кабинета
+        /// </summary>
         public Guid OfficeId { get; set; }
+
+        /// <summary>
+        /// Id специальности
+        /// </summary>
         public Guid SpecializationId { get; set; }
+
+        /// <summary>
+        /// Id участка
+        /// </summary>
         public Guid PlotId { get; set; }
 
         public Office Office { get; set; }

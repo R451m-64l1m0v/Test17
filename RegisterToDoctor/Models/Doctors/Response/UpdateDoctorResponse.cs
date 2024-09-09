@@ -1,6 +1,8 @@
-﻿namespace RegisterToDoctor.Models.Doctors.Response
+﻿using RegisterToDoctor.Models.Abstractions;
+
+namespace RegisterToDoctor.Models.Doctors.Response
 {
-    public class UpdateDoctorResponse : CreateDoctorResponse
+    public class UpdateDoctorResponse : CreateResultBase
     {
     }
 }

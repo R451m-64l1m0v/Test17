@@ -15,6 +15,9 @@ namespace RegisterToDoctor.Domen.Core.Entities
         /// </summary>
         public int Number { get; set; }
 
+        /// <summary>
+        /// Id пациента
+        /// </summary>
         public Guid PatientId { get; set; }
 
         public Patient Patient { get; set; }

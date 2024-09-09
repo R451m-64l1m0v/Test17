@@ -8,7 +8,7 @@ namespace RegisterToDoctor.Interfaces
     {
         Task<CreateDoctorResponse> Create(CreateDoctorRequest createDoctor);
         Task<UpdateDoctorResponse> Update(UpdateDoctorRequest updateDoctor);
-        Task<DoctorResponse> GetById(Guid doctorId);
+        Task<DoctorByIdResponse> GetById(Guid doctorId);
         Task<List<DoctorByFilterResponse>> GetDoctorsByFilter(DoctorByFilterRequest doctorByFilterRequest);
     }
 }

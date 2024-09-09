@@ -38,11 +38,17 @@ namespace RegisterToDoctor.Services
         {
             try
             {
-                var specialization = await _specializationService.CheckSpecialization(createDoctor.Specialization);
+                var specializationTask = _specializationService.CheckSpecialization(createDoctor.Specialization);
 
-                var office = await _officeService.CheckOffice(createDoctor.NumberOffice);
+                var officeTask = _officeService.CheckOffice(createDoctor.NumberOffice);
 
-                var plot = await _plotService.CheckPlot(createDoctor.NumberPlot);
+                var plotTask = _plotService.CheckPlot(createDoctor.NumberPlot);
+
+                await Task.WhenAll(specializationTask, officeTask, plotTask);
+
+                var specialization = specializationTask.Result;
+                var office = officeTask.Result;
+                var plot = plotTask.Result;
 
                 if (string.IsNullOrWhiteSpace(createDoctor.FirstName) ||
                     string.IsNullOrWhiteSpace(createDoctor.LastName))
@@ -59,7 +65,6 @@ namespace RegisterToDoctor.Services
                     FirstName = createDoctor.FirstName,
                     LastName = createDoctor.LastName,
                     MiddleName = createDoctor.MiddleName,
-                    DateOfBirth = null,
                     OfficeId = office.Id,
                     PlotId = plot.Id,
                     SpecializationId = specialization.Id,
@@ -75,28 +80,39 @@ namespace RegisterToDoctor.Services
             }
         }
 
-        public async Task<DoctorResponse> GetById(Guid doctorId)
+        public async Task<DoctorByIdResponse> GetById(Guid doctorId)
         {
-            var doctor = await _docRepository.Entity
-                .FirstOrDefaultAsync(x => x.Id == doctorId);
-
-            if (doctor == null)
+            try
             {
-                return null;
+                if (doctorId == Guid.Empty)
+                {
+                    throw new ArgumentException($"Ошибка id доктора не может быть {doctorId}");
+                }
+
+                var doctor = _docRepository.GetById(doctorId);
+
+                if (doctor == null)
+                {
+                    return null;
+                }
+
+                var doctorResponse = new DoctorByIdResponse
+                {
+                    Id = doctor.Id,
+                    FirstName = doctor.FirstName,
+                    LastName = doctor.LastName,
+                    MiddleName = doctor.MiddleName,
+                    OfficeId = doctor.OfficeId,
+                    PlotId = doctor.PlotId,
+                    SpecializationId = doctor.SpecializationId,
+                };
+
+                return doctorResponse;
             }
-
-            var doctorResponse = new DoctorResponse
+            catch (Exception)
             {
-                Id = doctor.Id,
-                FirstName = doctor.FirstName,
-                LastName = doctor.LastName,
-                MiddleName = doctor.MiddleName,
-                OfficeId = doctor.OfficeId,
-                PlotId = doctor.PlotId,
-                SpecializationId = doctor.SpecializationId,
-            };
-
-            return doctorResponse;
+                throw;
+            }
         }
 
         public async Task<List<DoctorByFilterResponse>> GetDoctorsByFilter(DoctorByFilterRequest doctorByFilterRequest)
@@ -117,27 +133,25 @@ namespace RegisterToDoctor.Services
                 }
 
                 var doctors = _docRepository.Entity
-                    .Include(v => v.Office)
-                    .Include(v => v.Specialization)
-                    .Include(v => v.Plot)
+                    .Include(x => x.Office)
+                    .Include(x => x.Specialization)
+                    .Include(x => x.Plot)
                     .AsQueryable();
 
-                if (!string.IsNullOrEmpty(doctorByFilterRequest.SortField))
-                {
-                    var parameter = Expression.Parameter(typeof(Doctor), "e");
-                    var property = Expression.Property(parameter, doctorByFilterRequest.SortField);
-                    var conversion = Expression.Convert(property, typeof(object));
-                    var orderByExpression = Expression.Lambda<Func<Doctor, object>>(conversion, parameter);
+                var sortField = doctorByFilterRequest.SortField.ToString();
 
-                    if (doctorByFilterRequest?.Ascending ?? false)
-                    {
-                        doctors = doctors.OrderByDescending(orderByExpression);
-                    }
-                    else
-                    {
-                        doctors = doctors.OrderBy(orderByExpression);
-                        
-                    }
+                var parameter = Expression.Parameter(typeof(Doctor), "e");
+                var property = Expression.Property(parameter, sortField);
+                var conversion = Expression.Convert(property, typeof(object));
+                var orderByExpression = Expression.Lambda<Func<Doctor, object>>(conversion, parameter);
+
+                if (doctorByFilterRequest?.Ascending ?? false)
+                {
+                    doctors = doctors.OrderByDescending(orderByExpression);
+                }
+                else
+                {
+                    doctors = doctors.OrderBy(orderByExpression);
                 }
 
                 doctors = doctors
@@ -155,7 +169,7 @@ namespace RegisterToDoctor.Services
                         LastName = doctor.LastName,
                         MiddleName = doctor.MiddleName,
                         NumberOffice = doctor.Office.Number,
-                        Specialization = doctor.Specialization.Name,
+                        SpecializationName = doctor.Specialization.Name,
                         NumberPlot = doctor.Plot.Number,
                     };
 
@@ -168,35 +182,52 @@ namespace RegisterToDoctor.Services
             {
 
                 throw;
-            }                      
+            }
         }
 
         public async Task<UpdateDoctorResponse> Update(UpdateDoctorRequest updateDoctor)
         {
             try
             {
-                var specialization = await _specializationService.CheckSpecialization(updateDoctor.Specialization);
+                if (updateDoctor.Id == Guid.Empty)
+                {
+                    throw new ArgumentException($"Ошибка id доктора не может быть {updateDoctor.Id}");
+                }
 
-                var office = await _officeService.CheckOffice(updateDoctor.NumberOffice);
+                var specializationTask = _specializationService.CheckSpecialization(updateDoctor.Specialization);
 
-                var plot = await _plotService.CheckPlot(updateDoctor.NumberPlot);
+                var officeTask = _officeService.CheckOffice(updateDoctor.NumberOffice);
+
+                var plotTask = _plotService.CheckPlot(updateDoctor.NumberPlot);
+
+                await Task.WhenAll(specializationTask, officeTask, plotTask);
+
+                var specialization = specializationTask.Result;
+                var office = officeTask.Result;
+                var plot = plotTask.Result;
 
                 if (string.IsNullOrWhiteSpace(updateDoctor.FirstName) ||
-                    string.IsNullOrWhiteSpace(updateDoctor.LastName) ||
-                    string.IsNullOrWhiteSpace(updateDoctor.MiddleName))
+                    string.IsNullOrWhiteSpace(updateDoctor.LastName))
                     throw new ArgumentException($"Ошибка не заполнены поля ФИО");
 
-                var doctor = new Doctor
+                if (string.IsNullOrWhiteSpace(updateDoctor.MiddleName))
                 {
-                    Id = Guid.NewGuid(),
-                    FirstName = updateDoctor.FirstName,
-                    LastName = updateDoctor.LastName,
-                    MiddleName = updateDoctor.MiddleName,
-                    DateOfBirth = null,
-                    OfficeId = office.Id,
-                    PlotId = plot.Id,
-                    SpecializationId = specialization.Id,
-                };
+                    updateDoctor.MiddleName = null;
+                }
+
+                var doctor = _docRepository.GetById(updateDoctor.Id);
+
+                if (doctor != null)
+                {
+                    doctor.FirstName = updateDoctor.FirstName;
+                    doctor.LastName = updateDoctor.LastName;
+                    doctor.MiddleName = updateDoctor.MiddleName;
+                    doctor.OfficeId = office.Id;
+                    doctor.SpecializationId = specialization.Id;
+                    doctor.PlotId = plot.Id;
+                }
+                else
+                    return null;
 
                 _docRepository.Update(doctor);
 
@@ -206,12 +237,6 @@ namespace RegisterToDoctor.Services
             {
                 throw;
             }
-
-
-
-
         }
-
-
     }
 }

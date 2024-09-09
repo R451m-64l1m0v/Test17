@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RegisterToDoctor.Domen.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,10 @@ namespace RegisterToDoctor.Infrastructure.Data.Context
                 .HasOne(p => p.MedicalCard)
                 .WithOne(b => b.Patient)
                 .HasForeignKey<MedicalCard>(p => p.PatientId);
+
+            modelBuilder.Entity<Patient>()
+            .Property(e => e.DateOfBirth)
+            .HasColumnType("DATE");
         }
 
     }

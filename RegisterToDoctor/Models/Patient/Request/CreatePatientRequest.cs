@@ -10,7 +10,7 @@ namespace RegisterToDoctor.Models.Patient.Request
         /// <summary>
         /// Дата рождения
         /// </summary>
-        public DateTime? DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         /// <summary>
         /// Адресс

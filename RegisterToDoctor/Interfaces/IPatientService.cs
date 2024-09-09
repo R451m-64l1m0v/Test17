@@ -8,5 +8,8 @@ namespace RegisterToDoctor.Interfaces
     public interface IPatientService
     {
         Task<CreatePatientResponse> Create(CreatePatientRequest createDoctor);
+        Task<UpdatePatientResponse> Update(UpdatePatientRequest updateDoctor);
+        Task<PatientByIdResponse> GetById(Guid doctorId);
+        Task<List<PatienByFilterResponse>> GetPatientByFilter(PatientByFilterRequest doctorByFilterRequest);
     }
 }

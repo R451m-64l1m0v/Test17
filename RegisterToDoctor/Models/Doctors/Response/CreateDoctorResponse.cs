@@ -1,10 +1,8 @@
-﻿namespace RegisterToDoctor.Models.Doctors.Response
+﻿using RegisterToDoctor.Models.Abstractions;
+
+namespace RegisterToDoctor.Models.Doctors.Response
 {
-    public class CreateDoctorResponse
-    {
-        /// <summary>
-        /// Результат создания
-        /// </summary>
-        public bool IsSecceed { get; set; }
+    public class CreateDoctorResponse : CreateResultBase
+    {        
     }
 }

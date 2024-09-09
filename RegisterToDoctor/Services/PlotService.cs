@@ -30,7 +30,7 @@ namespace RegisterToDoctor.Services
                     return existsPlot;
                 }
 
-                var plot = await CreatePlot(numberPlot);
+                var plot = CreatePlot(numberPlot);
 
                 return plot;
             }
@@ -41,7 +41,7 @@ namespace RegisterToDoctor.Services
             
         }
 
-        private async Task<Plot> CreatePlot(int numberPlot)
+        private Plot CreatePlot(int numberPlot)
         {
             try
             {

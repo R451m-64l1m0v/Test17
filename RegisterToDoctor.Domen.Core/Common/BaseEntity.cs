@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RegisterToDoctor.Domen.Core.Common
 {
-    public class BaseEntity
+    public abstract class BaseEntity
     {
         public Guid Id { get; set; }
     }

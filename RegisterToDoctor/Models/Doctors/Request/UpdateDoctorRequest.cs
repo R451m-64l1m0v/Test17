@@ -3,12 +3,11 @@ using RegisterToDoctor.Models.Abstractions;
 
 namespace RegisterToDoctor.Models.Doctors.Request
 {
-    public class UpdateDoctorRequest : РersonBase
+    public class UpdateDoctorRequest : CreateDoctorRequest
     {
-        public int NumberOffice { get; set; }
-
-        public string Specialization { get; set; }
-
-        public int NumberPlot { get; set; }
+        /// <summary>
+        /// Id доктора
+        /// </summary>
+        public Guid Id { get; set; }
     }
 }

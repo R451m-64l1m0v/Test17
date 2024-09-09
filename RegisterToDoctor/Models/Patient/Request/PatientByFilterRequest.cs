@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RegisterToDoctor.Domen.Core.Common;
+using RegisterToDoctor.Domen.Core.Enums;
+using RegisterToDoctor.Models.Abstractions;
 using RegisterToDoctor.Models.Enum;
 
-namespace RegisterToDoctor.Models.Doctors.Request
+namespace RegisterToDoctor.Models.Patient.Request
 {
-    public class DoctorByFilterRequest
+    public class PatientByFilterRequest
     {
-
         /// <summary>
         /// Сортировачное поле
         /// </summary>
         [FromQuery]
-        public DoctorSortField SortField { get; set; }
+        public PatientSortField SortField { get; set; }
 
         /// <summary>
         /// Упорядочить
         /// </summary>
         [FromQuery]
-        public bool Ascending {  get; set; }
+        public bool Ascending { get; set; }
 
         /// <summary>
         /// Номер страницы
@@ -29,6 +29,6 @@ namespace RegisterToDoctor.Models.Doctors.Request
         /// Количество записей на странице
         /// </summary>
         [FromQuery]
-        public int PageSize { get; set; }
+        public int PageSize { get; set; }        
     }
 }

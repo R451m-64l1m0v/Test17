@@ -10,6 +10,11 @@ namespace RegisterToDoctor.Domen.Core.Entities
     public class Patient : Рerson
     {
         /// <summary>
+        /// Дата рождения
+        /// </summary>
+        public DateTime DateOfBirth { get; set; }
+
+        /// <summary>
         /// Адресс
         /// </summary>
         public string? Address { get; set; }
@@ -20,21 +25,28 @@ namespace RegisterToDoctor.Domen.Core.Entities
         public Gender Gender { get; set; }
 
         /// <summary>
+        /// Id участока 
+        /// </summary>
+        public Guid PlotId { get; set; }
+
+        /// <summary>
+        /// Номер OMC
+        /// </summary>
+        public string? OmsNumder {  get; set; } 
+
+        /// <summary>
+        /// Номер ДМС
+        /// </summary>
+        public string? DmsNumber { get; set; }
+
+        /// <summary>
         /// Участок
         /// </summary>
         public Plot Plot { get; set; }
 
         /// <summary>
-        /// Номер OMC
+        /// Медицинская карта
         /// </summary>
-        public string OmsNumder {  get; set; } 
-
-        /// <summary>
-        /// Номер ДМС
-        /// </summary>
-        public string DmsNumber { get; set; }
-        
-
         public MedicalCard MedicalCard { get; set; }
     }
 }
