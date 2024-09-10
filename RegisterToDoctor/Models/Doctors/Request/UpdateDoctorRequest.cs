@@ -1,5 +1,6 @@
 ﻿using RegisterToDoctor.Domen.Core.Entities;
 using RegisterToDoctor.Models.Abstractions;
+using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Doctors.Request
 {
@@ -8,6 +9,7 @@ namespace RegisterToDoctor.Models.Doctors.Request
         /// <summary>
         /// Id доктора
         /// </summary>
+        [JsonPropertyName("DoctorId")]
         public Guid Id { get; set; }
     }
 }

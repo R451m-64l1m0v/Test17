@@ -10,6 +10,6 @@ namespace RegisterToDoctor.Interfaces
         Task<CreatePatientResponse> Create(CreatePatientRequest createDoctor);
         Task<UpdatePatientResponse> Update(UpdatePatientRequest updateDoctor);
         Task<PatientByIdResponse> GetById(Guid doctorId);
-        Task<List<PatienByFilterResponse>> GetPatientByFilter(PatientByFilterRequest doctorByFilterRequest);
+        Task<IEnumerable<PatienByFilterResponse>> GetPatientByFilter(PatientByFilterRequest doctorByFilterRequest);
     }
 }

@@ -2,6 +2,7 @@
 using RegisterToDoctor.Domen.Core.Enums;
 using RegisterToDoctor.Models.Abstractions;
 using RegisterToDoctor.Models.Enum;
+using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Patient.Request
 {
@@ -9,26 +10,27 @@ namespace RegisterToDoctor.Models.Patient.Request
     {
         /// <summary>
         /// Сортировачное поле
-        /// </summary>
+        /// </summary>        
         [FromQuery]
         public PatientSortField SortField { get; set; }
 
         /// <summary>
         /// Упорядочить
         /// </summary>
-        [FromQuery]
+        [FromQuery]        
         public bool Ascending { get; set; }
 
         /// <summary>
         /// Номер страницы
         /// </summary>
-        [FromQuery]
+        [FromQuery]        
         public int PageNumber { get; set; }
 
         /// <summary>
         /// Количество записей на странице
         /// </summary>
         [FromQuery]
+        [JsonPropertyName("PageSize")]
         public int PageSize { get; set; }        
     }
 }

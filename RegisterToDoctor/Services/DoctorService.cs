@@ -96,18 +96,7 @@ namespace RegisterToDoctor.Services
                     return null;
                 }
 
-                var doctorResponse = new DoctorByIdResponse
-                {
-                    Id = doctor.Id,
-                    FirstName = doctor.FirstName,
-                    LastName = doctor.LastName,
-                    MiddleName = doctor.MiddleName,
-                    OfficeId = doctor.OfficeId,
-                    PlotId = doctor.PlotId,
-                    SpecializationId = doctor.SpecializationId,
-                };
-
-                return doctorResponse;
+                return DoctorByIdResponse.Create(doctor);                                
             }
             catch (Exception)
             {
@@ -115,7 +104,7 @@ namespace RegisterToDoctor.Services
             }
         }
 
-        public async Task<List<DoctorByFilterResponse>> GetDoctorsByFilter(DoctorByFilterRequest doctorByFilterRequest)
+        public async Task<IEnumerable<DoctorByFilterResponse>> GetDoctorsByFilter(DoctorByFilterRequest doctorByFilterRequest)
         {
             try
             {
@@ -158,25 +147,7 @@ namespace RegisterToDoctor.Services
                     .Skip((doctorByFilterRequest.PageNumber - 1) * doctorByFilterRequest.PageSize)
                     .Take(doctorByFilterRequest.PageSize);
 
-                var doctorsByFilter = new List<DoctorByFilterResponse>();
-
-                foreach (var doctor in doctors)
-                {
-                    var doctorByFilter = new DoctorByFilterResponse
-                    {
-                        Id = doctor.Id,
-                        FirstName = doctor.FirstName,
-                        LastName = doctor.LastName,
-                        MiddleName = doctor.MiddleName,
-                        NumberOffice = doctor.Office.Number,
-                        SpecializationName = doctor.Specialization.Name,
-                        NumberPlot = doctor.Plot.Number,
-                    };
-
-                    doctorsByFilter.Add(doctorByFilter);
-                }
-
-                return doctorsByFilter;
+                return doctors.Select(DoctorByFilterResponse.Create);
             }
             catch (Exception)
             {

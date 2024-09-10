@@ -90,19 +90,7 @@ namespace RegisterToDoctor.Services
                     return null;
                 }
 
-                var patientResponse = new PatientByIdResponse
-                {
-                    Id = patient.Id,
-                    FirstName = patient.FirstName,
-                    LastName = patient.LastName,
-                    MiddleName = patient.MiddleName,
-                    DateOfBirth = patient.DateOfBirth,
-                    Address = patient.Address, 
-                    Gender = patient.Gender,
-                    PlotId = patient.PlotId,                    
-                };
-
-                return patientResponse;
+                return PatientByIdResponse.Create(patient);
             }
             catch (Exception)
             {
@@ -110,7 +98,7 @@ namespace RegisterToDoctor.Services
             }            
         }
 
-        public async Task<List<PatienByFilterResponse>> GetPatientByFilter(PatientByFilterRequest patientByFilterRequest)
+        public async Task<IEnumerable<PatienByFilterResponse>> GetPatientByFilter(PatientByFilterRequest patientByFilterRequest)
         {
             try
             {
@@ -151,26 +139,7 @@ namespace RegisterToDoctor.Services
                     .Skip((patientByFilterRequest.PageNumber - 1) * patientByFilterRequest.PageSize)
                     .Take(patientByFilterRequest.PageSize);
 
-                var patientsByFilter = new List<PatienByFilterResponse>();
-
-                foreach (var patient in patients)
-                {
-                    var patientByFilter = new PatienByFilterResponse
-                    {
-                        Id = patient.Id,
-                        FirstName = patient.FirstName,
-                        LastName = patient.LastName,
-                        MiddleName = patient.MiddleName,                        
-                        DateOfBirth = patient.DateOfBirth,
-                        Gender = patient.Gender,
-                        Address = patient.Address,
-                        NumberPlot = patient.Plot.Number,
-                    };
-
-                    patientsByFilter.Add(patientByFilter);
-                }
-
-                return patientsByFilter;
+                return patients.Select(PatienByFilterResponse.Create);
             }
             catch (Exception)
             {

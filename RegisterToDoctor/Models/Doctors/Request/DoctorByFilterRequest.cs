@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RegisterToDoctor.Domen.Core.Common;
 using RegisterToDoctor.Models.Enum;
+using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Doctors.Request
 {
@@ -9,19 +10,19 @@ namespace RegisterToDoctor.Models.Doctors.Request
 
         /// <summary>
         /// Сортировачное поле
-        /// </summary>
+        /// </summary>        
         [FromQuery]
         public DoctorSortField SortField { get; set; }
 
         /// <summary>
         /// Упорядочить
-        /// </summary>
+        /// </summary>        
         [FromQuery]
         public bool Ascending {  get; set; }
 
         /// <summary>
         /// Номер страницы
-        /// </summary>
+        /// </summary>        
         [FromQuery]
         public int PageNumber { get; set; }
 
