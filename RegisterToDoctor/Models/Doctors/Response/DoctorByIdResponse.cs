@@ -6,55 +6,56 @@ namespace RegisterToDoctor.Models.Doctors.Response
 {
     public class DoctorByIdResponse : РersonBase
     {
-        private readonly Doctor _doctor;
-
         /// <summary>
         /// Id доктора
         /// </summary>
         [JsonPropertyName("DoctorId")]
-        public Guid Id => _doctor.Id;
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// Имя
         /// </summary>
         [JsonPropertyName("FirstName")]
-        public string FirstName => _doctor.FirstName;
+        public string FirstName { get; private set; }
 
         /// <summary>
         /// Фамилия
         /// </summary>
         [JsonPropertyName("LastName")]
-        public string LastName => _doctor.LastName;
+        public string LastName { get; private set; }
 
         /// <summary>
         /// Отчество
         /// </summary>
         [JsonPropertyName("MiddleName")]
-        public string MiddleName => _doctor.MiddleName;
+        public string MiddleName { get; private set; }
 
         /// <summary>
         /// Id кабинета
         /// </summary>
         [JsonPropertyName("OfficeId")]
-        public Guid OfficeId => _doctor.OfficeId;
+        public Guid OfficeId { get; private set; }
 
         /// <summary>
         /// Id специальности
         /// </summary>
         [JsonPropertyName("SpecializationId")]
-        public Guid SpecializationId => _doctor.SpecializationId;
+        public Guid SpecializationId { get; private set; }
 
         /// <summary>
         /// Id участка
         /// </summary>
         [JsonPropertyName("PlotId")]
-        public Guid PlotId => _doctor.PlotId;
+        public Guid PlotId { get; private set; }
 
-        public DoctorByIdResponse(Doctor doctor)
+        public static DoctorByIdResponse CreateResponse(Doctor doctor) => new DoctorByIdResponse
         {
-            _doctor = doctor;
-        }
-
-        public static DoctorByIdResponse Create(Doctor doctor) => new DoctorByIdResponse(doctor);
+            FirstName = doctor.FirstName,
+            LastName = doctor.LastName,
+            MiddleName = doctor.MiddleName,
+            OfficeId = doctor.OfficeId,
+            SpecializationId = doctor.SpecializationId,
+            PlotId = doctor.PlotId,
+        };
     }
 }

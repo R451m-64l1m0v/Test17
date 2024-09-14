@@ -9,11 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domen", "Domen", "{5E8C1129
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{7920BBAB-AFE1-4032-9AAB-D030BBDE0A4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterToDoctor.Domen.Core", "RegisterToDoctor.Domen.Core\RegisterToDoctor.Domen.Core.csproj", "{F2964937-4951-4B1F-9A7C-3D1790DCB40C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterToDoctor.Domen.Core", "RegisterToDoctor.Domen.Core\RegisterToDoctor.Domen.Core.csproj", "{F2964937-4951-4B1F-9A7C-3D1790DCB40C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{89D6C80B-181E-4382-B70A-74C7EC24CCBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterToDoctor.Infrastructure.Data", "RegisterToDoctor.Infrastructure.Data\RegisterToDoctor.Infrastructure.Data.csproj", "{30E6A2F7-DDB7-413C-BB6A-A1FA19ED7BB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterToDoctor.Infrastructure.Data", "RegisterToDoctor.Infrastructure.Data\RegisterToDoctor.Infrastructure.Data.csproj", "{30E6A2F7-DDB7-413C-BB6A-A1FA19ED7BB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

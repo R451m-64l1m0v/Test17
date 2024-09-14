@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Attributes;
 using RegisterToDoctor.Domen.Core.Entities;
+using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
 using RegisterToDoctor.Helpers;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using RegisterToDoctor.Interfaces;
+using RegisterToDoctor.Models.Doctors;
 using RegisterToDoctor.Models.Doctors.Request;
 using RegisterToDoctor.Models.Doctors.Response;
 using System;
@@ -34,15 +36,15 @@ namespace RegisterToDoctor.Services
             _plotService = plotService;
         }
 
-        public async Task<CreateDoctorResponse> Create(CreateDoctorRequest createDoctor)
+        public async Task<CreateDoctorResponse> Create(CreateDoctorRequest createDoctorRequest)
         {
             try
             {
-                var specializationTask = _specializationService.CheckSpecialization(createDoctor.Specialization);
+                var specializationTask = _specializationService.CheckSpecialization(createDoctorRequest.Specialization);
 
-                var officeTask = _officeService.CheckOffice(createDoctor.NumberOffice);
+                var officeTask = _officeService.CheckOffice(createDoctorRequest.NumberOffice);
 
-                var plotTask = _plotService.CheckPlot(createDoctor.NumberPlot);
+                var plotTask = _plotService.CheckPlot(createDoctorRequest.NumberPlot);
 
                 await Task.WhenAll(specializationTask, officeTask, plotTask);
 
@@ -50,29 +52,22 @@ namespace RegisterToDoctor.Services
                 var office = officeTask.Result;
                 var plot = plotTask.Result;
 
-                if (string.IsNullOrWhiteSpace(createDoctor.FirstName) ||
-                    string.IsNullOrWhiteSpace(createDoctor.LastName))
+                if (string.IsNullOrWhiteSpace(createDoctorRequest.FirstName) ||
+                    string.IsNullOrWhiteSpace(createDoctorRequest.LastName))
                     throw new ArgumentException($"Ошибка не заполнены поля Фамилии или Имени");
 
-                if (string.IsNullOrWhiteSpace(createDoctor.MiddleName))
+                if (string.IsNullOrWhiteSpace(createDoctorRequest.MiddleName))
                 {
-                    createDoctor.MiddleName = null;
+                    createDoctorRequest.MiddleName = null;
                 }
 
-                var doctor = new Doctor
-                {
-                    Id = Guid.NewGuid(),
-                    FirstName = createDoctor.FirstName,
-                    LastName = createDoctor.LastName,
-                    MiddleName = createDoctor.MiddleName,
-                    OfficeId = office.Id,
-                    PlotId = plot.Id,
-                    SpecializationId = specialization.Id,
-                };
+                ICreateDoctor createDoctor = CreateDoctor.Create(createDoctorRequest, specialization.Id, office.Id, plot.Id);
 
+                var doctor = Doctor.Create(createDoctor);
+                
                 _docRepository.Create(doctor);
 
-                return new CreateDoctorResponse { IsSecceed = true };
+                return CreateDoctorResponse.CreateResponse(doctor);
             }
             catch (Exception)
             {
@@ -96,7 +91,7 @@ namespace RegisterToDoctor.Services
                     return null;
                 }
 
-                return DoctorByIdResponse.Create(doctor);                                
+                return DoctorByIdResponse.CreateResponse(doctor);                  
             }
             catch (Exception)
             {
@@ -146,30 +141,29 @@ namespace RegisterToDoctor.Services
                 doctors = doctors
                     .Skip((doctorByFilterRequest.PageNumber - 1) * doctorByFilterRequest.PageSize)
                     .Take(doctorByFilterRequest.PageSize);
-
-                return doctors.Select(DoctorByFilterResponse.Create);
+                                
+                return doctors.Select(doctor => DoctorByFilterResponse.CreateResponse(doctor));
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public async Task<UpdateDoctorResponse> Update(UpdateDoctorRequest updateDoctor)
+        public async Task<UpdateDoctorResponse> Update(UpdateDoctorRequest updateDoctorRequest)
         {
             try
             {
-                if (updateDoctor.Id == Guid.Empty)
+                if (updateDoctorRequest.Id == Guid.Empty)
                 {
-                    throw new ArgumentException($"Ошибка id доктора не может быть {updateDoctor.Id}");
+                    throw new ArgumentException($"Ошибка id доктора не может быть {updateDoctorRequest.Id}");
                 }
 
-                var specializationTask = _specializationService.CheckSpecialization(updateDoctor.Specialization);
+                var specializationTask = _specializationService.CheckSpecialization(updateDoctorRequest.Specialization);
 
-                var officeTask = _officeService.CheckOffice(updateDoctor.NumberOffice);
+                var officeTask = _officeService.CheckOffice(updateDoctorRequest.NumberOffice);
 
-                var plotTask = _plotService.CheckPlot(updateDoctor.NumberPlot);
+                var plotTask = _plotService.CheckPlot(updateDoctorRequest.NumberPlot);
 
                 await Task.WhenAll(specializationTask, officeTask, plotTask);
 
@@ -177,32 +171,29 @@ namespace RegisterToDoctor.Services
                 var office = officeTask.Result;
                 var plot = plotTask.Result;
 
-                if (string.IsNullOrWhiteSpace(updateDoctor.FirstName) ||
-                    string.IsNullOrWhiteSpace(updateDoctor.LastName))
+                if (string.IsNullOrWhiteSpace(updateDoctorRequest.FirstName) ||
+                    string.IsNullOrWhiteSpace(updateDoctorRequest.LastName))
                     throw new ArgumentException($"Ошибка не заполнены поля ФИО");
 
-                if (string.IsNullOrWhiteSpace(updateDoctor.MiddleName))
+                if (string.IsNullOrWhiteSpace(updateDoctorRequest.MiddleName))
                 {
-                    updateDoctor.MiddleName = null;
+                    updateDoctorRequest.MiddleName = null;
                 }
 
-                var doctor = _docRepository.GetById(updateDoctor.Id);
+                var doctor = _docRepository.GetById(updateDoctorRequest.Id);
 
-                if (doctor != null)
+                if (doctor == null)
                 {
-                    doctor.FirstName = updateDoctor.FirstName;
-                    doctor.LastName = updateDoctor.LastName;
-                    doctor.MiddleName = updateDoctor.MiddleName;
-                    doctor.OfficeId = office.Id;
-                    doctor.SpecializationId = specialization.Id;
-                    doctor.PlotId = plot.Id;
-                }
-                else
                     return null;
+                }              
+
+                ICreateDoctor updateDoctor = CreateDoctor.Create(updateDoctorRequest, specialization.Id, office.Id, plot.Id);
+
+                doctor = Doctor.Create(updateDoctor);
 
                 _docRepository.Update(doctor);
 
-                return new UpdateDoctorResponse { IsSecceed = true };
+                return UpdateDoctorResponse.CreateResponse(doctor);
             }
             catch (Exception)
             {

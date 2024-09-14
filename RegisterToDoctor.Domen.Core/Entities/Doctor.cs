@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RegisterToDoctor.Domen.Core.RequestModels;
+using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RegisterToDoctor.Domen.Core.Entities
 {
-    public class Doctor : Рerson
+    public class Doctor : Рerson, ICreateDoctor
     {
         /// <summary>
         /// Id кабинета
@@ -26,5 +28,19 @@ namespace RegisterToDoctor.Domen.Core.Entities
         public Office Office { get; set; }
         public Specialization Specialization { get; set; }
         public Plot Plot { get; set; }
+
+        public static Doctor Create(ICreateDoctor doctor) 
+        {
+            return new Doctor
+            {
+                Id = doctor.Id,
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                MiddleName = doctor.MiddleName,
+                OfficeId = doctor.OfficeId,
+                PlotId = doctor.PlotId,
+                SpecializationId = doctor.SpecializationId,
+            };
+        }
     }
 }
