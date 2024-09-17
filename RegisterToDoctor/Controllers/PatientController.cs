@@ -23,20 +23,13 @@ namespace RegisterToDoctor.Controllers
         /// Добавляет доктора
         /// </summary>        
         [HttpPost]
-        public IActionResult Create(CreatePatientRequest createPatient)
+        public async Task<IActionResult> Create(CreatePatientRequest createPatient)
         {
             try
             {
-                var isSecceed = _patientService.Create(createPatient);
-
-                if (isSecceed.Exception != null)
-                {
-                    return BadRequest($"Ошибка добавления доктора- {isSecceed.Exception}");
-                }
-
-                return Ok($"Пациент добавлен {isSecceed}");
-
-                throw new Exception();
+                var patientResponse = await _patientService.Create(createPatient);
+                
+                return Ok($"Пациент добавлен Id пацииента {patientResponse.Id}.");                
             }
             catch (Exception e)
             {
@@ -45,25 +38,18 @@ namespace RegisterToDoctor.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(UpdatePatientRequest updatePatient)
+        public async Task<IActionResult> Update(UpdatePatientRequest updatePatient)
         {
             try
             {
-                var isSecceed = _patientService.Update(updatePatient);
+                var patientResponse = await _patientService.Update(updatePatient);
 
-                if (isSecceed == null)
+                if (patientResponse == null)
                 {
                     return NotFound();
-                }
+                }                                
 
-                if (isSecceed.Exception != null)
-                {
-                    return BadRequest($"Ошибка - {isSecceed.Exception}");
-                }                
-
-                return Ok($"Пациент обновлен {isSecceed}");
-
-                throw new Exception();
+                return Ok($"Пациент обновлен Id пациента {patientResponse.Id}.");
             }
             catch (Exception e)
             {
@@ -76,14 +62,14 @@ namespace RegisterToDoctor.Controllers
         {
             try
             {
-                var doctor = await _patientService.GetById(patientId);
+                var patientResponse = await _patientService.GetById(patientId);
 
-                if (doctor == null)
+                if (patientResponse == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(doctor);
+                return Ok(patientResponse);
 
             }
             catch (Exception e)
@@ -98,9 +84,9 @@ namespace RegisterToDoctor.Controllers
         {
             try
             {
-                var doctors = await _patientService.GetPatientByFilter(patientByFilter);
+                var patientsResponse = await _patientService.GetPatientByFilter(patientByFilter);
 
-                return Ok(doctors);
+                return Ok(patientsResponse);
             }
             catch (Exception e)
             {

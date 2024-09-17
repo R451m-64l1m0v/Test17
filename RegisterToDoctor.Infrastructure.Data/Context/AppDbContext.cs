@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using RegisterToDoctor.Domen.Core.Entities;
 using System;
@@ -40,7 +41,7 @@ namespace RegisterToDoctor.Infrastructure.Data.Context
                 .HasOne(p => p.Plot)
                 .WithMany(b => b.Patients);
 
-            modelBuilder.Entity<Patient>()
+            modelBuilder.Entity<Patient>()                
                 .HasOne(p => p.MedicalCard)
                 .WithOne(b => b.Patient)
                 .HasForeignKey<MedicalCard>(p => p.PatientId);
@@ -48,6 +49,11 @@ namespace RegisterToDoctor.Infrastructure.Data.Context
             modelBuilder.Entity<Patient>()
             .Property(e => e.DateOfBirth)
             .HasColumnType("DATE");
+
+            modelBuilder.Entity<Patient>()
+                .Property(x => x.OmsNumber)
+                .HasMaxLength(16)
+                .IsFixedLength();
         }
 
     }

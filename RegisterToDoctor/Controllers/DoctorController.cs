@@ -23,45 +23,33 @@ namespace RegisterToDoctor.Controllers
         /// Добавляет доктора
         /// </summary>        
         [HttpPost]
-        public IActionResult Create(CreateDoctorRequest createDoctor)
+        public async Task<IActionResult> Create(CreateDoctorRequest createDoctor)
         {
             try
             {
-                var isSecceed = _doctorService.Create(createDoctor);
-
-                if (isSecceed.Exception != null)
-                {
-                    return BadRequest($"Ошибка добавления доктора- {isSecceed.Exception}");
-                }
+                var doctorResponse = await _doctorService.Create(createDoctor);                
             
-                return Ok($"Док добавлен {isSecceed}");
-                
-                throw new Exception();
+                return Ok($"Док добавлен doctorId {doctorResponse.Id}.");                
             }
             catch (Exception e)
             {
-                return BadRequest($"Ошибка добавления доктора- {e.Message}");
+                return BadRequest($"Ошибка добавления доктора- {e.Message}.");
             }
         }
 
         [HttpPut]
-        public IActionResult Update(UpdateDoctorRequest createDoctor)
+        public async Task<IActionResult> Update(UpdateDoctorRequest createDoctor)
         {
             try
             {
-                var isSecceed = _doctorService.Update(createDoctor);
+                var doctorId = await _doctorService.Update(createDoctor);
 
-                if (isSecceed == null)
+                if (doctorId == null)
                 {
                     return NotFound();
-                }
+                }                                               
 
-                if (isSecceed.Exception != null)
-                {
-                    return BadRequest($"Ошибка - {isSecceed.Exception}");
-                }                               
-
-                return Ok($"Док обновлен {isSecceed}");
+                return Ok($"Док обновлен Id доктор {doctorId}");
 
                 throw new Exception();
             }
@@ -83,7 +71,7 @@ namespace RegisterToDoctor.Controllers
                     return NotFound();
                 }
 
-                return Ok(doctor);
+                return Ok();
                 
             }
             catch (Exception e)

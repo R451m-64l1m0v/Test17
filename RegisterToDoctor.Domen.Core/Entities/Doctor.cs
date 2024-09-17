@@ -27,20 +27,6 @@ namespace RegisterToDoctor.Domen.Core.Entities
 
         public Office Office { get; set; }
         public Specialization Specialization { get; set; }
-        public Plot Plot { get; set; }
-
-        public static Doctor Create(ICreateDoctor doctor) 
-        {
-            return new Doctor
-            {
-                Id = doctor.Id,
-                FirstName = doctor.FirstName,
-                LastName = doctor.LastName,
-                MiddleName = doctor.MiddleName,
-                OfficeId = doctor.OfficeId,
-                PlotId = doctor.PlotId,
-                SpecializationId = doctor.SpecializationId,
-            };
-        }
+        public Plot Plot { get; set; }        
     }
 }

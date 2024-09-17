@@ -8,61 +8,78 @@ namespace RegisterToDoctor.Models.Patient.Response
 {
     public class PatienByFilterResponse
     {
-        private readonly Domen.Core.Entities.Patient _patient;
-
         /// <summary>
         /// Id пациента
         /// </summary>
         [JsonPropertyName("PatienId")]
-        public Guid Id => _patient.Id;
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// Имя
         /// </summary>
         [JsonPropertyName("FirstName")]
-        public string FirstName => _patient.FirstName;
+        public string FirstName { get; private set; }
 
         /// <summary>
         /// Фамилия
         /// </summary>
         [JsonPropertyName("LastName")]
-        public string LastName => _patient.LastName;
+        public string LastName { get; private set; }
 
         /// <summary>
         /// Отчество
         /// </summary>
         [JsonPropertyName("MiddleName")]
-        public string MiddleName => _patient.MiddleName;
+        public string? MiddleName { get; private set; }
 
         /// <summary>
         /// Дата рождения
         /// </summary>
         [JsonPropertyName("DateOfBirth")]
-        public DateTime DateOfBirth => _patient.DateOfBirth;
+        public DateTime DateOfBirth { get; private set; }
 
         /// <summary>
         /// Адресс
         /// </summary>
         [JsonPropertyName("Address")]
-        public string Address => _patient.Address;
+        public string Address { get; private set; }
 
         /// <summary>
         /// Пол
         /// </summary>
         [JsonPropertyName("Gender")]
-        public Gender Gender => _patient.Gender;
+        public Gender Gender { get; private set; }
+
+        /// <summary>
+        /// Номер омс
+        /// </summary>
+        [JsonPropertyName("OmsNumber")]
+        public string OmsNumber { get; private set; }
+
+        /// <summary>
+        /// Номер дмс
+        /// </summary>
+        [JsonPropertyName("OmsNumber")]
+        public string? DmsNumber { get; private set; }
 
         /// <summary>
         /// Участок
         /// </summary>
         [JsonPropertyName("NumberPlot")]
-        public int NumberPlot => _patient.Plot.Number;
+        public int NumberPlot { get; private set; }
 
-        public PatienByFilterResponse(Domen.Core.Entities.Patient patient)
+        public static PatienByFilterResponse CreateResponse(Domen.Core.Entities.Patient patient) => new PatienByFilterResponse 
         {
-            _patient = patient;
-        }
-
-        public static PatienByFilterResponse Create(Domen.Core.Entities.Patient patient) => new PatienByFilterResponse(patient);
+            Id = patient.Id,
+            FirstName = patient.FirstName,
+            LastName = patient.LastName,
+            MiddleName = patient.MiddleName ?? null,
+            DateOfBirth = patient.DateOfBirth,
+            Address = patient.Address,
+            Gender = patient.Gender,
+            OmsNumber = patient.OmsNumber,
+            DmsNumber = patient.DmsNumber,
+            NumberPlot = patient.Plot.Number,
+        };
     }
 }

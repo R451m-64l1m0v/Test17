@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Attributes;
 using RegisterToDoctor.Domen.Core.Entities;
 using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
-using RegisterToDoctor.Helpers;
+using RegisterToDoctor.Helpers.Doctor;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Doctors;
@@ -40,6 +40,15 @@ namespace RegisterToDoctor.Services
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(createDoctorRequest.FirstName) ||
+                    string.IsNullOrWhiteSpace(createDoctorRequest.LastName))
+                    throw new ArgumentException($"Ошибка не заполнены поля Фамилии или Имени");
+
+                if (string.IsNullOrWhiteSpace(createDoctorRequest.MiddleName))
+                {
+                    createDoctorRequest.MiddleName = null;
+                }
+
                 var specializationTask = _specializationService.CheckSpecialization(createDoctorRequest.Specialization);
 
                 var officeTask = _officeService.CheckOffice(createDoctorRequest.NumberOffice);
@@ -52,18 +61,9 @@ namespace RegisterToDoctor.Services
                 var office = officeTask.Result;
                 var plot = plotTask.Result;
 
-                if (string.IsNullOrWhiteSpace(createDoctorRequest.FirstName) ||
-                    string.IsNullOrWhiteSpace(createDoctorRequest.LastName))
-                    throw new ArgumentException($"Ошибка не заполнены поля Фамилии или Имени");
+                ICreateDoctor createDoctor = CreatorDoctor.Create(createDoctorRequest, specialization.Id, office.Id, plot.Id);
 
-                if (string.IsNullOrWhiteSpace(createDoctorRequest.MiddleName))
-                {
-                    createDoctorRequest.MiddleName = null;
-                }
-
-                ICreateDoctor createDoctor = CreateDoctor.Create(createDoctorRequest, specialization.Id, office.Id, plot.Id);
-
-                var doctor = Doctor.Create(createDoctor);
+                var doctor = СreatorDoctorHelper.Create(createDoctor);
                 
                 _docRepository.Create(doctor);
 
@@ -107,14 +107,7 @@ namespace RegisterToDoctor.Services
                     throw new ArgumentException($"Ошибка не указан {nameof(doctorByFilterRequest.PageNumber)}");
 
                 if (doctorByFilterRequest.PageSize == 0)
-                    throw new ArgumentException($"Ошибка не указан {nameof(doctorByFilterRequest.PageSize)}");
-
-                var isSortField = DoctorHelper.CheckingSortingField(doctorByFilterRequest.SortField);
-
-                if (!isSortField)
-                {
-                    throw new ArgumentException($"Ошибка поля {doctorByFilterRequest.SortField} не найдено");
-                }
+                    throw new ArgumentException($"Ошибка не указан {nameof(doctorByFilterRequest.PageSize)}");                
 
                 var doctors = _docRepository.Entity
                     .Include(x => x.Office)
@@ -159,18 +152,6 @@ namespace RegisterToDoctor.Services
                     throw new ArgumentException($"Ошибка id доктора не может быть {updateDoctorRequest.Id}");
                 }
 
-                var specializationTask = _specializationService.CheckSpecialization(updateDoctorRequest.Specialization);
-
-                var officeTask = _officeService.CheckOffice(updateDoctorRequest.NumberOffice);
-
-                var plotTask = _plotService.CheckPlot(updateDoctorRequest.NumberPlot);
-
-                await Task.WhenAll(specializationTask, officeTask, plotTask);
-
-                var specialization = specializationTask.Result;
-                var office = officeTask.Result;
-                var plot = plotTask.Result;
-
                 if (string.IsNullOrWhiteSpace(updateDoctorRequest.FirstName) ||
                     string.IsNullOrWhiteSpace(updateDoctorRequest.LastName))
                     throw new ArgumentException($"Ошибка не заполнены поля ФИО");
@@ -185,11 +166,23 @@ namespace RegisterToDoctor.Services
                 if (doctor == null)
                 {
                     return null;
-                }              
+                }
 
-                ICreateDoctor updateDoctor = CreateDoctor.Create(updateDoctorRequest, specialization.Id, office.Id, plot.Id);
+                var specializationTask = _specializationService.CheckSpecialization(updateDoctorRequest.Specialization);
 
-                doctor = Doctor.Create(updateDoctor);
+                var officeTask = _officeService.CheckOffice(updateDoctorRequest.NumberOffice);
+
+                var plotTask = _plotService.CheckPlot(updateDoctorRequest.NumberPlot);
+
+                await Task.WhenAll(specializationTask, officeTask, plotTask);
+
+                var specialization = specializationTask.Result;
+                var office = officeTask.Result;
+                var plot = plotTask.Result;
+                
+                ICreateDoctor updateDoctor = UpdaterDoctor.Create(updateDoctorRequest, specialization.Id, office.Id, plot.Id);
+
+                doctor = UpdaterDoctorHelper.Update(doctor,updateDoctor);
 
                 _docRepository.Update(doctor);
 

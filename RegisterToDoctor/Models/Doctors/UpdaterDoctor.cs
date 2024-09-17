@@ -3,7 +3,7 @@ using RegisterToDoctor.Models.Doctors.Request;
 
 namespace RegisterToDoctor.Models.Doctors
 {
-    public class UpdateDoctor : ICreateDoctor
+    public class UpdaterDoctor : ICreateDoctor
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }
@@ -13,9 +13,9 @@ namespace RegisterToDoctor.Models.Doctors
         public Guid SpecializationId { get; set; }
         public Guid PlotId { get; set; }
 
-        public static UpdateDoctor Create(UpdateDoctorRequest updateDoctor, Guid specializationId, Guid officeId, Guid plotId)
+        public static UpdaterDoctor Create(UpdateDoctorRequest updateDoctor, Guid specializationId, Guid officeId, Guid plotId)
         {
-            return new UpdateDoctor
+            return new UpdaterDoctor
             {
                 Id = updateDoctor.Id,
                 FirstName = updateDoctor.FirstName,

@@ -4,7 +4,7 @@ using RegisterToDoctor.Models.Doctors.Request;
 
 namespace RegisterToDoctor.Models.Doctors
 {
-    public class CreateDoctor : ICreateDoctor
+    public class CreatorDoctor : ICreateDoctor
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }
@@ -14,9 +14,9 @@ namespace RegisterToDoctor.Models.Doctors
         public Guid SpecializationId { get; set; }
         public Guid PlotId { get; set; }
 
-        public static CreateDoctor Create(CreateDoctorRequest createDoctor, Guid specializationId, Guid officeId, Guid plotId)
+        public static CreatorDoctor Create(CreateDoctorRequest createDoctor, Guid specializationId, Guid officeId, Guid plotId)
         {
-            return new CreateDoctor
+            return new CreatorDoctor
             {
                 Id = Guid.NewGuid(),
                 FirstName = createDoctor.FirstName,

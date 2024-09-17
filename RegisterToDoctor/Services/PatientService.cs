@@ -1,11 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Attributes;
 using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Helpers;
+using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
+using RegisterToDoctor.Helpers.Patient;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
+using RegisterToDoctor.Infrastructure.Data.Migrations;
 using RegisterToDoctor.Interfaces;
+using RegisterToDoctor.Models.Doctors;
 using RegisterToDoctor.Models.Doctors.Request;
 using RegisterToDoctor.Models.Doctors.Response;
+using RegisterToDoctor.Models.Patient;
 using RegisterToDoctor.Models.Patient.Request;
 using RegisterToDoctor.Models.Patient.Response;
 using System.Linq.Expressions;
@@ -21,6 +25,7 @@ namespace RegisterToDoctor.Services
 
         DateTime maxAge = new DateTime(1900, 1, 1);
         DateTime minAge = DateTime.Today.AddDays(1);
+        int OmsLength = 16;
 
         public PatientService(IUnitOfWork uow,
             IPlotService plotService)
@@ -29,49 +34,47 @@ namespace RegisterToDoctor.Services
             _plotService = plotService;
         }
 
-        public async Task<CreatePatientResponse> Create(CreatePatientRequest createPatient)
+        public async Task<CreatePatientResponse> Create(CreatePatientRequest createPatientRequest)
         {
             try
             {
-                var plot = await _plotService.CheckPlot(createPatient.NumberPlot);
+                //ToDo вынести проверки
+                if (createPatientRequest.DateOfBirth <= maxAge || createPatientRequest.DateOfBirth >= minAge)
+                    throw new ArgumentException($"Ошибка дата рождения {createPatientRequest.DateOfBirth.ToString("dd/MM/yyyy")} не коректна");
 
-                if (createPatient.DateOfBirth <= maxAge || createPatient.DateOfBirth >= minAge)
-                    throw new ArgumentException($"Ошибка дата рождения {createPatient.DateOfBirth.ToString("dd/MM/yyyy")} не коректна");
-
-                if (string.IsNullOrWhiteSpace(createPatient.FirstName) ||
-                        string.IsNullOrWhiteSpace(createPatient.LastName))
+                if (string.IsNullOrWhiteSpace(createPatientRequest.FirstName) ||
+                        string.IsNullOrWhiteSpace(createPatientRequest.LastName))
                     throw new ArgumentException($"Ошибка не заполнены поля Фамилии или Имени");
 
-                if (string.IsNullOrWhiteSpace(createPatient.MiddleName))
+                if (createPatientRequest.OmsNumber.Length != OmsLength)
                 {
-                    createPatient.MiddleName = null;
+                    throw new ArgumentException($"Ошибка в OmsNumber дожно быть 16 чисел");
                 }
 
-                if (string.IsNullOrWhiteSpace(createPatient.Address))
+                if (!createPatientRequest.OmsNumber.All(char.IsDigit))
                 {
-                    createPatient.Address = null;
+                    throw new ArgumentException($"Ошибка в OmsNumber должно содержать только чисела");
                 }
 
-                var patient = new Patient
+                if (string.IsNullOrWhiteSpace(createPatientRequest.MiddleName))
                 {
-                    Id = Guid.NewGuid(),
-                    FirstName = createPatient.FirstName,
-                    LastName = createPatient.LastName,
-                    MiddleName = createPatient.MiddleName,
-                    DateOfBirth = createPatient.DateOfBirth,
-                    Address = createPatient.Address,
-                    Gender = createPatient.Gender,
-                    PlotId = plot.Id,
-                };
+                    createPatientRequest.MiddleName = null;
+                }               
+
+                var plot = await _plotService.CheckPlot(createPatientRequest.NumberPlot);
+
+                ICreatePatient createPatient = CreatorPatient.Create(createPatientRequest, plot.Id);
+
+                var patient = СreatorPatientHelper.Create(createPatient);
 
                 _patientRepository.Create(patient);
 
-                return new CreatePatientResponse { IsSecceed = true };
+                return CreatePatientResponse.CreateResponse(patient);
             }
             catch (Exception)
             {
                 throw;
-            }          
+            }
         }
 
         public async Task<PatientByIdResponse> GetById(Guid patientId)
@@ -83,19 +86,19 @@ namespace RegisterToDoctor.Services
                     throw new ArgumentException($"Ошибка id пациента не может быть {patientId}");
                 }
 
-                var patient = _patientRepository.GetById(patientId);                
+                var patient = _patientRepository.GetById(patientId);
 
                 if (patient == null)
                 {
                     return null;
                 }
 
-                return PatientByIdResponse.Create(patient);
+                return PatientByIdResponse.CreateResponse(patient);
             }
             catch (Exception)
             {
                 throw;
-            }            
+            }
         }
 
         public async Task<IEnumerable<PatienByFilterResponse>> GetPatientByFilter(PatientByFilterRequest patientByFilterRequest)
@@ -108,15 +111,8 @@ namespace RegisterToDoctor.Services
                 if (patientByFilterRequest.PageSize == 0)
                     throw new ArgumentException($"Ошибка не указан {nameof(patientByFilterRequest.PageSize)}");
 
-                var isSortField = PatientHelper.CheckingSortingField(patientByFilterRequest.SortField);
-
-                if (!isSortField)
-                {
-                    throw new ArgumentException($"Ошибка поля {patientByFilterRequest.SortField} не найдено");
-                }
-
                 var patients = _patientRepository.Entity
-                    .Include(x => x.Plot) 
+                    .Include(x => x.Plot)
                     .AsQueryable();
 
                 var sortField = patientByFilterRequest.SortField.ToString();
@@ -139,66 +135,67 @@ namespace RegisterToDoctor.Services
                     .Skip((patientByFilterRequest.PageNumber - 1) * patientByFilterRequest.PageSize)
                     .Take(patientByFilterRequest.PageSize);
 
-                return patients.Select(PatienByFilterResponse.Create);
+                return patients.Select(PatienByFilterResponse.CreateResponse);
             }
             catch (Exception)
             {
                 throw;
             }
-            
+
         }
 
-        public async Task<UpdatePatientResponse> Update(UpdatePatientRequest updatePatient)
+        public async Task<UpdatePatientResponse> Update(UpdatePatientRequest updatePatientRequest)
         {
             try
             {
-                if (updatePatient.Id == Guid.Empty)
+                if (updatePatientRequest.Id == Guid.Empty)
                 {
-                    throw new ArgumentException($"Ошибка id пациента не может быть {updatePatient.Id}");
+                    throw new ArgumentException($"Ошибка id пациента не может быть {updatePatientRequest.Id}");
                 }
 
-                var plot = await _plotService.CheckPlot(updatePatient.NumberPlot);
+                if (updatePatientRequest.DateOfBirth <= maxAge || updatePatientRequest.DateOfBirth >= minAge)
+                    throw new ArgumentException($"Ошибка дата рождения {updatePatientRequest.DateOfBirth.ToString("dd/MM/yyyy")} не коректна");
 
-                if (updatePatient.DateOfBirth <= maxAge || updatePatient.DateOfBirth >= minAge)
-                    throw new ArgumentException($"Ошибка дата рождения {updatePatient.DateOfBirth.ToString("dd/MM/yyyy")} не коректна");
-
-                if (string.IsNullOrWhiteSpace(updatePatient.FirstName) ||
-                            string.IsNullOrWhiteSpace(updatePatient.LastName))
+                if (string.IsNullOrWhiteSpace(updatePatientRequest.FirstName) ||
+                            string.IsNullOrWhiteSpace(updatePatientRequest.LastName))
                     throw new ArgumentException($"Ошибка не заполнены поля Фамилии или Имени");
 
-                if (string.IsNullOrWhiteSpace(updatePatient.MiddleName))
+                if (updatePatientRequest.OmsNumber.Length != OmsLength)
                 {
-                    updatePatient.MiddleName = null;
+                    throw new ArgumentException($"Ошибка в OmsNumber дожно быть 16 чисел");
                 }
 
-                if (string.IsNullOrWhiteSpace(updatePatient.Address))
+                if (!updatePatientRequest.OmsNumber.All(char.IsDigit))
                 {
-                    updatePatient.Address = null;
+                    throw new ArgumentException($"Ошибка в OmsNumber должно содержать только чисела");
                 }
 
-                var patient = _patientRepository.GetById(updatePatient.Id);
-
-                if (patient != null)
+                if (string.IsNullOrWhiteSpace(updatePatientRequest.MiddleName))
                 {
-                    patient.FirstName = updatePatient.FirstName;
-                    patient.LastName = updatePatient.LastName;
-                    patient.MiddleName = updatePatient.MiddleName;
-                    patient.Address = updatePatient.Address;
-                    patient.DateOfBirth = updatePatient.DateOfBirth;
-                    patient.Gender = updatePatient.Gender;
-                    patient.PlotId = plot.Id;
-                }
-                else
+                    updatePatientRequest.MiddleName = null;
+                }                
+
+                var patient = _patientRepository.GetById(updatePatientRequest.Id);
+
+                if (patient == null)
+                {
                     return null;
+                }
+
+                var plot = await _plotService.CheckPlot(updatePatientRequest.NumberPlot);
+
+                ICreatePatient updatePatient = UpdaterPatient.Create(updatePatientRequest, plot.Id);
+
+                patient = UpdaterPatientHelper.Update(patient, updatePatient);
 
                 _patientRepository.Update(patient);
 
-                return new UpdatePatientResponse { IsSecceed = true };
+                return UpdatePatientResponse.CreateResponse(patient);
             }
             catch (Exception)
             {
                 throw;
-            }            
+            }
         }
     }
 }

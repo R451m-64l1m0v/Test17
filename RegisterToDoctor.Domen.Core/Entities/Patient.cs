@@ -17,7 +17,7 @@ namespace RegisterToDoctor.Domen.Core.Entities
         /// <summary>
         /// Адресс
         /// </summary>
-        public string? Address { get; set; }
+        public string Address { get; set; }
         
         /// <summary>
         /// Пол
@@ -32,7 +32,7 @@ namespace RegisterToDoctor.Domen.Core.Entities
         /// <summary>
         /// Номер OMC
         /// </summary>
-        public string? OmsNumder {  get; set; } 
+        public string OmsNumber {  get; set; } 
 
         /// <summary>
         /// Номер ДМС

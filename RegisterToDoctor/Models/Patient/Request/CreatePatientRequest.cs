@@ -15,6 +15,18 @@ namespace RegisterToDoctor.Models.Patient.Request
         public DateTime DateOfBirth { get; set; }
 
         /// <summary>
+        /// Номер омс
+        /// </summary>
+        [JsonPropertyName("OmsNumber")]
+        public string OmsNumber { get; set; }
+
+        /// <summary>
+        /// Номер дмс
+        /// </summary>
+        [JsonPropertyName("OmsNumder")]
+        public string? DmsNumber { get; set; }
+
+        /// <summary>
         /// Адресс
         /// </summary>
         [JsonPropertyName("Address")]
