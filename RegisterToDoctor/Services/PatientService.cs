@@ -12,6 +12,7 @@ using RegisterToDoctor.Models.Doctors.Response;
 using RegisterToDoctor.Models.Patient;
 using RegisterToDoctor.Models.Patient.Request;
 using RegisterToDoctor.Models.Patient.Response;
+using RegisterToDoctor.Validators;
 using System.Linq.Expressions;
 using System.Numerics;
 
@@ -42,9 +43,7 @@ namespace RegisterToDoctor.Services
                 if (createPatientRequest.DateOfBirth <= maxAge || createPatientRequest.DateOfBirth >= minAge)
                     throw new ArgumentException($"Ошибка дата рождения {createPatientRequest.DateOfBirth.ToString("dd/MM/yyyy")} не коректна");
 
-                if (string.IsNullOrWhiteSpace(createPatientRequest.FirstName) ||
-                        string.IsNullOrWhiteSpace(createPatientRequest.LastName))
-                    throw new ArgumentException($"Ошибка не заполнены поля Фамилии или Имени");
+                UserEntityValidator.CheckFullNames(createPatientRequest.FirstName, createPatientRequest.LastName);
 
                 if (createPatientRequest.OmsNumber.Length != OmsLength)
                 {
@@ -105,6 +104,7 @@ namespace RegisterToDoctor.Services
         {
             try
             {
+                //ToDo вынести проверки
                 if (patientByFilterRequest.PageNumber == 0)
                     throw new ArgumentException($"Ошибка не указан {nameof(patientByFilterRequest.PageNumber)}");
 
@@ -148,6 +148,7 @@ namespace RegisterToDoctor.Services
         {
             try
             {
+                //ToDo вынести проверки
                 if (updatePatientRequest.Id == Guid.Empty)
                 {
                     throw new ArgumentException($"Ошибка id пациента не может быть {updatePatientRequest.Id}");
@@ -156,9 +157,7 @@ namespace RegisterToDoctor.Services
                 if (updatePatientRequest.DateOfBirth <= maxAge || updatePatientRequest.DateOfBirth >= minAge)
                     throw new ArgumentException($"Ошибка дата рождения {updatePatientRequest.DateOfBirth.ToString("dd/MM/yyyy")} не коректна");
 
-                if (string.IsNullOrWhiteSpace(updatePatientRequest.FirstName) ||
-                            string.IsNullOrWhiteSpace(updatePatientRequest.LastName))
-                    throw new ArgumentException($"Ошибка не заполнены поля Фамилии или Имени");
+                UserEntityValidator.CheckFullNames(updatePatientRequest.FirstName, updatePatientRequest.LastName);
 
                 if (updatePatientRequest.OmsNumber.Length != OmsLength)
                 {

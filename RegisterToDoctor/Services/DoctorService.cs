@@ -9,6 +9,7 @@ using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Doctors;
 using RegisterToDoctor.Models.Doctors.Request;
 using RegisterToDoctor.Models.Doctors.Response;
+using RegisterToDoctor.Validators;
 using System;
 using System.Globalization;
 using System.Linq.Expressions;
@@ -40,10 +41,9 @@ namespace RegisterToDoctor.Services
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(createDoctorRequest.FirstName) ||
-                    string.IsNullOrWhiteSpace(createDoctorRequest.LastName))
-                    throw new ArgumentException($"Ошибка не заполнены поля Фамилии или Имени");
-
+                //ToDo вынести проверки
+                UserEntityValidator.CheckFullNames(createDoctorRequest.FirstName, createDoctorRequest.LastName);
+                
                 if (string.IsNullOrWhiteSpace(createDoctorRequest.MiddleName))
                 {
                     createDoctorRequest.MiddleName = null;
@@ -103,6 +103,7 @@ namespace RegisterToDoctor.Services
         {
             try
             {
+                //ToDo вынести проверки
                 if (doctorByFilterRequest.PageNumber == 0)
                     throw new ArgumentException($"Ошибка не указан {nameof(doctorByFilterRequest.PageNumber)}");
 
@@ -147,14 +148,13 @@ namespace RegisterToDoctor.Services
         {
             try
             {
+                //ToDo вынести проверки
                 if (updateDoctorRequest.Id == Guid.Empty)
                 {
                     throw new ArgumentException($"Ошибка id доктора не может быть {updateDoctorRequest.Id}");
                 }
 
-                if (string.IsNullOrWhiteSpace(updateDoctorRequest.FirstName) ||
-                    string.IsNullOrWhiteSpace(updateDoctorRequest.LastName))
-                    throw new ArgumentException($"Ошибка не заполнены поля ФИО");
+                UserEntityValidator.CheckFullNames(updateDoctorRequest.FirstName, updateDoctorRequest.LastName);
 
                 if (string.IsNullOrWhiteSpace(updateDoctorRequest.MiddleName))
                 {

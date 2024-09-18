@@ -6,8 +6,8 @@
         FirstName = 1,
         LastName = 2,
         MiddleName = 3,
-        NumberPlot = 4,
-        NumberOffice = 5,
-        Specialization = 6,
+        PlotId = 4,
+        OfficeId = 5,
+        SpecializationId = 6,
     }
 }
