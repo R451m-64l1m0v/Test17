@@ -20,6 +20,6 @@ namespace RegisterToDoctor.Models.Abstractions
         /// Отчество
         /// </summary>
         [JsonPropertyName("MiddleName")]
-        public string MiddleName { get; set; }
+        public string? MiddleName { get; set; }
     }
 }

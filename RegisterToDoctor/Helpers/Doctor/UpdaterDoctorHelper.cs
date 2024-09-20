@@ -12,6 +12,7 @@ namespace RegisterToDoctor.Helpers.Doctor
             doctor.OfficeId = updateDoctor.OfficeId;
             doctor.SpecializationId = updateDoctor.SpecializationId;
             doctor.PlotId = updateDoctor.PlotId;
+            doctor.UpdatedAt = updateDoctor.UpdatedAt;
             return doctor;
         }
     }

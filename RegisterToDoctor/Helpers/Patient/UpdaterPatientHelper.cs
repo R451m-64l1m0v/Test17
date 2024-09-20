@@ -15,6 +15,7 @@ namespace RegisterToDoctor.Helpers.Patient
             patient.Gender = updatePatient.Gender;
             patient.OmsNumber = updatePatient.OmsNumber;
             patient.PlotId = updatePatient.PlotId;
+            patient.UpdatedAt = updatePatient.UpdatedAt;
             return patient;
         }
     }

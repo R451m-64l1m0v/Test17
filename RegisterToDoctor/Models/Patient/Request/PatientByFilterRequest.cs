@@ -27,10 +27,15 @@ namespace RegisterToDoctor.Models.Patient.Request
         public int PageNumber { get; set; }
 
         /// <summary>
-        /// Количество записей на странице
+        /// Минимальное значение количества записей на странице
         /// </summary>
         [FromQuery]
-        [JsonPropertyName("PageSize")]
-        public int PageSize { get; set; }        
+        public int PageSizeMin { get; set; }
+
+        /// <summary>
+        /// Максимальное значение количества записей на странице
+        /// </summary>
+        [FromQuery]
+        public int PageSizeMax { get; set; }
     }
 }

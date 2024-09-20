@@ -16,6 +16,7 @@ namespace RegisterToDoctor.Helpers.Doctor
                 OfficeId = doctor.OfficeId,
                 PlotId = doctor.PlotId,
                 SpecializationId = doctor.SpecializationId,
+                UpdatedAt = doctor.UpdatedAt,
             };
         }
     }

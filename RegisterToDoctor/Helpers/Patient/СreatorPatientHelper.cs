@@ -17,7 +17,8 @@ namespace RegisterToDoctor.Helpers.Patient
                 Gender = patient.Gender,
                 OmsNumber = patient.OmsNumber,
                 DmsNumber = patient.DmsNumber,
-                PlotId = patient.PlotId,                
+                PlotId = patient.PlotId,
+                UpdatedAt = patient.UpdatedAt,
             };
         }
     }

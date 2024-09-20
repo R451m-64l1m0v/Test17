@@ -2,6 +2,7 @@
 using RegisterToDoctor.Domen.Core.Enums;
 using RegisterToDoctor.Models.Abstractions;
 using RegisterToDoctor.Models.Doctors.Response;
+using System.Numerics;
 using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Patient.Response
@@ -59,7 +60,7 @@ namespace RegisterToDoctor.Models.Patient.Response
         /// <summary>
         /// Номер дмс
         /// </summary>
-        [JsonPropertyName("OmsNumber")]
+        [JsonPropertyName("DmsNumber")]
         public string? DmsNumber { get; private set; }
 
         /// <summary>
@@ -68,18 +69,25 @@ namespace RegisterToDoctor.Models.Patient.Response
         [JsonPropertyName("NumberPlot")]
         public int NumberPlot { get; private set; }
 
+        // <summary>
+        /// Дата обновления
+        /// </summary>
+        [JsonPropertyName("UpdatedAt")]
+        public DateTime? UpdatedAt { get; private set; }
+
         public static PatienByFilterResponse CreateResponse(Domen.Core.Entities.Patient patient) => new PatienByFilterResponse 
         {
             Id = patient.Id,
             FirstName = patient.FirstName,
             LastName = patient.LastName,
-            MiddleName = patient.MiddleName ?? null,
+            MiddleName = patient.MiddleName,
             DateOfBirth = patient.DateOfBirth,
             Address = patient.Address,
             Gender = patient.Gender,
             OmsNumber = patient.OmsNumber,
             DmsNumber = patient.DmsNumber,
             NumberPlot = patient.Plot.Number,
+            UpdatedAt = patient.UpdatedAt,
         };
     }
 }

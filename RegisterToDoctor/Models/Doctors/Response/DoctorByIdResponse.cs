@@ -28,7 +28,7 @@ namespace RegisterToDoctor.Models.Doctors.Response
         /// Отчество
         /// </summary>
         [JsonPropertyName("MiddleName")]
-        public string MiddleName { get; private set; }
+        public string? MiddleName { get; private set; }
 
         /// <summary>
         /// Id кабинета
@@ -48,6 +48,12 @@ namespace RegisterToDoctor.Models.Doctors.Response
         [JsonPropertyName("PlotId")]
         public Guid PlotId { get; private set; }
 
+        /// <summary>
+        /// Дата обновления
+        /// </summary>
+        [JsonPropertyName("UpdatedAt")]
+        public DateTime? UpdatedAt { get; private set; }
+
         public static DoctorByIdResponse CreateResponse(Doctor doctor) => new DoctorByIdResponse
         {
             FirstName = doctor.FirstName,
@@ -56,6 +62,7 @@ namespace RegisterToDoctor.Models.Doctors.Response
             OfficeId = doctor.OfficeId,
             SpecializationId = doctor.SpecializationId,
             PlotId = doctor.PlotId,
+            UpdatedAt = doctor.UpdatedAt,
         };
     }
 }

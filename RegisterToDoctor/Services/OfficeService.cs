@@ -22,7 +22,7 @@ namespace RegisterToDoctor.Services
             try
             {
                 if (numberOffice == 0)                
-                    throw new ArgumentException($"Ошибка номер кабинета не может быть 0");
+                    throw new ArgumentException($"Ошибка номер кабинета не может быть 0.");
                 
                 var existsOffice = await GetOffice(numberOffice);
 

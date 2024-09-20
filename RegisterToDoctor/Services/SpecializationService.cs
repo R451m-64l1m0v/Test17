@@ -21,7 +21,7 @@ namespace RegisterToDoctor.Services
             try
             {
                 if (string.IsNullOrWhiteSpace(specializationName))                
-                    throw new ArgumentException($"Ошибка поле спечиальность не заполнено");
+                    throw new ArgumentException($"Ошибка поле спечиальность не заполнено.");
 
                 var existsSpecialization = await GetSpecialization(specializationName);                    
 

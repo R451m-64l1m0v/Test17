@@ -16,7 +16,7 @@ namespace RegisterToDoctor.Domen.Core.RequestModels.Interfaces
 
         string LastName { get; set; }
 
-        string MiddleName { get; set; }
+        string? MiddleName { get; set; }
 
         public DateTime DateOfBirth { get; set; }
                 
@@ -29,5 +29,7 @@ namespace RegisterToDoctor.Domen.Core.RequestModels.Interfaces
         public string OmsNumber { get; set; }
                
         public string? DmsNumber { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
     }
 }

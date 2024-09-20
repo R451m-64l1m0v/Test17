@@ -1,4 +1,5 @@
-﻿using RegisterToDoctor.Domen.Core.Enums;
+﻿using RegisterToDoctor.Domen.Core.Entities;
+using RegisterToDoctor.Domen.Core.Enums;
 using RegisterToDoctor.Models.Abstractions;
 using System.Text.Json.Serialization;
 
@@ -66,18 +67,25 @@ namespace RegisterToDoctor.Models.Patient.Response
         [JsonPropertyName("PlotId")]
         public Guid PlotId { get; private set; }
 
+        /// <summary>
+        /// Дата обновления
+        /// </summary>
+        [JsonPropertyName("UpdatedAt")]
+        public DateTime? UpdatedAt { get; private set; }
+
         public static PatientByIdResponse CreateResponse(Domen.Core.Entities.Patient patient) => new PatientByIdResponse
         {
             Id = patient.Id,
             FirstName = patient.FirstName,
             LastName = patient.LastName,
-            MiddleName = patient.MiddleName ?? null,
+            MiddleName = patient.MiddleName,
             DateOfBirth = patient.DateOfBirth,
             Address = patient.Address,
             Gender = patient.Gender,
             OmsNumber = patient.OmsNumber,
-            DmsNumber = patient.DmsNumber ?? null,
+            DmsNumber = patient.DmsNumber,
             PlotId = patient.PlotId,
+            UpdatedAt = patient.UpdatedAt,
         };
 
     }

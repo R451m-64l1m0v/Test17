@@ -14,12 +14,14 @@ namespace RegisterToDoctor.Domen.Core.RequestModels.Interfaces
 
         string LastName { get; set; }
 
-        string MiddleName { get; set; }
+        string? MiddleName { get; set; }
 
         Guid OfficeId { get; set; }
 
         Guid SpecializationId { get; set; }
 
         Guid PlotId { get; set; }
+
+        DateTime? UpdatedAt { get; set; }
     }
 }

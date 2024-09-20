@@ -21,7 +21,7 @@ namespace RegisterToDoctor.Services
             try
             {
                 if (numberPlot == 0)
-                    throw new ArgumentException($"Ошибка номер участка не может быть 0");
+                    throw new ArgumentException($"Ошибка номер участка не может быть 0.");
 
                 var existsPlot = await GetPlot(numberPlot);
 

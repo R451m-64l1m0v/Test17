@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RegisterToDoctor.Domen.Core.Entities
 {
-    public class Doctor : Рerson, ICreateDoctor
+    public class Doctor : Рerson
     {
         /// <summary>
         /// Id кабинета
@@ -24,7 +24,7 @@ namespace RegisterToDoctor.Domen.Core.Entities
         /// Id участка
         /// </summary>
         public Guid PlotId { get; set; }
-
+        
         public Office Office { get; set; }
         public Specialization Specialization { get; set; }
         public Plot Plot { get; set; }        

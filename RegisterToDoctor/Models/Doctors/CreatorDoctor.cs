@@ -9,10 +9,11 @@ namespace RegisterToDoctor.Models.Doctors
         public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string MiddleName { get; set; }
+        public string? MiddleName { get; set; }
         public Guid OfficeId { get; set; }
         public Guid SpecializationId { get; set; }
         public Guid PlotId { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         public static CreatorDoctor Create(CreateDoctorRequest createDoctor, Guid specializationId, Guid officeId, Guid plotId)
         {
@@ -25,6 +26,7 @@ namespace RegisterToDoctor.Models.Doctors
                 OfficeId = officeId,
                 SpecializationId = specializationId,
                 PlotId = plotId,
+                UpdatedAt = null,
             };
 
         }

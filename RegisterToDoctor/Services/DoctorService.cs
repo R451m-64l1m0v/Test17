@@ -9,8 +9,10 @@ using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Doctors;
 using RegisterToDoctor.Models.Doctors.Request;
 using RegisterToDoctor.Models.Doctors.Response;
+using RegisterToDoctor.Models.Patient.Request;
 using RegisterToDoctor.Models.Patient.Response;
 using RegisterToDoctor.Validators;
+using RegisterToDoctor.Сonstants;
 using System;
 using System.Globalization;
 using System.Linq.Expressions;
@@ -41,15 +43,9 @@ namespace RegisterToDoctor.Services
         public async Task<CreateDoctorResponse> Create(CreateDoctorRequest createDoctorRequest)
         {
             try
-            {
-                //ToDo вынести проверки
-                UserEntityValidator.CheckFullNames(createDoctorRequest.FirstName, createDoctorRequest.LastName);
+            {                
+                UserEntityValidator.CheckFullNames(createDoctorRequest.FirstName, createDoctorRequest.LastName, createDoctorRequest.MiddleName);
                 
-                if (string.IsNullOrWhiteSpace(createDoctorRequest.MiddleName))
-                {
-                    createDoctorRequest.MiddleName = null;
-                }
-
                 var specializationTask = _specializationService.CheckSpecialization(createDoctorRequest.Specialization);
 
                 var officeTask = _officeService.CheckOffice(createDoctorRequest.NumberOffice);
@@ -82,7 +78,7 @@ namespace RegisterToDoctor.Services
             {
                 if (doctorId == Guid.Empty)
                 {
-                    throw new ArgumentException($"Ошибка: id доктора не может быть {doctorId}");
+                    throw new ArgumentException($"Ошибка: id доктора не может быть {doctorId}.");
                 }
 
                 var doctor = await _docRepository.GetByIdAsync(doctorId);
@@ -105,16 +101,25 @@ namespace RegisterToDoctor.Services
             try
             {
                 //ToDo вынести проверки
-                if (doctorByFilterRequest.PageNumber == 0)
-                    throw new ArgumentException($"Ошибка: не указан {nameof(doctorByFilterRequest.PageNumber)}");
+                if (doctorByFilterRequest.PageNumber <= 0)
+                    throw new ArgumentException($"Ошибка: {nameof(doctorByFilterRequest.PageNumber)} не может быть ноль или отрицательным.");
 
-                if (doctorByFilterRequest.PageSize == 0)
-                    throw new ArgumentException($"Ошибка: не указан {nameof(doctorByFilterRequest.PageSize)}");                
+                if (doctorByFilterRequest.PageSizeMin < 0 || doctorByFilterRequest.PageSizeMax < doctorByFilterRequest.PageSizeMin)
+                    throw new ArgumentException($"Ошибка: поля {nameof(doctorByFilterRequest.PageSizeMax)} или {doctorByFilterRequest.PageSizeMin} заполнено некорректно.");
+
+                if (doctorByFilterRequest.PageSizeMax > ConstansForValidators.PageSizeLimit)
+                {
+                    throw new ArgumentException($"Ошибка: поле {nameof(doctorByFilterRequest.PageSizeMax)} не может превышать {ConstansForValidators.PageSizeLimit} на странице.");
+                }
+
+                var pageSize = doctorByFilterRequest.PageSizeMax - doctorByFilterRequest.PageSizeMin;
 
                 var doctors = _docRepository.Entity
                     .Include(x => x.Office)
                     .Include(x => x.Specialization)
                     .Include(x => x.Plot)
+                    .AsNoTracking()
+                    .TagWith("This is my spatial query")
                     .AsQueryable();
 
                 var sortField = doctorByFilterRequest.SortField.ToString();
@@ -134,9 +139,9 @@ namespace RegisterToDoctor.Services
                 }
 
                 doctors = doctors
-                    .Skip((doctorByFilterRequest.PageNumber - 1) * doctorByFilterRequest.PageSize)
-                    .Take(doctorByFilterRequest.PageSize);
-                                
+                    .Skip((doctorByFilterRequest.PageNumber - 1) * pageSize)
+                    .Take(pageSize);
+
                 return doctors.Select(doctor => DoctorByFilterResponse.CreateResponse(doctor));
             }
             catch (Exception)
@@ -152,14 +157,7 @@ namespace RegisterToDoctor.Services
                 //ToDo вынести проверки
                 if (updateDoctorRequest.Id == Guid.Empty)
                 {
-                    throw new ArgumentException($"Ошибка: id доктора не может быть {updateDoctorRequest.Id}");
-                }
-
-                UserEntityValidator.CheckFullNames(updateDoctorRequest.FirstName, updateDoctorRequest.LastName);
-
-                if (string.IsNullOrWhiteSpace(updateDoctorRequest.MiddleName))
-                {
-                    updateDoctorRequest.MiddleName = null;
+                    throw new ArgumentException($"Ошибка: id доктора не может быть {updateDoctorRequest.Id}.");
                 }
 
                 var doctor = await _docRepository.GetByIdAsync(updateDoctorRequest.Id);
@@ -169,6 +167,8 @@ namespace RegisterToDoctor.Services
                     return null;
                 }
 
+                UserEntityValidator.CheckFullNames(updateDoctorRequest.FirstName, updateDoctorRequest.LastName, updateDoctorRequest.MiddleName);
+                
                 var specializationTask = _specializationService.CheckSpecialization(updateDoctorRequest.Specialization);
 
                 var officeTask = _officeService.CheckOffice(updateDoctorRequest.NumberOffice);
@@ -201,7 +201,7 @@ namespace RegisterToDoctor.Services
             {
                 if (doctorId == Guid.Empty)
                 {
-                    throw new ArgumentException($"Ошибка: id доктора не может быть {doctorId}");
+                    throw new ArgumentException($"Ошибка: id доктора не может быть {doctorId}.");
                 }
 
                 var doctor = await _docRepository.GetByIdAsync(doctorId);
