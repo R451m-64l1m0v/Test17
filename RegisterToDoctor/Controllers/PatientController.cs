@@ -33,7 +33,7 @@ namespace RegisterToDoctor.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Ошибка добавления пациента- {e.Message}");
+                return BadRequest($"Ошибка: добавления пациента- {e.Message}");
             }
         }
 
@@ -53,7 +53,7 @@ namespace RegisterToDoctor.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Ошибка - {e.Message}");
+                return BadRequest($"Ошибка: - {e.Message}");
             }
         }
 
@@ -74,7 +74,7 @@ namespace RegisterToDoctor.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Ошибка - {e.Message}");
+                return BadRequest($"Ошибка: - {e.Message}");
             }
         }
 
@@ -90,9 +90,29 @@ namespace RegisterToDoctor.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Ошибка - {e.Message}");
+                return BadRequest($"Ошибка: - {e.Message}");
             }
 
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid patientId)
+        {
+            try
+            {
+                var isSecceed = await _patientService.Delete(patientId);
+
+                if (isSecceed == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok($"Пациет удален {isSecceed.IsSecceed}");
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Ошибка: удаления пациента- {e.Message}");
+            }
         }
     }
 }

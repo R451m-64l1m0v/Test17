@@ -9,7 +9,7 @@ namespace RegisterToDoctor.Validators
             if (string.IsNullOrWhiteSpace(firstName) ||
                     string.IsNullOrWhiteSpace(LastName)) 
             {
-                throw new ArgumentException($"Ошибка не заполнены поля Фамилии или Имени");
+                throw new ArgumentException($"Ошибка: не заполнены поля Фамилии или Имени");
             }
             return true;   
         }        

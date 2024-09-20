@@ -31,7 +31,7 @@ namespace RegisterToDoctor.Services
                     return existsOffice;
                 }
 
-                var office = CreateOffice(numberOffice);
+                var office = await CreateOffice(numberOffice);
 
                 return office;
             }
@@ -42,7 +42,7 @@ namespace RegisterToDoctor.Services
 
         }
 
-        private Office CreateOffice(int numberOffice)
+        private async Task<Office> CreateOffice(int numberOffice)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace RegisterToDoctor.Services
                     Number = numberOffice,
                 };
 
-                _officeRepository.Create(office);
+                await _officeRepository.CreateAsync(office);
 
                 return office;
             }
@@ -65,9 +65,8 @@ namespace RegisterToDoctor.Services
 
         private async Task<Office> GetOffice(int numberOffice)
         {
-            var offices = _officeRepository
-                .GetAll()
-                .FirstOrDefault(x => x.Number == numberOffice);                    
+            var offices = await _officeRepository.Entity
+                .FirstOrDefaultAsync(x => x.Number == numberOffice);                    
 
             return offices;
         }

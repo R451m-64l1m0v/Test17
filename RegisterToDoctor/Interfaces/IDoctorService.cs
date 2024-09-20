@@ -10,5 +10,6 @@ namespace RegisterToDoctor.Interfaces
         Task<UpdateDoctorResponse> Update(UpdateDoctorRequest updateDoctor);
         Task<DoctorByIdResponse> GetById(Guid doctorId);
         Task<IEnumerable<DoctorByFilterResponse>> GetDoctorsByFilter(DoctorByFilterRequest doctorByFilterRequest);
+        Task<DeleteDoctorResponse> Delete(Guid doctorId);
     }
 }

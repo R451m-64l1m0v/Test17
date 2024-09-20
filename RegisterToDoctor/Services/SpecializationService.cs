@@ -30,7 +30,7 @@ namespace RegisterToDoctor.Services
                     return existsSpecialization;
                 }
 
-                var specialization = CreateSpecialization(specializationName);
+                var specialization = await CreateSpecialization(specializationName);
 
                 return specialization;
             }
@@ -41,7 +41,7 @@ namespace RegisterToDoctor.Services
 
         }
 
-        private Specialization CreateSpecialization(string specializationName)
+        private async Task<Specialization> CreateSpecialization(string specializationName)
         {
             try
             {               
@@ -51,7 +51,7 @@ namespace RegisterToDoctor.Services
                     Name = specializationName.ToLower(),
                 };
 
-                _specializationRepository.Create(specialization);
+                await _specializationRepository.CreateAsync(specialization);
 
                 return specialization;
             }
@@ -59,14 +59,12 @@ namespace RegisterToDoctor.Services
             {
                 throw;
             }
-
         }
 
         private async Task<Specialization> GetSpecialization(string specializationName) 
         {
-            var specialization = _specializationRepository
-                .GetAll()
-                .FirstOrDefault(x => x.Name == specializationName.ToLower());                                 
+            var specialization = await _specializationRepository.Entity
+                .FirstOrDefaultAsync(x => x.Name == specializationName.ToLower());                                                 
 
             return specialization;
         }

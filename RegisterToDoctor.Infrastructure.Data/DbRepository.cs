@@ -1,4 +1,5 @@
-﻿using RegisterToDoctor.Domen.Core.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using RegisterToDoctor.Domen.Core.Common;
 using RegisterToDoctor.Infrastructure.Data.Context;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using System;
@@ -13,39 +14,38 @@ namespace RegisterToDoctor.Infrastructure.Data
     {
         private readonly AppDbContext DbContext;
 
-        public IQueryable<T> Entity => DbContext.Set<T>();
-
         public DbRepository(AppDbContext dbContext)
         {
             DbContext = dbContext;
         }
+        public IQueryable<T> Entity => DbContext.Set<T>();
+        
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await DbContext.Set<T>().ToListAsync();
+        }
 
-        public void Delete(T t)
+        public async Task<T> GetByIdAsync(Guid id)
+        {
+            return await DbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task CreateAsync(T t)
+        {
+            await DbContext.Set<T>().AddAsync(t);
+            await DbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(T t)
         {
             DbContext.Set<T>().Remove(t);
-            DbContext.SaveChanges();
+            await DbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAll()
-        {
-            return DbContext.Set<T>().ToList();
-        }
-
-        public T GetById(Guid id)
-        {
-            return DbContext.Set<T>().FirstOrDefault(x => x.Id == id);
-        }
-
-        public void Create(T t)
-        {
-            DbContext.Set<T>().Add(t);
-            DbContext.SaveChanges();
-        }
-
-        public void Update(T t)
+        public async Task UpdateAsync(T t)
         {
             DbContext.Set<T>().Update(t);
-            DbContext.SaveChanges();
+            await DbContext.SaveChangesAsync();
         }
     }
 }

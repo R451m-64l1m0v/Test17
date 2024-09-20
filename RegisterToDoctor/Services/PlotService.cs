@@ -30,7 +30,7 @@ namespace RegisterToDoctor.Services
                     return existsPlot;
                 }
 
-                var plot = CreatePlot(numberPlot);
+                var plot = await CreatePlot(numberPlot);
 
                 return plot;
             }
@@ -41,7 +41,7 @@ namespace RegisterToDoctor.Services
             
         }
 
-        private Plot CreatePlot(int numberPlot)
+        private async Task<Plot> CreatePlot(int numberPlot)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace RegisterToDoctor.Services
                     Number = numberPlot,
                 };
 
-                _plotRepository.Create(plot);
+                await _plotRepository.CreateAsync(plot);
 
                 return plot;
             }
@@ -63,9 +63,8 @@ namespace RegisterToDoctor.Services
 
         private async Task<Plot> GetPlot(int numberPlot)
         {
-            var specialization = _plotRepository
-                .GetAll()
-                .FirstOrDefault(x => x.Number == numberPlot);                   
+            var specialization = await _plotRepository.Entity
+                .FirstOrDefaultAsync(x => x.Number == numberPlot);                   
 
             return specialization;
         }

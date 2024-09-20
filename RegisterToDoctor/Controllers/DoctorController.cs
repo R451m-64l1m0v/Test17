@@ -4,6 +4,7 @@ using RegisterToDoctor.Domen.Core.Entities;
 using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Doctors.Request;
 using RegisterToDoctor.Models.Doctors.Response;
+using RegisterToDoctor.Services;
 using System.Numerics;
 
 namespace RegisterToDoctor.Controllers
@@ -33,7 +34,7 @@ namespace RegisterToDoctor.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Ошибка добавления доктора- {e.Message}.");
+                return BadRequest($"Ошибка: добавления доктора- {e.Message}.");
             }
         }
 
@@ -55,7 +56,7 @@ namespace RegisterToDoctor.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Ошибка - {e.Message}");
+                return BadRequest($"Ошибка: - {e.Message}");
             }
         }
 
@@ -76,7 +77,7 @@ namespace RegisterToDoctor.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Ошибка - {e.Message}");
+                return BadRequest($"Ошибка: - {e.Message}");
             }
         }
 
@@ -92,9 +93,29 @@ namespace RegisterToDoctor.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest($"Ошибка - {e.Message}");                
+                return BadRequest($"Ошибка: - {e.Message}");                
+            }            
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid doctorId)
+        {
+            try
+            {
+                var isSecceed = await _doctorService.Delete(doctorId);
+
+                if (isSecceed == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok($"Доктор удален {isSecceed.IsSecceed}");
             }
-            
+            catch (Exception e)
+            {
+                return BadRequest($"Ошибка: удаления доктора - {e.Message}");
+            }
+
         }
     }
 

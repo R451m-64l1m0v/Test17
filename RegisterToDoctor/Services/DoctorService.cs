@@ -9,6 +9,7 @@ using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Doctors;
 using RegisterToDoctor.Models.Doctors.Request;
 using RegisterToDoctor.Models.Doctors.Response;
+using RegisterToDoctor.Models.Patient.Response;
 using RegisterToDoctor.Validators;
 using System;
 using System.Globalization;
@@ -65,7 +66,7 @@ namespace RegisterToDoctor.Services
 
                 var doctor = СreatorDoctorHelper.Create(createDoctor);
                 
-                _docRepository.Create(doctor);
+                await _docRepository.CreateAsync(doctor);
 
                 return CreateDoctorResponse.CreateResponse(doctor);
             }
@@ -81,10 +82,10 @@ namespace RegisterToDoctor.Services
             {
                 if (doctorId == Guid.Empty)
                 {
-                    throw new ArgumentException($"Ошибка id доктора не может быть {doctorId}");
+                    throw new ArgumentException($"Ошибка: id доктора не может быть {doctorId}");
                 }
 
-                var doctor = _docRepository.GetById(doctorId);
+                var doctor = await _docRepository.GetByIdAsync(doctorId);
 
                 if (doctor == null)
                 {
@@ -105,10 +106,10 @@ namespace RegisterToDoctor.Services
             {
                 //ToDo вынести проверки
                 if (doctorByFilterRequest.PageNumber == 0)
-                    throw new ArgumentException($"Ошибка не указан {nameof(doctorByFilterRequest.PageNumber)}");
+                    throw new ArgumentException($"Ошибка: не указан {nameof(doctorByFilterRequest.PageNumber)}");
 
                 if (doctorByFilterRequest.PageSize == 0)
-                    throw new ArgumentException($"Ошибка не указан {nameof(doctorByFilterRequest.PageSize)}");                
+                    throw new ArgumentException($"Ошибка: не указан {nameof(doctorByFilterRequest.PageSize)}");                
 
                 var doctors = _docRepository.Entity
                     .Include(x => x.Office)
@@ -151,7 +152,7 @@ namespace RegisterToDoctor.Services
                 //ToDo вынести проверки
                 if (updateDoctorRequest.Id == Guid.Empty)
                 {
-                    throw new ArgumentException($"Ошибка id доктора не может быть {updateDoctorRequest.Id}");
+                    throw new ArgumentException($"Ошибка: id доктора не может быть {updateDoctorRequest.Id}");
                 }
 
                 UserEntityValidator.CheckFullNames(updateDoctorRequest.FirstName, updateDoctorRequest.LastName);
@@ -161,7 +162,7 @@ namespace RegisterToDoctor.Services
                     updateDoctorRequest.MiddleName = null;
                 }
 
-                var doctor = _docRepository.GetById(updateDoctorRequest.Id);
+                var doctor = await _docRepository.GetByIdAsync(updateDoctorRequest.Id);
 
                 if (doctor == null)
                 {
@@ -184,7 +185,7 @@ namespace RegisterToDoctor.Services
 
                 doctor = UpdaterDoctorHelper.Update(doctor,updateDoctor);
 
-                _docRepository.Update(doctor);
+                await _docRepository.UpdateAsync(doctor);
 
                 return UpdateDoctorResponse.CreateResponse(doctor);
             }
@@ -192,6 +193,32 @@ namespace RegisterToDoctor.Services
             {
                 throw;
             }
+        }
+
+        public async Task<DeleteDoctorResponse> Delete(Guid doctorId)
+        {
+            try
+            {
+                if (doctorId == Guid.Empty)
+                {
+                    throw new ArgumentException($"Ошибка: id доктора не может быть {doctorId}");
+                }
+
+                var doctor = await _docRepository.GetByIdAsync(doctorId);
+
+                if (doctor == null)
+                {
+                    return null;
+                }
+
+                await _docRepository.DeleteAsync(doctor);
+
+                return new DeleteDoctorResponse { IsSecceed = true };
+            }
+            catch (Exception ex) 
+            {
+                throw; 
+            }            
         }
     }
 }
