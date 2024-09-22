@@ -1,8 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Domen.Core.Enums;
-using RegisterToDoctor.Models.Abstractions;
-using RegisterToDoctor.Models.Doctors.Response;
-using System.Numerics;
+﻿using RegisterToDoctor.Domen.Core.Enums;
 using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Patient.Response

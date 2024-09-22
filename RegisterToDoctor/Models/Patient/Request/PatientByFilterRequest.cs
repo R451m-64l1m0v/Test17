@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RegisterToDoctor.Domen.Core.Enums;
-using RegisterToDoctor.Models.Abstractions;
 using RegisterToDoctor.Models.Enum;
-using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Patient.Request
 {

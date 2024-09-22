@@ -1,23 +1,17 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Attributes;
 using RegisterToDoctor.Domen.Core.Entities;
 using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
+using RegisterToDoctor.Exceptions;
 using RegisterToDoctor.Helpers.Doctor;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Doctors;
 using RegisterToDoctor.Models.Doctors.Request;
 using RegisterToDoctor.Models.Doctors.Response;
-using RegisterToDoctor.Models.Patient.Request;
-using RegisterToDoctor.Models.Patient.Response;
 using RegisterToDoctor.Validators;
-using RegisterToDoctor.Сonstants;
-using System;
-using System.Globalization;
+using RegisterToDoctor.Validators.DoctorValidators;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RegisterToDoctor.Services
 {
@@ -28,24 +22,36 @@ namespace RegisterToDoctor.Services
         private readonly ISpecializationService _specializationService;
         private readonly IOfficeService _officeService;
         private readonly IPlotService _plotService;
+        private readonly CreateDoctorValidator _createDoctorValidator;
+        private readonly GuidValidator _guidValidator;
+        private readonly DoctorByFilterValidator _doctorByFilterValidator;
+        private readonly UpdateDoctorValidator _updateDoctorValidator;
 
         public DoctorService(IUnitOfWork uow,
             ISpecializationService specializationService,
             IOfficeService officeService,
-            IPlotService plotService)
+            IPlotService plotService,
+            CreateDoctorValidator createDoctorValidator,
+            GuidValidator guidValidator,
+            DoctorByFilterValidator doctorByFilterValidator,
+            UpdateDoctorValidator updateDoctorValidator)
         {
             _docRepository = uow.DbRepository<Doctor>();
             _specializationService = specializationService;
             _officeService = officeService;
             _plotService = plotService;
+            _createDoctorValidator = createDoctorValidator;
+            _guidValidator = guidValidator;
+            _doctorByFilterValidator = doctorByFilterValidator;
+            _updateDoctorValidator = updateDoctorValidator;
         }
 
         public async Task<CreateDoctorResponse> Create(CreateDoctorRequest createDoctorRequest)
         {
             try
-            {                
-                UserEntityValidator.CheckFullNames(createDoctorRequest.FirstName, createDoctorRequest.LastName, createDoctorRequest.MiddleName);
-                
+            {
+                _createDoctorValidator.Validate(createDoctorRequest);
+                                
                 var specializationTask = _specializationService.CheckSpecialization(createDoctorRequest.Specialization);
 
                 var officeTask = _officeService.CheckOffice(createDoctorRequest.NumberOffice);
@@ -75,17 +81,19 @@ namespace RegisterToDoctor.Services
         public async Task<DoctorByIdResponse> GetById(Guid doctorId)
         {
             try
-            {
-                if (doctorId == Guid.Empty)
+            {              
+                var result = _guidValidator.Validate(doctorId);
+
+                if (!result.IsValid)
                 {
-                    throw new ArgumentException($"Ошибка: id доктора не может быть {doctorId}.");
-                }
+                    throw new ArgumentException(result.Errors[0].ErrorMessage);
+                }                
 
                 var doctor = await _docRepository.GetByIdAsync(doctorId);
 
                 if (doctor == null)
                 {
-                    return null;
+                    throw new NotFoundException($"Ошибка: Доктор с ID {doctorId} не найден.");
                 }
 
                 return DoctorByIdResponse.CreateResponse(doctor);                  
@@ -100,18 +108,8 @@ namespace RegisterToDoctor.Services
         {
             try
             {
-                //ToDo вынести проверки
-                if (doctorByFilterRequest.PageNumber <= 0)
-                    throw new ArgumentException($"Ошибка: {nameof(doctorByFilterRequest.PageNumber)} не может быть ноль или отрицательным.");
-
-                if (doctorByFilterRequest.PageSizeMin < 0 || doctorByFilterRequest.PageSizeMax < doctorByFilterRequest.PageSizeMin)
-                    throw new ArgumentException($"Ошибка: поля {nameof(doctorByFilterRequest.PageSizeMax)} или {doctorByFilterRequest.PageSizeMin} заполнено некорректно.");
-
-                if (doctorByFilterRequest.PageSizeMax > ConstansForValidators.PageSizeLimit)
-                {
-                    throw new ArgumentException($"Ошибка: поле {nameof(doctorByFilterRequest.PageSizeMax)} не может превышать {ConstansForValidators.PageSizeLimit} на странице.");
-                }
-
+                _doctorByFilterValidator.Validate(doctorByFilterRequest);
+                
                 var pageSize = doctorByFilterRequest.PageSizeMax - doctorByFilterRequest.PageSizeMin;
 
                 var doctors = _docRepository.Entity
@@ -154,21 +152,15 @@ namespace RegisterToDoctor.Services
         {
             try
             {
-                //ToDo вынести проверки
-                if (updateDoctorRequest.Id == Guid.Empty)
-                {
-                    throw new ArgumentException($"Ошибка: id доктора не может быть {updateDoctorRequest.Id}.");
-                }
-
+                var result = _updateDoctorValidator.Validate(updateDoctorRequest);
+                                
                 var doctor = await _docRepository.GetByIdAsync(updateDoctorRequest.Id);
 
                 if (doctor == null)
                 {
-                    return null;
+                    throw new NotFoundException($"Ошибка: Доктор с ID {updateDoctorRequest.Id} не найден.");
                 }
-
-                UserEntityValidator.CheckFullNames(updateDoctorRequest.FirstName, updateDoctorRequest.LastName, updateDoctorRequest.MiddleName);
-                
+                                
                 var specializationTask = _specializationService.CheckSpecialization(updateDoctorRequest.Specialization);
 
                 var officeTask = _officeService.CheckOffice(updateDoctorRequest.NumberOffice);
@@ -199,16 +191,18 @@ namespace RegisterToDoctor.Services
         {
             try
             {
-                if (doctorId == Guid.Empty)
+                var result = _guidValidator.Validate(doctorId);
+
+                if (!result.IsValid)
                 {
-                    throw new ArgumentException($"Ошибка: id доктора не может быть {doctorId}.");
+                    throw new ArgumentException(result.Errors[0].ErrorMessage);
                 }
 
                 var doctor = await _docRepository.GetByIdAsync(doctorId);
 
                 if (doctor == null)
                 {
-                    return null;
+                    throw new NotFoundException($"Ошибка: Доктор с ID {doctorId} не найден.");
                 }
 
                 await _docRepository.DeleteAsync(doctor);

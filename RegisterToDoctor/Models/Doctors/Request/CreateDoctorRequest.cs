@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Models.Abstractions;
+﻿using RegisterToDoctor.Models.Abstractions;
 
 namespace RegisterToDoctor.Models.Doctors.Request
 {
-    public class CreateDoctorRequest : РersonBase
+    public class CreateDoctorRequest : Рerson
     {
         /// <summary>
         /// Номер кабинета

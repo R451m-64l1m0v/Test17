@@ -1,3 +1,5 @@
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Extensions;
 using RegisterToDoctor.Infrastructure.Data;
@@ -23,6 +25,8 @@ builder.Services.AddAttributedServices();
 builder.Services.AddTransient<UnitOfWork>();
 builder.Services.AddTransient<IUnitOfWork>(p => p.GetRequiredService<UnitOfWork>());
 builder.Services.AddTransient(typeof(IDbRepository<>), typeof(DbRepository<>));
+
+builder.Services.AddValidators();
 
 var app = builder.Build();
 

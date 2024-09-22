@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Domen.Core.Enums;
+﻿using RegisterToDoctor.Domen.Core.Enums;
 using RegisterToDoctor.Models.Abstractions;
 using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Patient.Request
 {
-    public class CreatePatientRequest : РersonBase
+    public class CreatePatientRequest : Рerson
     {
         /// <summary>
         /// Дата рождения

@@ -1,5 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
+﻿using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
 using RegisterToDoctor.Models.Doctors.Request;
 
 namespace RegisterToDoctor.Models.Doctors
@@ -28,7 +27,6 @@ namespace RegisterToDoctor.Models.Doctors
                 PlotId = plotId,
                 UpdatedAt = null,
             };
-
         }
     }
 }

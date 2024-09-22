@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RegisterToDoctor.Domen.Core.Entities
 {
-    public abstract class Рerson : BaseEntity
+    public abstract class РersonBase : BaseEntity
     {
         /// <summary>
         /// Имя

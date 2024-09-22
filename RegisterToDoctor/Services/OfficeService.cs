@@ -3,7 +3,6 @@ using RegisterToDoctor.Attributes;
 using RegisterToDoctor.Domen.Core.Entities;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using RegisterToDoctor.Interfaces;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RegisterToDoctor.Services
 {

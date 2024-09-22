@@ -2,7 +2,7 @@
 
 namespace RegisterToDoctor.Models.Abstractions
 {
-    public abstract class РersonBase
+    public abstract class Рerson
     {
         /// <summary>
         /// Имя

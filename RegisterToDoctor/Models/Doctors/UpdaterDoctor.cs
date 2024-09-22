@@ -27,8 +27,6 @@ namespace RegisterToDoctor.Models.Doctors
                 PlotId = plotId,
                 UpdatedAt = DateTime.UtcNow.Date,
             };
-
         }
-
     }
 }

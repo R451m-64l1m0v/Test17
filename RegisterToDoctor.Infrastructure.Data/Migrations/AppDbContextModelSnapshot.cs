@@ -59,7 +59,7 @@ namespace RegisterToDoctor.Infrastructure.Data.Migrations
 
                     b.HasIndex("SpecializationId");
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("RegisterToDoctor.Domen.Core.Entities.MedicalCard", b =>
@@ -79,7 +79,7 @@ namespace RegisterToDoctor.Infrastructure.Data.Migrations
                     b.HasIndex("PatientId")
                         .IsUnique();
 
-                    b.ToTable("MedicalCard");
+                    b.ToTable("MedicalCard", (string)null);
                 });
 
             modelBuilder.Entity("RegisterToDoctor.Domen.Core.Entities.Office", b =>
@@ -93,7 +93,7 @@ namespace RegisterToDoctor.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Offices");
+                    b.ToTable("Offices", (string)null);
                 });
 
             modelBuilder.Entity("RegisterToDoctor.Domen.Core.Entities.Patient", b =>
@@ -142,7 +142,7 @@ namespace RegisterToDoctor.Infrastructure.Data.Migrations
 
                     b.HasIndex("PlotId");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("RegisterToDoctor.Domen.Core.Entities.Plot", b =>
@@ -156,7 +156,7 @@ namespace RegisterToDoctor.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Plots");
+                    b.ToTable("Plots", (string)null);
                 });
 
             modelBuilder.Entity("RegisterToDoctor.Domen.Core.Entities.Specialization", b =>
@@ -171,7 +171,7 @@ namespace RegisterToDoctor.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Specializations");
+                    b.ToTable("Specializations", (string)null);
                 });
 
             modelBuilder.Entity("RegisterToDoctor.Domen.Core.Entities.Doctor", b =>

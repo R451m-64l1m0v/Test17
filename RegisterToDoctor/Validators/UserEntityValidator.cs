@@ -1,23 +1,23 @@
-﻿using RegisterToDoctor.Models.Doctors.Request;
+﻿using FluentValidation;
+using RegisterToDoctor.Models.Abstractions;
 
 namespace RegisterToDoctor.Validators
 {
-    public static class UserEntityValidator
+    public class UserEntityValidator : AbstractValidator<Рerson>
     {
-        public static bool CheckFullNames(string firstName, string LastName, string middleName)
+        public UserEntityValidator()
         {
-            if (string.IsNullOrWhiteSpace(firstName) 
-                || string.IsNullOrWhiteSpace(LastName)) 
-            {
-                throw new ArgumentException($"Ошибка: поле Фамилии или Имени заполнено некорректно.");
-            }
+            RuleFor(person => person.FirstName)
+            .NotEmpty().WithMessage("Необходимо указать Имя.")
+            .MaximumLength(50).WithMessage("Имя не может быть больше 50 символов.");
 
-            if (middleName != null && string.IsNullOrWhiteSpace(middleName))
-            {
-                throw new ArgumentException("Ошибка: поле Отчества заполнено некорректно.");
-            }
+            RuleFor(person => person.LastName)
+            .NotEmpty().WithMessage("Необходимо указать Фамилия.")
+            .MaximumLength(50).WithMessage("Фамилия не может быть больше 50 символов.");
 
-            return true;   
-        }        
+            RuleFor(person => person.MiddleName)
+            .MaximumLength(50).WithMessage("Отчество не может быть больше 50 символов.")
+            .When(person => !string.IsNullOrEmpty(person.MiddleName));
+        }     
     }
 }

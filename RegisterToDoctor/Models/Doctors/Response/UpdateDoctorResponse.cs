@@ -1,5 +1,4 @@
 ﻿using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Models.Abstractions;
 
 namespace RegisterToDoctor.Models.Doctors.Response
 {

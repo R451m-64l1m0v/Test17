@@ -1,10 +1,9 @@
 ﻿using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Models.Abstractions;
 using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Doctors.Response
 {
-    public class DoctorByIdResponse : РersonBase
+    public class DoctorByIdResponse
     {
         /// <summary>
         /// Id доктора

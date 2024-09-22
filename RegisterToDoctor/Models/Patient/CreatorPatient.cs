@@ -34,7 +34,6 @@ namespace RegisterToDoctor.Models.Patient
                 PlotId = plotId,
                 UpdatedAt = null,
             };
-
         }
     }    
 }

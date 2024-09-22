@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RegisterToDoctor.Domen.Core.Entities
 {
-    public class Doctor : Рerson
+    public class Doctor : РersonBase
     {
         /// <summary>
         /// Id кабинета

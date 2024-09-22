@@ -2,6 +2,10 @@
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using RegisterToDoctor.Infrastructure.Data;
 using System.Reflection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using RegisterToDoctor.Validators;
+using RegisterToDoctor.Validators.DoctorValidators;
 
 namespace RegisterToDoctor.Extensions
 {
@@ -34,6 +38,22 @@ namespace RegisterToDoctor.Extensions
                 }               
             }          
             
+            return services;
+        }
+
+        public static IServiceCollection AddValidators(this IServiceCollection services)
+        {
+            services.AddValidatorsFromAssemblyContaining<CreateDoctorValidator>();
+            services.AddValidatorsFromAssemblyContaining<UserEntityValidator>();
+            services.AddValidatorsFromAssemblyContaining<GuidValidator>();
+            services.AddValidatorsFromAssemblyContaining<DoctorByFilterValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateDoctorValidator>();
+            services.AddControllers()
+                .AddFluentValidation(fv =>
+                {
+                    fv.DisableDataAnnotationsValidation = true;
+                });
+
             return services;
         }
     }

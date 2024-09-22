@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Models.Abstractions;
+﻿using RegisterToDoctor.Domen.Core.Entities;
 using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Doctors.Response

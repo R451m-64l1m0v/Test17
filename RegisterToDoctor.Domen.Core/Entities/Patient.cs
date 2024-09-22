@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RegisterToDoctor.Domen.Core.Entities
 {
-    public class Patient : Рerson
+    public class Patient : РersonBase
     {
         /// <summary>
         /// Дата рождения

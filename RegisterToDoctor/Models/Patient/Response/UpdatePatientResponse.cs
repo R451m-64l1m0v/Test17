@@ -1,8 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Models.Abstractions;
-using RegisterToDoctor.Models.Doctors.Response;
-
-namespace RegisterToDoctor.Models.Patient.Response
+﻿namespace RegisterToDoctor.Models.Patient.Response
 {
     public class UpdatePatientResponse
     {
