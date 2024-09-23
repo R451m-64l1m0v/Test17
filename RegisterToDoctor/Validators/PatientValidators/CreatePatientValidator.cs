@@ -38,8 +38,8 @@ namespace RegisterToDoctor.Validators.PatientValidators
 
         private bool IsValidAge(DateTime dateOfBirth)
         {
-            return dateOfBirth.Year <= ConstansForValidators.maxAge.Year && 
-                   dateOfBirth.Year >= ConstansForValidators.minAge.Year;
+            var age = DateTime.Now.Year - dateOfBirth.Year;
+            return age <= ConstansForValidators.maxAge && age >= ConstansForValidators.minAge;
         }
     }
 }
