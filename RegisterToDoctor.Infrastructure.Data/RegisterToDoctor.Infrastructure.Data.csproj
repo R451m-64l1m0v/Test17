@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RegisterToDoctor.Domen.Core\RegisterToDoctor.Domain.Core.csproj" />
     <ProjectReference Include="..\RegisterToDoctor.Domen.Core\RegisterToDoctor.Domen.Core.csproj" />
   </ItemGroup>
 

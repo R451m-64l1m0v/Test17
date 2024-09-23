@@ -1,4 +1,5 @@
-﻿using RegisterToDoctor.Domen.Core.Entities;
+﻿using RegisterToDoctor.Domain.Core.Entities;
+using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Doctors.Response
 {
@@ -7,6 +8,7 @@ namespace RegisterToDoctor.Models.Doctors.Response
         /// <summary>
         /// Id доктора
         /// </summary>
+        [JsonPropertyName("DoctorId")]
         public Guid Id { get; private set; }
 
         public static UpdateDoctorResponse CreateResponse(Doctor doctor) =>

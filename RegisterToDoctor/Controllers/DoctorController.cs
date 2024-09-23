@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RegisterToDoctor.Domen.Core.Entities;
 using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Doctors.Request;
 using RegisterToDoctor.Models.Doctors.Response;
-using RegisterToDoctor.Services;
-using System.Numerics;
 
 namespace RegisterToDoctor.Controllers
 {

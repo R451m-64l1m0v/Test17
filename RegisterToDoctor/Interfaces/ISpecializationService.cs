@@ -1,4 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.Entities;
+﻿using RegisterToDoctor.Domain.Core.Entities;
 
 namespace RegisterToDoctor.Interfaces
 {

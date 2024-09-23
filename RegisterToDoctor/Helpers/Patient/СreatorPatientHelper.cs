@@ -4,9 +4,9 @@ namespace RegisterToDoctor.Helpers.Patient
 {
     public static class СreatorPatientHelper
     {
-        public static Domen.Core.Entities.Patient Create(ICreatePatient patient)
+        public static Domain.Core.Entities.Patient Create(ICreatePatient patient)
         {
-            return new Domen.Core.Entities.Patient
+            return new Domain.Core.Entities.Patient
             {
                 Id = patient.Id,
                 FirstName = patient.FirstName,

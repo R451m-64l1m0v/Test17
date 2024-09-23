@@ -4,7 +4,7 @@ namespace RegisterToDoctor.Helpers.Patient
 {
     public static class UpdaterPatientHelper
     {
-        public static Domen.Core.Entities.Patient Update(Domen.Core.Entities.Patient patient, ICreatePatient updatePatient)
+        public static Domain.Core.Entities.Patient Update(Domain.Core.Entities.Patient patient, ICreatePatient updatePatient)
         {
             patient.FirstName = updatePatient.FirstName;
             patient.LastName = updatePatient.LastName;

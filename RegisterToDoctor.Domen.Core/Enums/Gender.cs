@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RegisterToDoctor.Domen.Core.Enums
+namespace RegisterToDoctor.Domain.Core.Enums
 {
     public enum Gender
     {

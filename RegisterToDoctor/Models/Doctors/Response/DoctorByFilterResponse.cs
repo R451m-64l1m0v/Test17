@@ -1,4 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.Entities;
+﻿using RegisterToDoctor.Domain.Core.Entities;
 using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Doctors.Response

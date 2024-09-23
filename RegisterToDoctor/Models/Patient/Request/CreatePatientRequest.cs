@@ -1,4 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.Enums;
+﻿using RegisterToDoctor.Domain.Core.Enums;
 using RegisterToDoctor.Models.Abstractions;
 using System.Text.Json.Serialization;
 

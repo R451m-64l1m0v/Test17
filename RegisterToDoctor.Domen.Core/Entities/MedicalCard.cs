@@ -1,4 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.Common;
+﻿using RegisterToDoctor.Domain.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RegisterToDoctor.Domen.Core.Entities
+namespace RegisterToDoctor.Domain.Core.Entities
 {
     public class MedicalCard : BaseEntity
     {

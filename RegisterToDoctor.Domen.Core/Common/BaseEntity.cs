@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RegisterToDoctor.Domen.Core.Common
+namespace RegisterToDoctor.Domain.Core.Common
 {
     public abstract class BaseEntity
     {

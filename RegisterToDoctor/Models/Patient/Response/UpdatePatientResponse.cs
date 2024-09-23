@@ -1,13 +1,16 @@
-﻿namespace RegisterToDoctor.Models.Patient.Response
+﻿using System.Text.Json.Serialization;
+
+namespace RegisterToDoctor.Models.Patient.Response
 {
     public class UpdatePatientResponse
     {
         /// <summary>
         /// Id пациента
         /// </summary>
+        [JsonPropertyName("PatientId")]
         public Guid Id { get; private set; }
 
-        public static UpdatePatientResponse CreateResponse(Domen.Core.Entities.Patient patient) =>
+        public static UpdatePatientResponse CreateResponse(Domain.Core.Entities.Patient patient) =>
             new UpdatePatientResponse { Id = patient.Id };
     }
 }

@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RegisterToDoctor.Domen.Core.Common;
+using RegisterToDoctor.Domain.Core.Common;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RegisterToDoctor.Infrastructure.Data
 {

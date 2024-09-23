@@ -1,4 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.Enums;
+﻿using RegisterToDoctor.Domain.Core.Enums;
 using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.Models.Patient.Response
@@ -71,7 +71,7 @@ namespace RegisterToDoctor.Models.Patient.Response
         [JsonPropertyName("UpdatedAt")]
         public DateTime? UpdatedAt { get; private set; }
 
-        public static PatientByIdResponse CreateResponse(Domen.Core.Entities.Patient patient) => new PatientByIdResponse
+        public static PatientByIdResponse CreateResponse(Domain.Core.Entities.Patient patient) => new PatientByIdResponse
         {
             Id = patient.Id,
             FirstName = patient.FirstName,

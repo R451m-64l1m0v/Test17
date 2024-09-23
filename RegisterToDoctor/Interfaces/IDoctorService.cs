@@ -1,5 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Models.Doctors.Request;
+﻿using RegisterToDoctor.Models.Doctors.Request;
 using RegisterToDoctor.Models.Doctors.Response;
 
 namespace RegisterToDoctor.Interfaces

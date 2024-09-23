@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RegisterToDoctor.Domen.Core.Common;
+using RegisterToDoctor.Domain.Core.Common;
 using RegisterToDoctor.Infrastructure.Data.Context;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using System;

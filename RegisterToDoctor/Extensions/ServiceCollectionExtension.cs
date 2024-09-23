@@ -1,11 +1,9 @@
-﻿using RegisterToDoctor.Attributes;
-using RegisterToDoctor.Infrastructure.Data.Interfaces;
-using RegisterToDoctor.Infrastructure.Data;
-using System.Reflection;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using RegisterToDoctor.Attributes;
 using RegisterToDoctor.Validators;
 using RegisterToDoctor.Validators.DoctorValidators;
+using System.Reflection;
 
 namespace RegisterToDoctor.Extensions
 {
