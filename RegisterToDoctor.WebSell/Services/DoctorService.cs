@@ -1,7 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Domain.Entities;
+using RegisterToDoctor.Infrastructure.Abstractions;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
+using RegisterToDoctor.Infrastructure.Implementations;
 using RegisterToDoctor.WebSell.Attributes;
 using RegisterToDoctor.WebSell.Exceptions;
 using RegisterToDoctor.WebSell.Helpers.Doctor;
@@ -45,7 +47,7 @@ namespace RegisterToDoctor.WebSell.Services
             _updateDoctorValidator = updateDoctorValidator;
         }
 
-        public async Task<CreateDoctorResponse> Create(CreateDoctorRequest createDoctorRequest)
+        public async Task<ISuccessResult<CreateDoctorResponse>> Create(ICreateDoctorRequest createDoctorRequest)
         {
             try
             {
@@ -63,13 +65,16 @@ namespace RegisterToDoctor.WebSell.Services
                 var office = officeTask.Result;
                 var plot = plotTask.Result;
 
+                //todo: autoMapper
                 ICreateDoctor createDoctor = CreatorDoctor.Create(createDoctorRequest, specialization.Id, office.Id, plot.Id);
 
                 var doctor = СreatorDoctorHelper.Create(createDoctor);
                 
                 await _docRepository.CreateAsync(doctor);
 
-                return CreateDoctorResponse.CreateResponse(doctor);
+                var a = CreateDoctorResponse.CreateResponse(doctor);
+
+                return SuccessResultCreator.Create(a); ;
             }
             catch (Exception)
             {

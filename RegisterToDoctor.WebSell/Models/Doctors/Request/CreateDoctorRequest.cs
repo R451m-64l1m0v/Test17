@@ -1,26 +1,18 @@
 ﻿using System.Text.Json.Serialization;
+using RegisterToDoctor.WebSell.Interfaces;
 using RegisterToDoctor.WebSell.Models.Abstractions;
 
 namespace RegisterToDoctor.WebSell.Models.Doctors.Request
 {
-    public class CreateDoctorRequest : Рerson
+    public class CreateDoctorRequest : Рerson, ICreateDoctorRequest
     {
-        /// <summary>
-        /// Номер кабинета
-        /// </summary>
-        [JsonPropertyName("NumberOffice")]
+        
         public int NumberOffice { get; set; }
 
-        /// <summary>
-        /// Название специальности
-        /// </summary>
-        [JsonPropertyName("Specialization")]
+        
         public string Specialization { get; set; }
 
-        /// <summary>
-        /// Номер участка
-        /// </summary>
-        [JsonPropertyName("NumberPlot")]
+        
         public int  NumberPlot { get; set; }
     }
 }

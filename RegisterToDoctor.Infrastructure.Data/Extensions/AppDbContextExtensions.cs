@@ -9,7 +9,7 @@ namespace RegisterToDoctor.Infrastructure.Data.Extensions
         public static void AddApplicationDbContext(this IServiceCollection services, string connectionString)
         {
             services.AddDbContext<AppDbContext>(options =>
-                 options.UseSqlServer(connectionString));
+                 options.UseSqlServer(connectionString), ServiceLifetime.Transient);
         }
     }
 }

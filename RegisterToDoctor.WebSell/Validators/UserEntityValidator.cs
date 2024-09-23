@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
+using RegisterToDoctor.WebSell.Interfaces;
 using RegisterToDoctor.WebSell.Models.Abstractions;
 
 namespace RegisterToDoctor.WebSell.Validators
 {
-    public class UserEntityValidator : AbstractValidator<Рerson>
+    public class UserEntityValidator : AbstractValidator<IPerson>
     {
         public UserEntityValidator()
         {

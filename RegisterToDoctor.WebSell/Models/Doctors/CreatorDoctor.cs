@@ -14,7 +14,7 @@ namespace RegisterToDoctor.WebSell.Models.Doctors
         public Guid PlotId { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        public static CreatorDoctor Create(CreateDoctorRequest createDoctor, Guid specializationId, Guid officeId, Guid plotId)
+        public static CreatorDoctor Create(ICreateDoctorRequest createDoctor, Guid specializationId, Guid officeId, Guid plotId)
         {
             return new CreatorDoctor
             {

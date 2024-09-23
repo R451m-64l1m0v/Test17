@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RegisterToDoctor.Infrastructure.Abstractions\RegisterToDoctor.Infrastructure.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

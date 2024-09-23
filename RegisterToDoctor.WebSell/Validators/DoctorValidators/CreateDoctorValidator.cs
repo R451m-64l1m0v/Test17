@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
+using RegisterToDoctor.WebSell.Interfaces;
 using RegisterToDoctor.WebSell.Models.Doctors.Request;
 
 namespace RegisterToDoctor.WebSell.Validators.DoctorValidators
 {
-    public class CreateDoctorValidator : AbstractValidator<CreateDoctorRequest>
+    public class CreateDoctorValidator : AbstractValidator<ICreateDoctorRequest>
     {
         public CreateDoctorValidator()
         {

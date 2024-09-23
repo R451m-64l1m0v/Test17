@@ -2,6 +2,7 @@
 using RegisterToDoctor.WebSell.Interfaces;
 using RegisterToDoctor.WebSell.Models.Doctors.Request;
 using RegisterToDoctor.WebSell.Models.Doctors.Response;
+using RegisterToDoctor.WebSell.Models.DTOs;
 
 namespace RegisterToDoctor.WebSell.Controllers
 {
@@ -20,13 +21,13 @@ namespace RegisterToDoctor.WebSell.Controllers
         /// Добавляет доктора
         /// </summary>        
         [HttpPost]
-        public async Task<IActionResult> Create(CreateDoctorRequest createDoctor)
+        public async Task<IActionResult> Create(CreateDoctorInDto createDoctor)
         {
             try
             {
                 var doctorResponse = await _doctorService.Create(createDoctor);                
             
-                return Ok($"Док добавлен doctorId {doctorResponse.Id}.");                
+                return Ok($"Док добавлен doctorId {doctorResponse.Result}.");                
             }
             catch (Exception e)
             {
