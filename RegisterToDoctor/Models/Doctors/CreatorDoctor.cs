@@ -1,4 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
+﻿using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Doctors.Request;
 
 namespace RegisterToDoctor.Models.Doctors

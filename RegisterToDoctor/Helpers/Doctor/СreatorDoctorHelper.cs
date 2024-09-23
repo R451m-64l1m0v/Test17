@@ -1,4 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
+﻿using RegisterToDoctor.Interfaces;
 using System.Numerics;
 
 namespace RegisterToDoctor.Helpers.Doctor

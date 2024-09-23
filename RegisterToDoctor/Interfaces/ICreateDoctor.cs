@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RegisterToDoctor.Domen.Core.RequestModels.Interfaces
+﻿namespace RegisterToDoctor.Interfaces
 {
     public interface ICreateDoctor
     {

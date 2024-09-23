@@ -1,12 +1,6 @@
-﻿using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Domen.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RegisterToDoctor.Domen.Core.Enums;
 
-namespace RegisterToDoctor.Domen.Core.RequestModels.Interfaces
+namespace RegisterToDoctor.Interfaces
 {
     public interface ICreatePatient
     {

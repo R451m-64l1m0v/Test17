@@ -1,12 +1,4 @@
-﻿using RegisterToDoctor.Domen.Core.RequestModels;
-using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RegisterToDoctor.Domen.Core.Entities
+﻿namespace RegisterToDoctor.Domen.Core.Entities
 {
     public class Doctor : РersonBase
     {

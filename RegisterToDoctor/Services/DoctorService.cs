@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Attributes;
 using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
 using RegisterToDoctor.Exceptions;
 using RegisterToDoctor.Helpers.Doctor;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;

@@ -1,5 +1,5 @@
 ﻿using RegisterToDoctor.Domen.Core.Enums;
-using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
+using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Patient.Request;
 
 namespace RegisterToDoctor.Models.Patient

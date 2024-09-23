@@ -1,25 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Attributes;
 using RegisterToDoctor.Domen.Core.Entities;
-using RegisterToDoctor.Domen.Core.RequestModels.Interfaces;
+using RegisterToDoctor.Exceptions;
 using RegisterToDoctor.Helpers.Patient;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
-using RegisterToDoctor.Infrastructure.Data.Migrations;
 using RegisterToDoctor.Interfaces;
-using RegisterToDoctor.Models.Doctors;
-using RegisterToDoctor.Models.Doctors.Request;
-using RegisterToDoctor.Models.Doctors.Response;
 using RegisterToDoctor.Models.Patient;
 using RegisterToDoctor.Models.Patient.Request;
 using RegisterToDoctor.Models.Patient.Response;
 using RegisterToDoctor.Validators;
-using System.Drawing;
-using System;
-using System.Linq.Expressions;
-using System.Numerics;
-using RegisterToDoctor.Сonstants;
 using RegisterToDoctor.Validators.PatientValidators;
-using RegisterToDoctor.Exceptions;
+using System.Linq.Expressions;
 
 namespace RegisterToDoctor.Services
 {
