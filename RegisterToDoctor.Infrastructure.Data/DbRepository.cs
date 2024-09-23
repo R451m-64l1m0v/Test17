@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RegisterToDoctor.Domain.Core.Common;
+using RegisterToDoctor.Domain.Common;
 using RegisterToDoctor.Infrastructure.Data.Context;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RegisterToDoctor.Infrastructure.Data
 {

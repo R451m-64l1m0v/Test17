@@ -14,7 +14,7 @@ namespace RegisterToDoctor.Extensions
             var asmbly = Assembly.GetExecutingAssembly();
             var typeList = asmbly.GetTypes().Where(
                     t => t.GetCustomAttributes(typeof(RegisrationMarkerAttribute), true).Length > 0
-            ).ToList();
+            );
 
             foreach (var item in typeList)
             {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RegisterToDoctor.Domain.Core.Entities;
+using RegisterToDoctor.Domain.Entities;
 
 namespace RegisterToDoctor.Infrastructure.Data.Context
 {

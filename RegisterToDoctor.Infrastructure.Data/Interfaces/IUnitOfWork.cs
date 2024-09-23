@@ -1,4 +1,4 @@
-﻿using RegisterToDoctor.Domain.Core.Common;
+﻿using RegisterToDoctor.Domain.Common;
 
 namespace RegisterToDoctor.Infrastructure.Data.Interfaces
 {

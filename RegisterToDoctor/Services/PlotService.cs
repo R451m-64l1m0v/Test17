@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Attributes;
-using RegisterToDoctor.Domain.Core.Entities;
+using RegisterToDoctor.Domain.Entities;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using RegisterToDoctor.Interfaces;
 

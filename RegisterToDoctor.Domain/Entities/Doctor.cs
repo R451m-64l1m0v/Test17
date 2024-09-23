@@ -1,6 +1,4 @@
-﻿using RegisterToDoctor.Domain.Core.Entities;
-
-namespace RegisterToDoctor.Domain.Core.Entities
+﻿namespace RegisterToDoctor.Domain.Entities
 {
     public class Doctor : РersonBase
     {

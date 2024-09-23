@@ -1,11 +1,6 @@
-﻿using RegisterToDoctor.Domain.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RegisterToDoctor.Domain.Enums;
 
-namespace RegisterToDoctor.Domain.Core.Entities
+namespace RegisterToDoctor.Domain.Entities
 {
     public class Patient : РersonBase
     {

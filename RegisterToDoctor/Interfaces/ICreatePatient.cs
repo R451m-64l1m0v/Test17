@@ -1,4 +1,4 @@
-﻿using RegisterToDoctor.Domain.Core.Enums;
+﻿using RegisterToDoctor.Domain.Enums;
 
 namespace RegisterToDoctor.Interfaces
 {

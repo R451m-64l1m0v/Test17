@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Attributes;
-using RegisterToDoctor.Domain.Core.Entities;
 using RegisterToDoctor.Exceptions;
 using RegisterToDoctor.Helpers.Doctor;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
@@ -11,6 +10,7 @@ using RegisterToDoctor.Models.Doctors.Response;
 using RegisterToDoctor.Validators;
 using RegisterToDoctor.Validators.DoctorValidators;
 using System.Linq.Expressions;
+using RegisterToDoctor.Domain.Entities;
 
 namespace RegisterToDoctor.Services
 {

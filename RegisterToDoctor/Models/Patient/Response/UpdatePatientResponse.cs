@@ -10,7 +10,7 @@ namespace RegisterToDoctor.Models.Patient.Response
         [JsonPropertyName("PatientId")]
         public Guid Id { get; private set; }
 
-        public static UpdatePatientResponse CreateResponse(Domain.Core.Entities.Patient patient) =>
+        public static UpdatePatientResponse CreateResponse(Domain.Entities.Patient patient) =>
             new UpdatePatientResponse { Id = patient.Id };
     }
 }

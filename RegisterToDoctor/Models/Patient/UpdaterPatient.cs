@@ -1,4 +1,4 @@
-﻿using RegisterToDoctor.Domain.Core.Enums;
+﻿using RegisterToDoctor.Domain.Enums;
 using RegisterToDoctor.Interfaces;
 using RegisterToDoctor.Models.Patient.Request;
 

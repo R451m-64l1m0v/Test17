@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RegisterToDoctor.Domain.Core.Common;
+using RegisterToDoctor.Domain.Common;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 
 namespace RegisterToDoctor.Infrastructure.Data

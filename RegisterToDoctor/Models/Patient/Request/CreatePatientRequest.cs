@@ -1,6 +1,6 @@
-﻿using RegisterToDoctor.Domain.Core.Enums;
-using RegisterToDoctor.Models.Abstractions;
+﻿using RegisterToDoctor.Models.Abstractions;
 using System.Text.Json.Serialization;
+using RegisterToDoctor.Domain.Enums;
 
 namespace RegisterToDoctor.Models.Patient.Request
 {
