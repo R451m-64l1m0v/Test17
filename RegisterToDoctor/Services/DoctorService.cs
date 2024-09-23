@@ -152,7 +152,7 @@ namespace RegisterToDoctor.Services
         {
             try
             {
-                var result = _updateDoctorValidator.Validate(updateDoctorRequest);
+                _updateDoctorValidator.Validate(updateDoctorRequest);
                                 
                 var doctor = await _docRepository.GetByIdAsync(updateDoctorRequest.Id);
 

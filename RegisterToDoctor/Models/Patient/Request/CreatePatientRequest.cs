@@ -21,7 +21,7 @@ namespace RegisterToDoctor.Models.Patient.Request
         /// <summary>
         /// Номер дмс
         /// </summary>
-        [JsonPropertyName("OmsNumder")]
+        [JsonPropertyName("DmsNumber")]
         public string? DmsNumber { get; set; }
 
         /// <summary>

@@ -18,6 +18,8 @@ using System;
 using System.Linq.Expressions;
 using System.Numerics;
 using RegisterToDoctor.Сonstants;
+using RegisterToDoctor.Validators.PatientValidators;
+using RegisterToDoctor.Exceptions;
 
 namespace RegisterToDoctor.Services
 {
@@ -26,34 +28,32 @@ namespace RegisterToDoctor.Services
     {
         private readonly IDbRepository<Patient> _patientRepository;
         private readonly IPlotService _plotService;
-        
+        private readonly CreatePatientValidator _createPatientValidator;
+        private readonly GuidValidator _guidValidator;
+        private readonly PatientByFilterValidator _patientByFilterValidator;
+        private readonly UpdatePatientValidator _updatePatientValidator;
+
         public PatientService(IUnitOfWork uow,
-            IPlotService plotService)
+            IPlotService plotService,
+            CreatePatientValidator createPatientValidator,
+            GuidValidator guidValidator,
+            PatientByFilterValidator patientByFilterValidator,
+            UpdatePatientValidator updatePatientValidator)
         {
             _patientRepository = uow.DbRepository<Patient>();
             _plotService = plotService;
+            _createPatientValidator = createPatientValidator;
+            _guidValidator = guidValidator;
+            _patientByFilterValidator = patientByFilterValidator;
+            _updatePatientValidator = updatePatientValidator;
         }
 
         public async Task<CreatePatientResponse> Create(CreatePatientRequest createPatientRequest)
         {
             try
             {
-                //ToDo вынести проверки
-                if (createPatientRequest.DateOfBirth <= ConstansForValidators.maxAge || createPatientRequest.DateOfBirth >= ConstansForValidators.minAge)
-                    throw new ArgumentException($"Ошибка: дата рождения {createPatientRequest.DateOfBirth.ToString("dd/MM/yyyy")} не коректна.");
-
-                UserEntityValidator.CheckFullNames(createPatientRequest.FirstName, createPatientRequest.LastName, createPatientRequest.MiddleName);
-
-                if (createPatientRequest.OmsNumber.Length != ConstansForValidators.OmsLength)
-                {
-                    throw new ArgumentException($"Ошибка: в OmsNumber дожно быть 16 чисел.");
-                }
-
-                if (!createPatientRequest.OmsNumber.All(char.IsDigit))
-                {
-                    throw new ArgumentException($"Ошибка: в OmsNumber должно содержать только чисела.");
-                }
-                
+                _createPatientValidator.Validate(createPatientRequest);
+                                
                 var plot = await _plotService.CheckPlot(createPatientRequest.NumberPlot);
 
                 ICreatePatient createPatient = CreatorPatient.Create(createPatientRequest, plot.Id);
@@ -74,16 +74,18 @@ namespace RegisterToDoctor.Services
         {
             try
             {
-                if (patientId == Guid.Empty)
+                var result = _guidValidator.Validate(patientId);
+
+                if (!result.IsValid)
                 {
-                    throw new ArgumentException($"Ошибка: id пациента не может быть {patientId}.");
+                    throw new ArgumentException(result.Errors[0].ErrorMessage);
                 }
 
                 var patient = await _patientRepository.GetByIdAsync(patientId);
 
                 if (patient == null)
                 {
-                    return null;
+                    throw new NotFoundException($"Ошибка: Пациент с ID {patientId} не найден.");
                 }
 
                 return PatientByIdResponse.CreateResponse(patient);
@@ -98,17 +100,7 @@ namespace RegisterToDoctor.Services
         {
             try
             {
-                //ToDo вынести проверки
-                if (patientByFilterRequest.PageNumber <= 0)
-                    throw new ArgumentException($"Ошибка: {nameof(patientByFilterRequest.PageNumber)} не может быть ноль или отрицательным.");
-
-                if (patientByFilterRequest.PageSizeMin < 0 || patientByFilterRequest.PageSizeMax < patientByFilterRequest.PageSizeMin)
-                    throw new ArgumentException($"Ошибка: поля {nameof(patientByFilterRequest.PageSizeMax)} или {patientByFilterRequest.PageSizeMin} заполнено некорректно.");
-
-                if (patientByFilterRequest.PageSizeMax > ConstansForValidators.PageSizeLimit)
-                {
-                    throw new ArgumentException($"Ошибка: поле {nameof(patientByFilterRequest.PageSizeMax)} не может превышать {ConstansForValidators.PageSizeLimit} на странице.");
-                }
+                _patientByFilterValidator.Validate(patientByFilterRequest);
 
                 var pageSize = patientByFilterRequest.PageSizeMax - patientByFilterRequest.PageSizeMin;
 
@@ -150,32 +142,13 @@ namespace RegisterToDoctor.Services
         {
             try
             {
-                //ToDo вынести проверки
-                if (updatePatientRequest.Id == Guid.Empty)
-                {
-                    throw new ArgumentException($"Ошибка: id пациента не может быть {updatePatientRequest.Id}.");
-                }
+                _updatePatientValidator.Validate(updatePatientRequest);
 
-                if (updatePatientRequest.DateOfBirth <= ConstansForValidators.maxAge || updatePatientRequest.DateOfBirth >= ConstansForValidators.minAge)
-                    throw new ArgumentException($"Ошибка: дата рождения {updatePatientRequest.DateOfBirth.ToString("dd/MM/yyyy")} не коректна.");
-
-                UserEntityValidator.CheckFullNames(updatePatientRequest.FirstName, updatePatientRequest.LastName, updatePatientRequest.MiddleName);
-
-                if (updatePatientRequest.OmsNumber.Length != ConstansForValidators.OmsLength)
-                {
-                    throw new ArgumentException($"Ошибка: в OmsNumber дожно быть 16 чисел.");
-                }
-
-                if (!updatePatientRequest.OmsNumber.All(char.IsDigit))
-                {
-                    throw new ArgumentException($"Ошибка: в OmsNumber должно содержать только чисела.");
-                }
-                
                 var patient = await _patientRepository.GetByIdAsync(updatePatientRequest.Id);
 
                 if (patient == null)
                 {
-                    return null;
+                    throw new NotFoundException($"Ошибка: Пациент с ID {updatePatientRequest.Id} не найден.");
                 }
 
                 var plot = await _plotService.CheckPlot(updatePatientRequest.NumberPlot);
@@ -198,16 +171,18 @@ namespace RegisterToDoctor.Services
         {
             try
             {
-                if (patientId == Guid.Empty)
+                var result = _guidValidator.Validate(patientId);
+
+                if (!result.IsValid)
                 {
-                    throw new ArgumentException($"Ошибка: id пациента не может быть {patientId}.");
+                    throw new ArgumentException(result.Errors[0].ErrorMessage);
                 }
 
                 var patient = await _patientRepository.GetByIdAsync(patientId);
 
                 if (patient == null)
                 {
-                    return null;
+                    throw new NotFoundException($"Ошибка: Пациент с ID {patientId} не найден.");
                 }
 
                 await _patientRepository.DeleteAsync(patient);
