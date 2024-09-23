@@ -1,0 +1,29 @@
+﻿using RegisterToDoctor.Domain.Enums;
+
+namespace RegisterToDoctor.WebSell.Interfaces
+{
+    public interface ICreatePatient
+    {
+        Guid Id { get; set; }
+
+        string FirstName { get; set; }
+
+        string LastName { get; set; }
+
+        string? MiddleName { get; set; }
+
+        public DateTime DateOfBirth { get; set; }
+                
+        public string Address { get; set; }
+                
+        public Gender Gender { get; set; }
+                
+        public Guid PlotId { get; set; }
+                
+        public string OmsNumber { get; set; }
+               
+        public string? DmsNumber { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
+    }
+}
