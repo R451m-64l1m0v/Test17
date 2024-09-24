@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Domain.Entities;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
@@ -43,7 +44,7 @@ namespace RegisterToDoctor.WebSell.Services
         {
             try
             {
-                _createPatientValidator.Validate(createPatientRequest);
+                await _createPatientValidator.ValidateAndThrowAsync(createPatientRequest);
                                 
                 var plot = await _plotService.CheckPlot(createPatientRequest.NumberPlot);
 
@@ -65,13 +66,8 @@ namespace RegisterToDoctor.WebSell.Services
         {
             try
             {
-                var result = _guidValidator.Validate(patientId);
-
-                if (!result.IsValid)
-                {
-                    throw new ArgumentException(result.Errors[0].ErrorMessage);
-                }
-
+                await _guidValidator.ValidateAndThrowAsync(patientId);
+                
                 var patient = await _patientRepository.GetByIdAsync(patientId);
 
                 if (patient == null)
@@ -91,7 +87,7 @@ namespace RegisterToDoctor.WebSell.Services
         {
             try
             {
-                _patientByFilterValidator.Validate(patientByFilterRequest);
+                await _patientByFilterValidator.ValidateAndThrowAsync(patientByFilterRequest);
 
                 var pageSize = patientByFilterRequest.PageSizeMax - patientByFilterRequest.PageSizeMin;
 
@@ -133,7 +129,7 @@ namespace RegisterToDoctor.WebSell.Services
         {
             try
             {
-                _updatePatientValidator.Validate(updatePatientRequest);
+                await _updatePatientValidator.ValidateAndThrowAsync(updatePatientRequest);
 
                 var patient = await _patientRepository.GetByIdAsync(updatePatientRequest.Id);
 
@@ -162,13 +158,8 @@ namespace RegisterToDoctor.WebSell.Services
         {
             try
             {
-                var result = _guidValidator.Validate(patientId);
-
-                if (!result.IsValid)
-                {
-                    throw new ArgumentException(result.Errors[0].ErrorMessage);
-                }
-
+                await _guidValidator.ValidateAndThrowAsync(patientId);
+                
                 var patient = await _patientRepository.GetByIdAsync(patientId);
 
                 if (patient == null)

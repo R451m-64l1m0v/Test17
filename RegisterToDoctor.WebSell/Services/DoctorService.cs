@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Domain.Entities;
 using RegisterToDoctor.Infrastructure.Abstractions;
@@ -51,7 +52,7 @@ namespace RegisterToDoctor.WebSell.Services
         {
             try
             {
-                _createDoctorValidator.Validate(createDoctorRequest);
+                await _createDoctorValidator.ValidateAndThrowAsync(createDoctorRequest);
                                 
                 var specializationTask = _specializationService.CheckSpecialization(createDoctorRequest.Specialization);
 
@@ -85,13 +86,8 @@ namespace RegisterToDoctor.WebSell.Services
         public async Task<DoctorByIdResponse> GetById(Guid doctorId)
         {
             try
-            {              
-                var result = _guidValidator.Validate(doctorId);
-
-                if (!result.IsValid)
-                {
-                    throw new ArgumentException(result.Errors[0].ErrorMessage);
-                }                
+            {
+                _guidValidator.ValidateAndThrowAsync(doctorId);
 
                 var doctor = await _docRepository.GetByIdAsync(doctorId);
 
@@ -112,7 +108,7 @@ namespace RegisterToDoctor.WebSell.Services
         {
             try
             {
-                _doctorByFilterValidator.Validate(doctorByFilterRequest);
+                await _doctorByFilterValidator.ValidateAndThrowAsync(doctorByFilterRequest); //Validate(doctorByFilterRequest);
                 
                 var pageSize = doctorByFilterRequest.PageSizeMax - doctorByFilterRequest.PageSizeMin;
 
@@ -156,7 +152,7 @@ namespace RegisterToDoctor.WebSell.Services
         {
             try
             {
-                _updateDoctorValidator.Validate(updateDoctorRequest);
+                await _updateDoctorValidator.ValidateAndThrowAsync(updateDoctorRequest);
                                 
                 var doctor = await _docRepository.GetByIdAsync(updateDoctorRequest.Id);
 
@@ -195,12 +191,7 @@ namespace RegisterToDoctor.WebSell.Services
         {
             try
             {
-                var result = _guidValidator.Validate(doctorId);
-
-                if (!result.IsValid)
-                {
-                    throw new ArgumentException(result.Errors[0].ErrorMessage);
-                }
+                _guidValidator.ValidateAndThrowAsync(doctorId);
 
                 var doctor = await _docRepository.GetByIdAsync(doctorId);
 
