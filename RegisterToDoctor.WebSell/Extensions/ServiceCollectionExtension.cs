@@ -2,6 +2,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using RegisterToDoctor.WebSell.Attributes;
+using RegisterToDoctor.WebSell.Interfaces.Markers;
 using RegisterToDoctor.WebSell.Validators;
 using RegisterToDoctor.WebSell.Validators.DoctorValidators;
 
@@ -11,29 +12,28 @@ namespace RegisterToDoctor.WebSell.Extensions
     {
         public static IServiceCollection AddAttributedServices(this IServiceCollection services)
         {
-            var asmbly = Assembly.GetExecutingAssembly();
-            var typeList = asmbly.GetTypes().Where(
-                    t => t.GetCustomAttributes(typeof(RegisrationMarkerAttribute), true).Length > 0
-            );
+            var assembly = Assembly.GetExecutingAssembly();
 
-            foreach (var item in typeList)
+            var serviceTypes = assembly.GetTypes()
+                .Where(t => typeof(IServiceMarker).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+            
+            foreach (var serviceType in serviceTypes)
             {
-                var attribute = item.GetCustomAttribute<RegisrationMarkerAttribute>();
-                var interfaces = item.GetInterfaces();
-                var serviceType = interfaces.FirstOrDefault() ?? item;
+                var interfaces = serviceType.GetInterfaces()
+                    .Where(i => i != typeof(IServiceMarker));
 
-                switch (attribute.Lifetime)
+                if (interfaces.Contains(typeof(ISingletonServiceMarker)))
                 {
-                    case ServiceLifetime.Singleton:
-                        services.AddSingleton(serviceType, item);
-                        break;
-                    case ServiceLifetime.Scoped:
-                        services.AddScoped(serviceType, item);
-                        break;
-                    case ServiceLifetime.Transient:
-                        services.AddTransient(serviceType, item);
-                        break;
-                }               
+                    services.AddScoped(serviceType);
+                }
+                else if(interfaces.Contains(typeof(IScopedServiceMarker)))
+                {
+                    services.AddScoped(serviceType);
+                }
+                else if(interfaces.Contains(typeof(ITransientServiceMarker)))
+                {
+                    services.AddScoped(serviceType);
+                }
             }          
             
             return services;

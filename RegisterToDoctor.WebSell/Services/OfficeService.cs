@@ -3,11 +3,11 @@ using RegisterToDoctor.Domain.Entities;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using RegisterToDoctor.WebSell.Attributes;
 using RegisterToDoctor.WebSell.Interfaces;
+using RegisterToDoctor.WebSell.Interfaces.Markers;
 
 namespace RegisterToDoctor.WebSell.Services
 {
-    [RegisrationMarker(ServiceLifetime.Scoped)]
-    public class OfficeService : IOfficeService
+    public class OfficeService : IOfficeService, ITransientServiceMarker
     {
         private readonly IDbRepository<Office> _officeRepository;
 

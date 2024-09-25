@@ -1,4 +1,5 @@
-﻿using RegisterToDoctor.WebSell.Models.Patient.Request;
+﻿using RegisterToDoctor.WebSell.Interfaces.Markers;
+using RegisterToDoctor.WebSell.Models.Patient.Request;
 using RegisterToDoctor.WebSell.Models.Patient.Response;
 
 namespace RegisterToDoctor.WebSell.Interfaces

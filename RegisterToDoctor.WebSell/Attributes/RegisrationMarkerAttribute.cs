@@ -1,12 +1,14 @@
-﻿namespace RegisterToDoctor.WebSell.Attributes
-{
-    public class RegisrationMarkerAttribute : Attribute
-    {
-        public ServiceLifetime Lifetime { get; }
+﻿using RegisterToDoctor.WebSell.Interfaces.Markers;
 
-        public RegisrationMarkerAttribute(ServiceLifetime lifetime = ServiceLifetime.Transient)
-        {
-            Lifetime = lifetime;
-        }
-    }
+namespace RegisterToDoctor.WebSell.Attributes
+{
+    //public class RegisrationMarkerAttribute : Attribute, IServiceMarker
+    //{
+    //    public ServiceLifetime Lifetime { get; }
+    //
+    //    public RegisrationMarkerAttribute(ServiceLifetime lifetime = ServiceLifetime.Transient)
+    //    {
+    //        Lifetime = lifetime;
+    //    }
+    //}
 }

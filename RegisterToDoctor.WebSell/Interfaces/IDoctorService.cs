@@ -1,4 +1,6 @@
 ﻿using RegisterToDoctor.Infrastructure.Abstractions;
+using RegisterToDoctor.WebSell.Attributes;
+using RegisterToDoctor.WebSell.Interfaces.Markers;
 using RegisterToDoctor.WebSell.Models.Doctors.Request;
 using RegisterToDoctor.WebSell.Models.Doctors.Response;
 

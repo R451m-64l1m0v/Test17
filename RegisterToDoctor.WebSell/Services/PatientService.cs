@@ -7,6 +7,7 @@ using RegisterToDoctor.WebSell.Attributes;
 using RegisterToDoctor.WebSell.Exceptions;
 using RegisterToDoctor.WebSell.Helpers.Patient;
 using RegisterToDoctor.WebSell.Interfaces;
+using RegisterToDoctor.WebSell.Interfaces.Markers;
 using RegisterToDoctor.WebSell.Models.Patient;
 using RegisterToDoctor.WebSell.Models.Patient.Request;
 using RegisterToDoctor.WebSell.Models.Patient.Response;
@@ -15,8 +16,7 @@ using RegisterToDoctor.WebSell.Validators.PatientValidators;
 
 namespace RegisterToDoctor.WebSell.Services
 {
-    [RegisrationMarker(ServiceLifetime.Scoped)]
-    public class PatientService : IPatientService
+    public class PatientService : IPatientService, ITransientServiceMarker
     {
         private readonly IDbRepository<Patient> _patientRepository;
         private readonly IPlotService _plotService;
