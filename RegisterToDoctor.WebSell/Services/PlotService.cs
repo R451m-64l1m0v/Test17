@@ -7,7 +7,7 @@ using RegisterToDoctor.WebSell.Interfaces.Markers;
 
 namespace RegisterToDoctor.WebSell.Services
 {
-    public class PlotService : IPlotService, ITransientServiceMarker
+    public class PlotService : IPlotService, IScopedServiceMarker
     {
         private readonly IDbRepository<Plot> _plotRepository;
 

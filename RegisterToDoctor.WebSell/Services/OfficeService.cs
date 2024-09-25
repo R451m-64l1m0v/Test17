@@ -7,7 +7,7 @@ using RegisterToDoctor.WebSell.Interfaces.Markers;
 
 namespace RegisterToDoctor.WebSell.Services
 {
-    public class OfficeService : IOfficeService, ITransientServiceMarker
+    public class OfficeService : IOfficeService, IScopedServiceMarker
     {
         private readonly IDbRepository<Office> _officeRepository;
 

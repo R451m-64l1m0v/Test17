@@ -7,7 +7,7 @@ using RegisterToDoctor.WebSell.Interfaces.Markers;
 
 namespace RegisterToDoctor.WebSell.Services
 {
-    public class SpecializationService : ISpecializationService, ITransientServiceMarker
+    public class SpecializationService : ISpecializationService, IScopedServiceMarker
     {
         private readonly IDbRepository<Specialization> _specializationRepository;
 

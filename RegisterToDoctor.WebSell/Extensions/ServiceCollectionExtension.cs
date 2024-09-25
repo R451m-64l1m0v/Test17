@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel;
+using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using RegisterToDoctor.WebSell.Attributes;
@@ -17,25 +18,38 @@ namespace RegisterToDoctor.WebSell.Extensions
             var serviceTypes = assembly.GetTypes()
                 .Where(t => typeof(IServiceMarker).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
             
-            foreach (var serviceType in serviceTypes)
+            foreach (var type in serviceTypes)
             {
-                var interfaces = serviceType.GetInterfaces()
+                var interfaces = type.GetInterfaces()
                     .Where(i => i != typeof(IServiceMarker));
+
+                var interfaceType = type.GetInterfaces().FirstOrDefault();
 
                 if (interfaces.Contains(typeof(ISingletonServiceMarker)))
                 {
-                    services.AddScoped(serviceType);
+                    if (interfaceType != null)
+                    {
+                        services.AddSingleton(interfaceType, type);
+                    }
                 }
-                else if(interfaces.Contains(typeof(IScopedServiceMarker)))
+
+                if (interfaces.Contains(typeof(ITransientServiceMarker)))
                 {
-                    services.AddScoped(serviceType);
+                    if (interfaceType != null)
+                    {
+                        services.AddTransient(interfaceType, type);
+                    }
                 }
-                else if(interfaces.Contains(typeof(ITransientServiceMarker)))
+
+                if (interfaces.Contains(typeof(IScopedServiceMarker)))
                 {
-                    services.AddScoped(serviceType);
+                    if (interfaceType != null)
+                    {
+                        services.AddScoped(interfaceType, type);
+                    }
                 }
-            }          
-            
+            }
+
             return services;
         }
 

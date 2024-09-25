@@ -27,7 +27,7 @@ namespace RegisterToDoctor.WebSell.Controllers
             {
                 var doctorResponse = await _doctorService.Create(createDoctor);                
             
-                return Ok($"Док добавлен doctorId {doctorResponse.Result}.");                
+                return Ok($"Док добавлен doctorId {doctorResponse.Result.Id}.");                
             }
             catch (Exception e)
             {

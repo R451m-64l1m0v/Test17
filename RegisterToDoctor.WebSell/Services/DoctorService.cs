@@ -18,7 +18,7 @@ using RegisterToDoctor.WebSell.Validators.DoctorValidators;
 
 namespace RegisterToDoctor.WebSell.Services
 {
-    public class DoctorService : IDoctorService, ITransientServiceMarker
+    public class DoctorService : IDoctorService, IScopedServiceMarker
     {
         private readonly IDbRepository<Doctor> _docRepository;
         private readonly ISpecializationService _specializationService;

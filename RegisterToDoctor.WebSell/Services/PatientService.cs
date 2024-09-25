@@ -16,7 +16,7 @@ using RegisterToDoctor.WebSell.Validators.PatientValidators;
 
 namespace RegisterToDoctor.WebSell.Services
 {
-    public class PatientService : IPatientService, ITransientServiceMarker
+    public class PatientService : IPatientService, IScopedServiceMarker
     {
         private readonly IDbRepository<Patient> _patientRepository;
         private readonly IPlotService _plotService;
