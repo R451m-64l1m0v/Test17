@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace RegisterToDoctor.WebSell.Models.Abstractions
+﻿namespace RegisterToDoctor.WebSell.Interfaces.IDTOs.IOutDTOs
 {
     public interface IDeleteResponseOutDto
     {

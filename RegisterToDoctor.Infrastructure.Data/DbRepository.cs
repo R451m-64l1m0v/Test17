@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Domain.Common;
-using RegisterToDoctor.Infrastructure.Data.Context;
-using RegisterToDoctor.Infrastructure.Data.Interfaces;
+using RegisterToDoctor.Infrastructure.DataAccessLayer.Context;
+using RegisterToDoctor.Infrastructure.DataAccessLayer.Interfaces;
 
-namespace RegisterToDoctor.Infrastructure.Data
+namespace RegisterToDoctor.Infrastructure.DataAccessLayer
 {
     public class DbRepository<T> : IDbRepository<T> where T : BaseEntity
     {

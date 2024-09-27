@@ -1,6 +1,6 @@
 ﻿using RegisterToDoctor.Domain.Common;
 
-namespace RegisterToDoctor.Infrastructure.Data.Interfaces
+namespace RegisterToDoctor.Infrastructure.DataAccessLayer.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

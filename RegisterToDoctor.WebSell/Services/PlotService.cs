@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Domain.Entities;
-using RegisterToDoctor.Infrastructure.Data.Interfaces;
+using RegisterToDoctor.Infrastructure.DataAccessLayer.Interfaces;
 using RegisterToDoctor.WebSell.Attributes;
 using RegisterToDoctor.WebSell.Interfaces.IServices;
 using RegisterToDoctor.WebSell.Interfaces.Markers;

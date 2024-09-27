@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Domain.Entities;
 using RegisterToDoctor.Infrastructure.Abstractions;
-using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using RegisterToDoctor.Infrastructure.Implementations;
 using RegisterToDoctor.WebSell.Exceptions;
 using RegisterToDoctor.WebSell.Helpers.Patient;
@@ -16,6 +15,7 @@ using RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Patient;
 using RegisterToDoctor.WebSell.Validators;
 using RegisterToDoctor.WebSell.Validators.PatientValidators;
 using System.Linq.Expressions;
+using RegisterToDoctor.Infrastructure.DataAccessLayer.Interfaces;
 using RegisterToDoctor.WebSell.Mapping;
 
 namespace RegisterToDoctor.WebSell.Services

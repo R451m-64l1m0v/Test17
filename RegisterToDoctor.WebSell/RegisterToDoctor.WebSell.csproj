@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RegisterToDoctor.Infrastructure.Abstractions\RegisterToDoctor.Infrastructure.Abstractions.csproj" />
-    <ProjectReference Include="..\RegisterToDoctor.Infrastructure.Data\RegisterToDoctor.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\RegisterToDoctor.Infrastructure.Data\RegisterToDoctor.Infrastructure.DataAccessLayer.csproj" />
     <ProjectReference Include="..\RegisterToDoctor.Infrastructure.Implementations\RegisterToDoctor.Infrastructure.Implementations.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Domain.Entities;
 
-namespace RegisterToDoctor.Infrastructure.Data.Context
+namespace RegisterToDoctor.Infrastructure.DataAccessLayer.Context
 {
     public class AppDbContext : DbContext
     {
@@ -40,8 +40,8 @@ namespace RegisterToDoctor.Infrastructure.Data.Context
                 .HasForeignKey<MedicalCard>(p => p.PatientId);
 
             modelBuilder.Entity<Patient>()
-            .Property(e => e.DateOfBirth)
-            .HasColumnType("DATE");
+                .Property(e => e.DateOfBirth)
+                .HasColumnType("DATE");
 
             modelBuilder.Entity<Patient>()
                 .Property(x => x.OmsNumber)

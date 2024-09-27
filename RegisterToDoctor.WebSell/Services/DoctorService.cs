@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Domain.Entities;
 using RegisterToDoctor.Infrastructure.Abstractions;
-using RegisterToDoctor.Infrastructure.Data.Interfaces;
+using RegisterToDoctor.Infrastructure.DataAccessLayer.Interfaces;
 using RegisterToDoctor.Infrastructure.Implementations;
 using RegisterToDoctor.WebSell.Attributes;
 using RegisterToDoctor.WebSell.Exceptions;

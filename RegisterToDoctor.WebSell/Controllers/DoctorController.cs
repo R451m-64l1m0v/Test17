@@ -113,7 +113,4 @@ namespace RegisterToDoctor.WebSell.Controllers
 
         }
     }
-
-
 }
-

@@ -2,9 +2,10 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Infrastructure.Data;
-using RegisterToDoctor.Infrastructure.Data.Context;
-using RegisterToDoctor.Infrastructure.Data.Extensions;
-using RegisterToDoctor.Infrastructure.Data.Interfaces;
+using RegisterToDoctor.Infrastructure.DataAccessLayer;
+using RegisterToDoctor.Infrastructure.DataAccessLayer.Context;
+using RegisterToDoctor.Infrastructure.DataAccessLayer.Extensions;
+using RegisterToDoctor.Infrastructure.DataAccessLayer.Interfaces;
 using RegisterToDoctor.WebSell.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

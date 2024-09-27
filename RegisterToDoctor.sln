@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterToDoctor.Domain", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{89D6C80B-181E-4382-B70A-74C7EC24CCBC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterToDoctor.Infrastructure.Data", "RegisterToDoctor.Infrastructure.Data\RegisterToDoctor.Infrastructure.Data.csproj", "{30E6A2F7-DDB7-413C-BB6A-A1FA19ED7BB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterToDoctor.Infrastructure.DataAccessLayer", "RegisterToDoctor.Infrastructure.Data\RegisterToDoctor.Infrastructure.DataAccessLayer.csproj", "{30E6A2F7-DDB7-413C-BB6A-A1FA19ED7BB2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{14542677-974D-4AEC-8DC8-FB14B072BE8B}"
 EndProject
@@ -21,13 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterToDoctor.Abstractio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterToDoctor.Models", "RegisterToDoctor.Models\RegisterToDoctor.Models.csproj", "{E2AC81A7-F436-4F8C-B8D4-09BBF08C59D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterToDoctor.Infrastructure", "RegisterToDoctor.Infrastructure\RegisterToDoctor.Infrastructure.csproj", "{15208628-6699-42FC-8F7F-384698FB310D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterToDoctor.Infrastructure", "RegisterToDoctor.Infrastructure\RegisterToDoctor.Infrastructure.csproj", "{15208628-6699-42FC-8F7F-384698FB310D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterToDoctor.Infrastructure.Abstractions", "RegisterToDoctor.Infrastructure.Abstractions\RegisterToDoctor.Infrastructure.Abstractions.csproj", "{25BD5E91-2B34-49FD-A82F-5CD40DFAF4FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterToDoctor.Infrastructure.Abstractions", "RegisterToDoctor.Infrastructure.Abstractions\RegisterToDoctor.Infrastructure.Abstractions.csproj", "{25BD5E91-2B34-49FD-A82F-5CD40DFAF4FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterToDoctor.Infrastructure.DataAccessLayer", "RegisterToDoctor.Infrastructure.DataAccessLayer\RegisterToDoctor.Infrastructure.DataAccessLayer.csproj", "{EA2BC64A-A0FC-4CFD-8977-1CA4934FD876}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterToDoctor.Infrastructure.Implementations", "RegisterToDoctor.Infrastructure.Implementations\RegisterToDoctor.Infrastructure.Implementations.csproj", "{C34258EB-611C-48E5-BF98-88FD93CA7B8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterToDoctor.Infrastructure.Implementations", "RegisterToDoctor.Infrastructure.Implementations\RegisterToDoctor.Infrastructure.Implementations.csproj", "{C34258EB-611C-48E5-BF98-88FD93CA7B8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +61,6 @@ Global
 		{25BD5E91-2B34-49FD-A82F-5CD40DFAF4FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25BD5E91-2B34-49FD-A82F-5CD40DFAF4FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25BD5E91-2B34-49FD-A82F-5CD40DFAF4FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA2BC64A-A0FC-4CFD-8977-1CA4934FD876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA2BC64A-A0FC-4CFD-8977-1CA4934FD876}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA2BC64A-A0FC-4CFD-8977-1CA4934FD876}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA2BC64A-A0FC-4CFD-8977-1CA4934FD876}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C34258EB-611C-48E5-BF98-88FD93CA7B8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C34258EB-611C-48E5-BF98-88FD93CA7B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C34258EB-611C-48E5-BF98-88FD93CA7B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -84,7 +78,6 @@ Global
 		{E2AC81A7-F436-4F8C-B8D4-09BBF08C59D7} = {5E8C1129-6962-4044-B0CA-3122E9E8EFAF}
 		{15208628-6699-42FC-8F7F-384698FB310D} = {7920BBAB-AFE1-4032-9AAB-D030BBDE0A4E}
 		{25BD5E91-2B34-49FD-A82F-5CD40DFAF4FF} = {7920BBAB-AFE1-4032-9AAB-D030BBDE0A4E}
-		{EA2BC64A-A0FC-4CFD-8977-1CA4934FD876} = {7920BBAB-AFE1-4032-9AAB-D030BBDE0A4E}
 		{C34258EB-611C-48E5-BF98-88FD93CA7B8F} = {7920BBAB-AFE1-4032-9AAB-D030BBDE0A4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

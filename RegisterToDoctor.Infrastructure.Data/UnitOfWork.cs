@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RegisterToDoctor.Domain.Common;
-using RegisterToDoctor.Infrastructure.Data.Interfaces;
+using RegisterToDoctor.Infrastructure.DataAccessLayer.Interfaces;
 
-namespace RegisterToDoctor.Infrastructure.Data
+namespace RegisterToDoctor.Infrastructure.DataAccessLayer
 {
     public class UnitOfWork : IUnitOfWork
     {

@@ -7,9 +7,9 @@ namespace RegisterToDoctor.WebSell.Validators
         public GuidValidator() 
         {
             RuleFor(x => x)
-            .NotNull()
-            .NotEmpty()
-            .WithMessage("Ошибка: Некорректно заполнено id необходимо передать идентификатор.");            
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("Ошибка: Некорректно заполнено id необходимо передать идентификатор.");            
         }
     }
 }

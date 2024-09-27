@@ -8,10 +8,10 @@ namespace RegisterToDoctor.WebSell.Validators.DoctorValidators
         public UpdateDoctorValidator()
         {
             RuleFor(doctor => doctor.Id)
-            .SetValidator(new GuidValidator());            
+                .SetValidator(new GuidValidator());            
 
             RuleFor(doctor => doctor)
-            .SetValidator(new CreateDoctorValidator());           
+                .SetValidator(new CreateDoctorValidator());           
         }
     }
 }
