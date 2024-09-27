@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RegisterToDoctor.WebSell.Interfaces;
-using RegisterToDoctor.WebSell.Models.Doctors.Request;
-using RegisterToDoctor.WebSell.Models.Doctors.Response;
-using RegisterToDoctor.WebSell.Models.DTOs;
+using RegisterToDoctor.WebSell.Interfaces.IDTOs;
+using RegisterToDoctor.WebSell.Interfaces.IServices;
+using RegisterToDoctor.WebSell.Models.DTOs.InDTOs.Doctor;
+using RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Doctor;
 
 namespace RegisterToDoctor.WebSell.Controllers
 {
@@ -27,7 +27,7 @@ namespace RegisterToDoctor.WebSell.Controllers
             {
                 var doctorResponse = await _doctorService.Create(createDoctor);                
             
-                return Ok($"Док добавлен doctorId {doctorResponse.Result.Id}.");                
+                return Ok($"Status created: {doctorResponse.IsSuccess} doctorId: {doctorResponse.Result.Id}.");
             }
             catch (Exception e)
             {
@@ -36,20 +36,18 @@ namespace RegisterToDoctor.WebSell.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UpdateDoctorRequest createDoctor)
+        public async Task<IActionResult> Update(UpdateDoctorInDto updateDoctor)
         {
             try
             {
-                var doctorId = await _doctorService.Update(createDoctor);
+                var doctorResponse = await _doctorService.Update(updateDoctor);
 
-                if (doctorId == null)
+                if (doctorResponse.Result.Id == null)
                 {
                     return NotFound();
-                }                                               
+                }
 
-                return Ok($"Док обновлен Id доктор {doctorId}");
-
-                throw new Exception();
+                return Ok($"Status updated: {doctorResponse.IsSuccess} doctorId: {doctorResponse.Result.Id}.");
             }
             catch (Exception e)
             {
@@ -57,19 +55,19 @@ namespace RegisterToDoctor.WebSell.Controllers
             }
         }
 
-        [HttpGet("id")]
-        public async Task<IActionResult> GetById(Guid doctorId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
             try
             {
-                var doctor = await _doctorService.GetById(doctorId);
-
-                if (doctor == null)
+                var doctorResponse = await _doctorService.GetById(id);
+                
+                if (doctorResponse == null)
                 {
                     return NotFound();
                 }
-
-                return Ok();
+                
+                return Ok(doctorResponse.Result);
                 
             }
             catch (Exception e)
@@ -79,8 +77,8 @@ namespace RegisterToDoctor.WebSell.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DoctorByFilterResponse>>> GetDoctorsByFilter(
-            DoctorByFilterRequest doctorByFilterRequest)         
+        public async Task<ActionResult<List<DoctorByFilterOutDto>>> GetDoctorsByFilter(
+            DoctorByFilterInDto doctorByFilterRequest)         
         {
             try
             {
@@ -94,19 +92,19 @@ namespace RegisterToDoctor.WebSell.Controllers
             }            
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete(Guid doctorId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                var isSecceed = await _doctorService.Delete(doctorId);
+                var isSecceed = await _doctorService.Delete(id);
 
                 if (isSecceed == null)
                 {
                     return NotFound();
                 }
 
-                return Ok($"Доктор удален {isSecceed.IsSecceed}");
+                return Ok($"Доктор удален");
             }
             catch (Exception e)
             {

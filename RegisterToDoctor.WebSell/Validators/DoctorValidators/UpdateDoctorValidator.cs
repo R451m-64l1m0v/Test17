@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using RegisterToDoctor.WebSell.Models.Doctors.Request;
+using RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs.Doctor;
 
 namespace RegisterToDoctor.WebSell.Validators.DoctorValidators
 {
-    public class UpdateDoctorValidator : AbstractValidator<UpdateDoctorRequest>
+    public class UpdateDoctorValidator : AbstractValidator<IUpdateDoctorInDto>
     {
         public UpdateDoctorValidator()
         {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RegisterToDoctor.WebSell.Interfaces;
-using RegisterToDoctor.WebSell.Models.Patient.Request;
-using RegisterToDoctor.WebSell.Models.Patient.Response;
+using RegisterToDoctor.WebSell.Interfaces.IServices;
+using RegisterToDoctor.WebSell.Models.DTOs.InDTOs.Patient;
+using RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Patient;
 
 namespace RegisterToDoctor.WebSell.Controllers
 {
@@ -20,13 +20,13 @@ namespace RegisterToDoctor.WebSell.Controllers
         /// Добавляет доктора
         /// </summary>        
         [HttpPost]
-        public async Task<IActionResult> Create(CreatePatientRequest createPatient)
+        public async Task<IActionResult> Create(CreatePatientInDto createPatient)
         {
             try
             {
                 var patientResponse = await _patientService.Create(createPatient);
                 
-                return Ok($"Пациент добавлен Id пацииента {patientResponse.Id}.");                
+                return Ok($"Status created: {patientResponse.IsSuccess}  PatientId: {patientResponse.Result.Id}.");                
             }
             catch (Exception e)
             {
@@ -35,7 +35,7 @@ namespace RegisterToDoctor.WebSell.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UpdatePatientRequest updatePatient)
+        public async Task<IActionResult> Update(UpdatePatientInDto updatePatient)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace RegisterToDoctor.WebSell.Controllers
                     return NotFound();
                 }                                
 
-                return Ok($"Пациент обновлен Id пациента {patientResponse.Id}.");
+                return Ok($"Status updated: {patientResponse.IsSuccess}  PatientId: {patientResponse.Result.Id}.");
             }
             catch (Exception e)
             {
@@ -76,8 +76,8 @@ namespace RegisterToDoctor.WebSell.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PatienByFilterResponse>>> GetPatientByFilter(
-            PatientByFilterRequest patientByFilter)
+        public async Task<ActionResult<List<PatienByFilterOutDto>>> GetPatientByFilter(
+            PatientByFilterInDto patientByFilter)
         {
             try
             {
@@ -97,14 +97,14 @@ namespace RegisterToDoctor.WebSell.Controllers
         {
             try
             {
-                var isSecceed = await _patientService.Delete(patientId);
+                var result = await _patientService.Delete(patientId);
 
-                if (isSecceed == null)
+                if (result.Result == null)
                 {
                     return NotFound();
                 }
 
-                return Ok($"Пациет удален {isSecceed.IsSecceed}");
+                return Ok($"Пациет удален {result.Result.IsSecceed}");
             }
             catch (Exception e)
             {

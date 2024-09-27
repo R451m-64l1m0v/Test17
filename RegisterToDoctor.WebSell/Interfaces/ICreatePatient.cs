@@ -4,26 +4,26 @@ namespace RegisterToDoctor.WebSell.Interfaces
 {
     public interface ICreatePatient
     {
-        Guid Id { get; set; }
+        Guid Id { get; }
 
-        string FirstName { get; set; }
+        string FirstName { get;  }
 
-        string LastName { get; set; }
+        string LastName { get;  }
 
-        string? MiddleName { get; set; }
+        string? MiddleName { get; }
 
-        public DateTime DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; }
                 
-        public string Address { get; set; }
+        public string Address { get; }
                 
-        public Gender Gender { get; set; }
+        public Gender Gender { get; }
                 
-        public Guid PlotId { get; set; }
+        public Guid PlotId { get; }
                 
-        public string OmsNumber { get; set; }
+        public string OmsNumber { get; }
                
-        public string? DmsNumber { get; set; }
+        public string? DmsNumber { get; }
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; }
     }
 }

@@ -2,20 +2,20 @@
 {
     public interface ICreateDoctor
     {
-        Guid Id { get; set; }
+        Guid Id { get; }
 
-        string FirstName { get; set; }
+        string FirstName { get; }
 
-        string LastName { get; set; }
+        string LastName { get; }
 
-        string? MiddleName { get; set; }
+        string? MiddleName { get; }
 
-        Guid OfficeId { get; set; }
+        Guid OfficeId { get; }
 
-        Guid SpecializationId { get; set; }
+        Guid SpecializationId { get; }
 
-        Guid PlotId { get; set; }
+        Guid PlotId { get; }
 
-        DateTime? UpdatedAt { get; set; }
+        DateTime? UpdatedAt { get; }
     }
 }

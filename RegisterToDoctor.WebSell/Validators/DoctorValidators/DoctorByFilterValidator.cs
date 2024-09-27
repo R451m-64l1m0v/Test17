@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
-using RegisterToDoctor.WebSell.Models.Doctors.Request;
+using RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs.Doctor;
+using RegisterToDoctor.WebSell.Models.DTOs.InDTOs.Doctor;
 
 namespace RegisterToDoctor.WebSell.Validators.DoctorValidators
 {
-    public class DoctorByFilterValidator : AbstractValidator<DoctorByFilterRequest>
+    public class DoctorByFilterValidator : AbstractValidator<IDoctorByFilterInDto>
     {
         public DoctorByFilterValidator()
         {

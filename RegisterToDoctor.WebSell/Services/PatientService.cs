@@ -1,18 +1,22 @@
-﻿using System.Linq.Expressions;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using RegisterToDoctor.Domain.Entities;
+using RegisterToDoctor.Infrastructure.Abstractions;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
-using RegisterToDoctor.WebSell.Attributes;
+using RegisterToDoctor.Infrastructure.Implementations;
 using RegisterToDoctor.WebSell.Exceptions;
 using RegisterToDoctor.WebSell.Helpers.Patient;
 using RegisterToDoctor.WebSell.Interfaces;
+using RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs.Patient;
+using RegisterToDoctor.WebSell.Interfaces.IServices;
 using RegisterToDoctor.WebSell.Interfaces.Markers;
-using RegisterToDoctor.WebSell.Models.Patient;
-using RegisterToDoctor.WebSell.Models.Patient.Request;
-using RegisterToDoctor.WebSell.Models.Patient.Response;
+using RegisterToDoctor.WebSell.Models.DTOs.InDTOs.Patient;
+using RegisterToDoctor.WebSell.Models.DTOs.OutDTOs;
+using RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Patient;
 using RegisterToDoctor.WebSell.Validators;
 using RegisterToDoctor.WebSell.Validators.PatientValidators;
+using System.Linq.Expressions;
+using RegisterToDoctor.WebSell.Mapping;
 
 namespace RegisterToDoctor.WebSell.Services
 {
@@ -40,7 +44,7 @@ namespace RegisterToDoctor.WebSell.Services
             _updatePatientValidator = updatePatientValidator;
         }
 
-        public async Task<CreatePatientResponse> Create(CreatePatientRequest createPatientRequest)
+        public async Task<ISuccessResult<CreatePatientOutDto>> Create(ICreatePatientInDto createPatientRequest)
         {
             try
             {
@@ -49,12 +53,11 @@ namespace RegisterToDoctor.WebSell.Services
                 var plot = await _plotService.CheckPlot(createPatientRequest.NumberPlot);
 
                 ICreatePatient createPatient = CreatorPatient.Create(createPatientRequest, plot.Id);
-
                 var patient = СreatorPatientHelper.Create(createPatient);
 
                 await _patientRepository.CreateAsync(patient);
 
-                return CreatePatientResponse.CreateResponse(patient);
+                return SuccessResultCreator.Create(true, CreatePatientOutDto.CreateResponse(patient));
             }
             catch (Exception)
             {
@@ -62,7 +65,7 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<PatientByIdResponse> GetById(Guid patientId)
+        public async Task<ISuccessResult<PatientByIdOutDto>> GetById(Guid patientId)
         {
             try
             {
@@ -75,7 +78,7 @@ namespace RegisterToDoctor.WebSell.Services
                     throw new NotFoundException($"Ошибка: Пациент с ID {patientId} не найден.");
                 }
 
-                return PatientByIdResponse.CreateResponse(patient);
+                return SuccessResultCreator.Create(PatientByIdOutDto.CreateResponse(patient));
             }
             catch (Exception)
             {
@@ -83,7 +86,7 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<IEnumerable<PatienByFilterResponse>> GetPatientByFilter(PatientByFilterRequest patientByFilterRequest)
+        public async Task<ISuccessResult<IEnumerable<PatienByFilterOutDto>>> GetPatientByFilter(IPatientByFilterInDto patientByFilterRequest)
         {
             try
             {
@@ -116,8 +119,8 @@ namespace RegisterToDoctor.WebSell.Services
                 patients = patients
                     .Skip((patientByFilterRequest.PageNumber - 1) * pageSize)
                     .Take(pageSize);
-
-                return patients.Select(PatienByFilterResponse.CreateResponse);
+                
+                return SuccessResultCreator.Create(patients.Select(PatienByFilterOutDto.CreateResponse));
             }
             catch (Exception)
             {
@@ -125,7 +128,7 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }       
 
-        public async Task<UpdatePatientResponse> Update(UpdatePatientRequest updatePatientRequest)
+        public async Task<ISuccessResult<UpdatePatientOutDto>> Update(IUpdatePatientInDto updatePatientRequest)
         {
             try
             {
@@ -146,7 +149,7 @@ namespace RegisterToDoctor.WebSell.Services
 
                 await _patientRepository.UpdateAsync(patient);
 
-                return UpdatePatientResponse.CreateResponse(patient);
+                return SuccessResultCreator.Create(true, UpdatePatientOutDto.CreateResponse(patient));
             }
             catch (Exception)
             {
@@ -154,7 +157,7 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<DeletePatientResponse> Delete(Guid patientId)
+        public async Task<ISuccessResult<DeleteOutDto>> Delete(Guid patientId)
         {
             try
             {
@@ -169,7 +172,7 @@ namespace RegisterToDoctor.WebSell.Services
 
                 await _patientRepository.DeleteAsync(patient);
 
-                return new DeletePatientResponse { IsSecceed = true };
+                return SuccessResultCreator.Create(true, DeleteOutDto.CreateResponse(true));
             }
             catch (Exception)
             {

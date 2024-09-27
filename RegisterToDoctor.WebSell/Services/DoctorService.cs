@@ -9,10 +9,13 @@ using RegisterToDoctor.WebSell.Attributes;
 using RegisterToDoctor.WebSell.Exceptions;
 using RegisterToDoctor.WebSell.Helpers.Doctor;
 using RegisterToDoctor.WebSell.Interfaces;
+using RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs.Doctor;
+using RegisterToDoctor.WebSell.Interfaces.IServices;
 using RegisterToDoctor.WebSell.Interfaces.Markers;
-using RegisterToDoctor.WebSell.Models.Doctors;
-using RegisterToDoctor.WebSell.Models.Doctors.Request;
-using RegisterToDoctor.WebSell.Models.Doctors.Response;
+using RegisterToDoctor.WebSell.Mapping;
+using RegisterToDoctor.WebSell.Models.DTOs.InDTOs.Doctor;
+using RegisterToDoctor.WebSell.Models.DTOs.OutDTOs;
+using RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Doctor;
 using RegisterToDoctor.WebSell.Validators;
 using RegisterToDoctor.WebSell.Validators.DoctorValidators;
 
@@ -48,7 +51,7 @@ namespace RegisterToDoctor.WebSell.Services
             _updateDoctorValidator = updateDoctorValidator;
         }
 
-        public async Task<ISuccessResult<CreateDoctorResponse>> Create(ICreateDoctorRequest createDoctorRequest)
+        public async Task<ISuccessResult<CreateDoctorOutDto>> Create(ICreateDoctorInDto createDoctorRequest)
         {
             try
             {
@@ -73,9 +76,7 @@ namespace RegisterToDoctor.WebSell.Services
                 
                 await _docRepository.CreateAsync(doctor);
 
-                var a = CreateDoctorResponse.CreateResponse(doctor);
-
-                return SuccessResultCreator.Create(a); ;
+                return SuccessResultCreator.Create( true, CreateDoctorOutDto.CreateResponse(doctor)); ;
             }
             catch (Exception)
             {
@@ -83,11 +84,11 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<DoctorByIdResponse> GetById(Guid doctorId)
+        public async Task<ISuccessResult<DoctorByIdOutDto>> GetById(Guid doctorId)
         {
             try
             {
-                _guidValidator.ValidateAndThrowAsync(doctorId);
+                await _guidValidator.ValidateAndThrowAsync(doctorId);
 
                 var doctor = await _docRepository.GetByIdAsync(doctorId);
 
@@ -96,7 +97,7 @@ namespace RegisterToDoctor.WebSell.Services
                     throw new NotFoundException($"Ошибка: Доктор с ID {doctorId} не найден.");
                 }
 
-                return DoctorByIdResponse.CreateResponse(doctor);                  
+                return SuccessResultCreator.Create(DoctorByIdOutDto.CreateResponse(doctor));                  
             }
             catch (Exception)
             {
@@ -104,7 +105,7 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<IEnumerable<DoctorByFilterResponse>> GetDoctorsByFilter(DoctorByFilterRequest doctorByFilterRequest)
+        public async Task<ISuccessResult<IEnumerable<DoctorByFilterOutDto>>> GetDoctorsByFilter(IDoctorByFilterInDto doctorByFilterRequest)
         {
             try
             {
@@ -140,7 +141,7 @@ namespace RegisterToDoctor.WebSell.Services
                     .Skip((doctorByFilterRequest.PageNumber - 1) * pageSize)
                     .Take(pageSize);
 
-                return doctors.Select(doctor => DoctorByFilterResponse.CreateResponse(doctor));
+                return SuccessResultCreator.Create(doctors.Select(DoctorByFilterOutDto.CreateResponse));
             }
             catch (Exception)
             {
@@ -148,7 +149,7 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<UpdateDoctorResponse> Update(UpdateDoctorRequest updateDoctorRequest)
+        public async Task<ISuccessResult<UpdateDoctorOutDto>> Update(IUpdateDoctorInDto updateDoctorRequest)
         {
             try
             {
@@ -179,7 +180,7 @@ namespace RegisterToDoctor.WebSell.Services
 
                 await _docRepository.UpdateAsync(doctor);
 
-                return UpdateDoctorResponse.CreateResponse(doctor);
+                return SuccessResultCreator.Create(true, UpdateDoctorOutDto.CreateResponse(doctor));
             }
             catch (Exception)
             {
@@ -187,7 +188,7 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<DeleteDoctorResponse> Delete(Guid doctorId)
+        public async Task<ISuccessResult<DeleteOutDto>> Delete(Guid doctorId)
         {
             try
             {
@@ -199,10 +200,10 @@ namespace RegisterToDoctor.WebSell.Services
                 {
                     throw new NotFoundException($"Ошибка: Доктор с ID {doctorId} не найден.");
                 }
-
+                
                 await _docRepository.DeleteAsync(doctor);
-
-                return new DeleteDoctorResponse { IsSecceed = true };
+                
+                return SuccessResultCreator.Create(true, DeleteOutDto.CreateResponse(true));
             }
             catch (Exception ex) 
             {

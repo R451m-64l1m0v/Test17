@@ -2,7 +2,7 @@
 using RegisterToDoctor.Domain.Entities;
 using RegisterToDoctor.Infrastructure.Data.Interfaces;
 using RegisterToDoctor.WebSell.Attributes;
-using RegisterToDoctor.WebSell.Interfaces;
+using RegisterToDoctor.WebSell.Interfaces.IServices;
 using RegisterToDoctor.WebSell.Interfaces.Markers;
 
 namespace RegisterToDoctor.WebSell.Services

@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
-using RegisterToDoctor.WebSell.Models.Patient.Request;
+using RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs.Patient;
 using RegisterToDoctor.WebSell.Сonstants;
 
 namespace RegisterToDoctor.WebSell.Validators.PatientValidators
 {
-    public class CreatePatientValidator : AbstractValidator<CreatePatientRequest>
+    public class CreatePatientValidator : AbstractValidator<ICreatePatientInDto>
     {
         public CreatePatientValidator()
         {
@@ -21,9 +21,9 @@ namespace RegisterToDoctor.WebSell.Validators.PatientValidators
             .Must(omsNumber => omsNumber.All(char.IsDigit))
             .WithMessage("Ошибка: в OmsNumber должно содержать только цифры.");
 
-            RuleFor(x => x.DmsNumber)
-            .Must(dmsNumber => dmsNumber.Trim().Length > 0)
-            .WithMessage("Ошибка: в DmsNumber не должен содержать тольно пробелы.");
+            //RuleFor(x => x.DmsNumber)
+            //.Must(dmsNumber => dmsNumber.Trim().Length > 0)
+            //.WithMessage("Ошибка: в DmsNumber не должен содержать тольно пробелы.");
 
             RuleFor(doctor => doctor.Address)
             .NotEmpty()
