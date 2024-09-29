@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RegisterToDoctor.WebSell.Models.Abstractions
 {
-    public abstract class ByFilterRequest
+    public abstract class ByFilterInDto
     {
         /// <summary>
         /// Упорядочить

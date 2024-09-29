@@ -8,10 +8,10 @@ namespace RegisterToDoctor.WebSell.Interfaces.IServices
 {
     public interface IDoctorService
     {
-        Task<ISuccessResult<CreateDoctorOutDto>> Create(ICreateDoctorInDto createDoctor);
+        Task<ISuccessResult<CreateDoctorOutDto>> Create(ICreateDoctorInDto createDoctorInDto);
         Task<ISuccessResult<DoctorByIdOutDto>> GetById(Guid doctorId);
-        Task<ISuccessResult<UpdateDoctorOutDto>> Update(IUpdateDoctorInDto updateDoctor);
-        Task<ISuccessResult<IEnumerable<DoctorByFilterOutDto>>> GetDoctorsByFilter(IDoctorByFilterInDto doctorByFilterRequest);
+        Task<ISuccessResult<UpdateDoctorOutDto>> Update(IUpdateDoctorInDto updateDoctorInDto);
+        Task<ISuccessResult<IEnumerable<DoctorByFilterOutDto>>> GetDoctorsByFilter(IDoctorByFilterInDto doctorByFilterInDto);
         Task<ISuccessResult<DeleteOutDto>> Delete(Guid doctorId);
     }
 }

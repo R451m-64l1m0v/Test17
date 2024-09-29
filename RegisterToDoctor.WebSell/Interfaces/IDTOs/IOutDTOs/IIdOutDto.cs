@@ -1,6 +1,6 @@
 ﻿namespace RegisterToDoctor.WebSell.Interfaces.IDTOs.IOutDTOs
 {
-    public interface IResponseIdOutDto
+    public interface IIdOutDto
     {
         public Guid Id { get; }
     }

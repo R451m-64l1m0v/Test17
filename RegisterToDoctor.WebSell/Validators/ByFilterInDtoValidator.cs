@@ -6,9 +6,9 @@ using RegisterToDoctor.WebSell.Сonstants;
 
 namespace RegisterToDoctor.WebSell.Validators
 {
-    public class ByFilterRequestValidator : AbstractValidator<IByFilterInDto>
+    public class ByFilterInDtoValidator : AbstractValidator<IByFilterInDto>
     {
-        public ByFilterRequestValidator() 
+        public ByFilterInDtoValidator() 
         {
             RuleFor(doctor => doctor.PageNumber)
                 .GreaterThan(0)

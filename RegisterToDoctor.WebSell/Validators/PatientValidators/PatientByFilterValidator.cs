@@ -9,7 +9,7 @@ namespace RegisterToDoctor.WebSell.Validators.PatientValidators
         public PatientByFilterValidator()
         {
             RuleFor(x => x)
-                .SetValidator(new ByFilterRequestValidator());
+                .SetValidator(new ByFilterInDtoValidator());
         }
     }
 }

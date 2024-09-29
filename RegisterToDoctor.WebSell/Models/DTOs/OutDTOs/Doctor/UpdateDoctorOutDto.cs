@@ -3,7 +3,7 @@ using RegisterToDoctor.WebSell.Interfaces.IDTOs.IOutDTOs;
 
 namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Doctor
 {
-    public class UpdateDoctorOutDto : IResponseIdOutDto
+    public class UpdateDoctorOutDto : IIdOutDto
     {
         /// <summary>
         /// Id доктора
@@ -11,7 +11,7 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Doctor
         [JsonPropertyName("DoctorId")]
         public Guid Id { get; private set; }
 
-        public static UpdateDoctorOutDto CreateResponse(Domain.Entities.Doctor doctor) =>
+        public static UpdateDoctorOutDto Create(Domain.Entities.Doctor doctor) =>
             new UpdateDoctorOutDto { Id = doctor.Id };
     }
 }

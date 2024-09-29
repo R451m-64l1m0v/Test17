@@ -51,17 +51,17 @@ namespace RegisterToDoctor.WebSell.Services
             _updateDoctorValidator = updateDoctorValidator;
         }
 
-        public async Task<ISuccessResult<CreateDoctorOutDto>> Create(ICreateDoctorInDto createDoctorRequest)
+        public async Task<ISuccessResult<CreateDoctorOutDto>> Create(ICreateDoctorInDto createDoctorInDto)
         {
             try
             {
-                await _createDoctorValidator.ValidateAndThrowAsync(createDoctorRequest);
+                await _createDoctorValidator.ValidateAndThrowAsync(createDoctorInDto);
                                 
-                var specializationTask = _specializationService.CheckSpecialization(createDoctorRequest.Specialization);
+                var specializationTask = _specializationService.CheckSpecialization(createDoctorInDto.Specialization);
 
-                var officeTask = _officeService.CheckOffice(createDoctorRequest.NumberOffice);
+                var officeTask = _officeService.CheckOffice(createDoctorInDto.NumberOffice);
 
-                var plotTask = _plotService.CheckPlot(createDoctorRequest.NumberPlot);
+                var plotTask = _plotService.CheckPlot(createDoctorInDto.NumberPlot);
 
                 await Task.WhenAll(specializationTask, officeTask, plotTask);
 
@@ -70,13 +70,13 @@ namespace RegisterToDoctor.WebSell.Services
                 var plot = plotTask.Result;
 
                 //todo: autoMapper
-                ICreateDoctor createDoctor = CreatorDoctor.Create(createDoctorRequest, specialization.Id, office.Id, plot.Id);
+                ICreateDoctor createDoctor = CreatorDoctor.Create(createDoctorInDto, specialization.Id, office.Id, plot.Id);
 
                 var doctor = СreatorDoctorHelper.Create(createDoctor);
                 
                 await _docRepository.CreateAsync(doctor);
 
-                return SuccessResultCreator.Create( true, CreateDoctorOutDto.CreateResponse(doctor)); ;
+                return SuccessResultCreator.Create( true, CreateDoctorOutDto.Create(doctor)); ;
             }
             catch (Exception)
             {
@@ -97,7 +97,7 @@ namespace RegisterToDoctor.WebSell.Services
                     throw new NotFoundException($"Ошибка: Доктор с ID {doctorId} не найден.");
                 }
 
-                return SuccessResultCreator.Create(DoctorByIdOutDto.CreateResponse(doctor));                  
+                return SuccessResultCreator.Create(DoctorByIdOutDto.Create(doctor));                  
             }
             catch (Exception)
             {
@@ -105,13 +105,13 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<ISuccessResult<IEnumerable<DoctorByFilterOutDto>>> GetDoctorsByFilter(IDoctorByFilterInDto doctorByFilterRequest)
+        public async Task<ISuccessResult<IEnumerable<DoctorByFilterOutDto>>> GetDoctorsByFilter(IDoctorByFilterInDto doctorByFilterInDto)
         {
             try
             {
-                await _doctorByFilterValidator.ValidateAndThrowAsync(doctorByFilterRequest); //Validate(doctorByFilterRequest);
+                await _doctorByFilterValidator.ValidateAndThrowAsync(doctorByFilterInDto); //Validate(doctorByFilterInDto);
                 
-                var pageSize = doctorByFilterRequest.PageSizeMax - doctorByFilterRequest.PageSizeMin;
+                var pageSize = doctorByFilterInDto.PageSizeMax - doctorByFilterInDto.PageSizeMin;
 
                 var doctors = _docRepository.Entity
                     .Include(x => x.Office)
@@ -121,14 +121,14 @@ namespace RegisterToDoctor.WebSell.Services
                     .TagWith("This is my spatial query")
                     .AsQueryable();
 
-                var sortField = doctorByFilterRequest.SortField.ToString();
+                var sortField = doctorByFilterInDto.SortField.ToString();
 
                 var parameter = Expression.Parameter(typeof(Doctor), "e");
                 var property = Expression.Property(parameter, sortField);
                 var conversion = Expression.Convert(property, typeof(object));
                 var orderByExpression = Expression.Lambda<Func<Doctor, object>>(conversion, parameter);
 
-                if (doctorByFilterRequest?.Ascending ?? false)
+                if (doctorByFilterInDto?.Ascending ?? false)
                 {
                     doctors = doctors.OrderByDescending(orderByExpression);
                 }
@@ -138,10 +138,10 @@ namespace RegisterToDoctor.WebSell.Services
                 }
 
                 doctors = doctors
-                    .Skip((doctorByFilterRequest.PageNumber - 1) * pageSize)
+                    .Skip((doctorByFilterInDto.PageNumber - 1) * pageSize)
                     .Take(pageSize);
 
-                return SuccessResultCreator.Create(doctors.Select(DoctorByFilterOutDto.CreateResponse));
+                return SuccessResultCreator.Create(doctors.Select(DoctorByFilterOutDto.Create));
             }
             catch (Exception)
             {
@@ -149,24 +149,24 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<ISuccessResult<UpdateDoctorOutDto>> Update(IUpdateDoctorInDto updateDoctorRequest)
+        public async Task<ISuccessResult<UpdateDoctorOutDto>> Update(IUpdateDoctorInDto updateDoctorInDto)
         {
             try
             {
-                await _updateDoctorValidator.ValidateAndThrowAsync(updateDoctorRequest);
+                await _updateDoctorValidator.ValidateAndThrowAsync(updateDoctorInDto);
                                 
-                var doctor = await _docRepository.GetByIdAsync(updateDoctorRequest.Id);
+                var doctor = await _docRepository.GetByIdAsync(updateDoctorInDto.Id);
 
                 if (doctor == null)
                 {
-                    throw new NotFoundException($"Ошибка: Доктор с ID {updateDoctorRequest.Id} не найден.");
+                    throw new NotFoundException($"Ошибка: Доктор с ID {updateDoctorInDto.Id} не найден.");
                 }
                                 
-                var specializationTask = _specializationService.CheckSpecialization(updateDoctorRequest.Specialization);
+                var specializationTask = _specializationService.CheckSpecialization(updateDoctorInDto.Specialization);
 
-                var officeTask = _officeService.CheckOffice(updateDoctorRequest.NumberOffice);
+                var officeTask = _officeService.CheckOffice(updateDoctorInDto.NumberOffice);
 
-                var plotTask = _plotService.CheckPlot(updateDoctorRequest.NumberPlot);
+                var plotTask = _plotService.CheckPlot(updateDoctorInDto.NumberPlot);
 
                 await Task.WhenAll(specializationTask, officeTask, plotTask);
 
@@ -174,13 +174,13 @@ namespace RegisterToDoctor.WebSell.Services
                 var office = officeTask.Result;
                 var plot = plotTask.Result;
                 
-                ICreateDoctor updateDoctor = UpdaterDoctor.Create(updateDoctorRequest, specialization.Id, office.Id, plot.Id);
+                ICreateDoctor updateDoctor = UpdaterDoctor.Create(updateDoctorInDto, specialization.Id, office.Id, plot.Id);
 
                 doctor = UpdaterDoctorHelper.Update(doctor,updateDoctor);
 
                 await _docRepository.UpdateAsync(doctor);
 
-                return SuccessResultCreator.Create(true, UpdateDoctorOutDto.CreateResponse(doctor));
+                return SuccessResultCreator.Create(true, UpdateDoctorOutDto.Create(doctor));
             }
             catch (Exception)
             {
@@ -203,7 +203,7 @@ namespace RegisterToDoctor.WebSell.Services
                 
                 await _docRepository.DeleteAsync(doctor);
                 
-                return SuccessResultCreator.Create(true, DeleteOutDto.CreateResponse(true));
+                return SuccessResultCreator.Create(true, DeleteOutDto.Create(true));
             }
             catch (Exception ex) 
             {

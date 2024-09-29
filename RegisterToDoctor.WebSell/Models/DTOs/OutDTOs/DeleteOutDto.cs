@@ -5,7 +5,7 @@ using RegisterToDoctor.WebSell.Interfaces.IDTOs.IOutDTOs;
 
 namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs
 {
-    public class DeleteOutDto : IDeleteResponseOutDto
+    public class DeleteOutDto : IDeleteOutDto
     {
         /// <summary>
         /// Результат удаления
@@ -13,7 +13,7 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs
         [JsonPropertyName("IsSecceed")]
         public bool IsSecceed { get; set; }
 
-        public static DeleteOutDto CreateResponse(bool isSecceed) =>
+        public static DeleteOutDto Create(bool isSecceed) =>
             new DeleteOutDto { IsSecceed = isSecceed };
     }
 }

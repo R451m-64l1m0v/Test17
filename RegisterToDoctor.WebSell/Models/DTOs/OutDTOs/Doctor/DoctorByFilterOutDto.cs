@@ -54,7 +54,7 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Doctor
         [JsonPropertyName("UpdatedAt")]
         public DateTime? UpdatedAt { get; set; }
 
-        public static DoctorByFilterOutDto CreateResponse(Domain.Entities.Doctor doctor) => new DoctorByFilterOutDto
+        public static DoctorByFilterOutDto Create(Domain.Entities.Doctor doctor) => new DoctorByFilterOutDto
         {
             Id = doctor.Id,
             FirstName = doctor.FirstName,

@@ -11,7 +11,7 @@ namespace RegisterToDoctor.WebSell.Controllers
     {
         private readonly IPatientService _patientService;
 
-        public PatientController(IPatientService patientService) 
+        public PatientController(IPatientService patientService)
         {
             _patientService = patientService;
         }
@@ -24,9 +24,9 @@ namespace RegisterToDoctor.WebSell.Controllers
         {
             try
             {
-                var patientResponse = await _patientService.Create(createPatient);
-                
-                return Ok($"Status created: {patientResponse.IsSuccess}  PatientId: {patientResponse.Result.Id}.");                
+                var result = await _patientService.Create(createPatient);
+
+                return Ok($"Status created: {(result.IsSuccess ? $"successfully. PatientId: {result.Result.Id}" : "unsuccessfully.")}");
             }
             catch (Exception e)
             {
@@ -39,14 +39,14 @@ namespace RegisterToDoctor.WebSell.Controllers
         {
             try
             {
-                var patientResponse = await _patientService.Update(updatePatient);
+                var result = await _patientService.Update(updatePatient);
 
-                if (patientResponse == null)
+                if (result == null)
                 {
                     return NotFound();
-                }                                
+                }
 
-                return Ok($"Status updated: {patientResponse.IsSuccess}  PatientId: {patientResponse.Result.Id}.");
+                return Ok($"Status updated: {(result.IsSuccess ? $"successfully. PatientId: {result.Result.Id}" : "unsuccessfully.")}");
             }
             catch (Exception e)
             {
@@ -54,19 +54,19 @@ namespace RegisterToDoctor.WebSell.Controllers
             }
         }
 
-        [HttpGet("id")]
-        public async Task<IActionResult> GetById(Guid patientId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
             try
             {
-                var patientResponse = await _patientService.GetById(patientId);
+                var result = await _patientService.GetById(id);
 
-                if (patientResponse == null)
+                if (result.Result == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(patientResponse);
+                return Ok(result);
 
             }
             catch (Exception e)
@@ -77,13 +77,13 @@ namespace RegisterToDoctor.WebSell.Controllers
 
         [HttpGet]
         public async Task<ActionResult<List<PatienByFilterOutDto>>> GetPatientByFilter(
-            PatientByFilterInDto patientByFilter)
+            PatientByFilterInDto patientByFilterInDto)
         {
             try
             {
-                var patientsResponse = await _patientService.GetPatientByFilter(patientByFilter);
+                var result = await _patientService.GetPatientByFilter(patientByFilterInDto);
 
-                return Ok(patientsResponse);
+                return Ok(result);
             }
             catch (Exception e)
             {
@@ -104,7 +104,7 @@ namespace RegisterToDoctor.WebSell.Controllers
                     return NotFound();
                 }
 
-                return Ok($"Пациет удален {result.Result.IsSecceed}");
+                return Ok($"Status updated: {(result.IsSuccess ? "successfully." : "unsuccessfully.")}");
             }
             catch (Exception e)
             {

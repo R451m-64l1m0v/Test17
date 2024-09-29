@@ -3,7 +3,7 @@ using RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs.Doctor;
 
 namespace RegisterToDoctor.WebSell.Mapping
 {
-    public class CreatorDoctor : ICreateDoctor
+    internal class CreatorDoctor : ICreateDoctor
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }
@@ -21,7 +21,7 @@ namespace RegisterToDoctor.WebSell.Mapping
                 Id = Guid.NewGuid(),
                 FirstName = createDoctor.FirstName,
                 LastName = createDoctor.LastName,
-                MiddleName = createDoctor.MiddleName,
+                MiddleName = string.IsNullOrWhiteSpace(createDoctor.MiddleName) ? null : createDoctor.MiddleName,
                 OfficeId = officeId,
                 SpecializationId = specializationId,
                 PlotId = plotId,

@@ -21,7 +21,7 @@ namespace RegisterToDoctor.WebSell.Mapping
                 Id = updateDoctor.Id,
                 FirstName = updateDoctor.FirstName,
                 LastName = updateDoctor.LastName,
-                MiddleName = updateDoctor.MiddleName,
+                MiddleName = string.IsNullOrWhiteSpace(updateDoctor.MiddleName) ? null : updateDoctor.MiddleName,
                 OfficeId = officeId,
                 SpecializationId = specializationId,
                 PlotId = plotId,

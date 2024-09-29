@@ -25,9 +25,9 @@ namespace RegisterToDoctor.WebSell.Controllers
         {
             try
             {
-                var doctorResponse = await _doctorService.Create(createDoctor);                
-            
-                return Ok($"Status created: {doctorResponse.IsSuccess} doctorId: {doctorResponse.Result.Id}.");
+                var result = await _doctorService.Create(createDoctor);              
+
+                return Ok($"Status created: {(result.IsSuccess ? $"successfully. DoctorId: {result.Result.Id}" : "unsuccessfully.")}");
             }
             catch (Exception e)
             {
@@ -40,14 +40,14 @@ namespace RegisterToDoctor.WebSell.Controllers
         {
             try
             {
-                var doctorResponse = await _doctorService.Update(updateDoctor);
+                var result = await _doctorService.Update(updateDoctor);
 
-                if (doctorResponse.Result.Id == null)
+                if (result.Result.Id == null)
                 {
                     return NotFound();
                 }
 
-                return Ok($"Status updated: {doctorResponse.IsSuccess} doctorId: {doctorResponse.Result.Id}.");
+                return Ok($"Status updated: {(result.IsSuccess ? $"successfully. DoctorId: {result.Result.Id}" : "unsuccessfully.")}");
             }
             catch (Exception e)
             {
@@ -60,14 +60,14 @@ namespace RegisterToDoctor.WebSell.Controllers
         {
             try
             {
-                var doctorResponse = await _doctorService.GetById(id);
+                var result = await _doctorService.GetById(id);
                 
-                if (doctorResponse == null)
+                if (result.Result == null)
                 {
                     return NotFound();
                 }
                 
-                return Ok(doctorResponse.Result);
+                return Ok(result.Result);
                 
             }
             catch (Exception e)
@@ -78,11 +78,11 @@ namespace RegisterToDoctor.WebSell.Controllers
 
         [HttpGet]
         public async Task<ActionResult<List<DoctorByFilterOutDto>>> GetDoctorsByFilter(
-            DoctorByFilterInDto doctorByFilterRequest)         
+            DoctorByFilterInDto doctorByFilterInDto)         
         {
             try
             {
-                var doctors = await _doctorService.GetDoctorsByFilter(doctorByFilterRequest);
+                var doctors = await _doctorService.GetDoctorsByFilter(doctorByFilterInDto);
                 
                 return Ok(doctors);
             }
@@ -97,14 +97,14 @@ namespace RegisterToDoctor.WebSell.Controllers
         {
             try
             {
-                var isSecceed = await _doctorService.Delete(id);
+                var result = await _doctorService.Delete(id);
 
-                if (isSecceed == null)
+                if (result.Result == null)
                 {
                     return NotFound();
                 }
 
-                return Ok($"Доктор удален");
+                return Ok($"Status updated: {(result.IsSuccess ? "successfully." : "unsuccessfully.")}");
             }
             catch (Exception e)
             {

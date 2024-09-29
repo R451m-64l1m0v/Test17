@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Patient
 {
-    public class CreatePatientOutDto : IResponseIdOutDto
+    public class CreatePatientOutDto : IIdOutDto
     {
         /// <summary>
         /// Id пациента
@@ -11,7 +11,7 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Patient
         [JsonPropertyName("PatientId")]
         public Guid Id { get; private set; }
 
-        public static CreatePatientOutDto CreateResponse(Domain.Entities.Patient patient) =>
+        public static CreatePatientOutDto Create(Domain.Entities.Patient patient) =>
             new CreatePatientOutDto { Id = patient.Id };
     }
 }

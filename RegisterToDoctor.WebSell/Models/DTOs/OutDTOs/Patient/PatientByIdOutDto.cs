@@ -57,7 +57,7 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Patient
         /// <summary>
         /// Номер дмс
         /// </summary>
-        [JsonPropertyName("OmsNumder")]
+        [JsonPropertyName("DmsNumber")]
         public string? DmsNumber { get; private set; }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Patient
         [JsonPropertyName("UpdatedAt")]
         public DateTime? UpdatedAt { get; private set; }
 
-        public static PatientByIdOutDto CreateResponse(Domain.Entities.Patient patient) => new PatientByIdOutDto
+        public static PatientByIdOutDto Create(Domain.Entities.Patient patient) => new PatientByIdOutDto
         {
             Id = patient.Id,
             FirstName = patient.FirstName,

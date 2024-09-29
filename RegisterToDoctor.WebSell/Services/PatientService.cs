@@ -44,20 +44,20 @@ namespace RegisterToDoctor.WebSell.Services
             _updatePatientValidator = updatePatientValidator;
         }
 
-        public async Task<ISuccessResult<CreatePatientOutDto>> Create(ICreatePatientInDto createPatientRequest)
+        public async Task<ISuccessResult<CreatePatientOutDto>> Create(ICreatePatientInDto createDoctorInDto)
         {
             try
             {
-                await _createPatientValidator.ValidateAndThrowAsync(createPatientRequest);
+                await _createPatientValidator.ValidateAndThrowAsync(createDoctorInDto);
                                 
-                var plot = await _plotService.CheckPlot(createPatientRequest.NumberPlot);
+                var plot = await _plotService.CheckPlot(createDoctorInDto.NumberPlot);
 
-                ICreatePatient createPatient = CreatorPatient.Create(createPatientRequest, plot.Id);
+                ICreatePatient createPatient = CreatorPatient.Create(createDoctorInDto, plot.Id);
                 var patient = СreatorPatientHelper.Create(createPatient);
 
                 await _patientRepository.CreateAsync(patient);
 
-                return SuccessResultCreator.Create(true, CreatePatientOutDto.CreateResponse(patient));
+                return SuccessResultCreator.Create(true, CreatePatientOutDto.Create(patient));
             }
             catch (Exception)
             {
@@ -78,7 +78,7 @@ namespace RegisterToDoctor.WebSell.Services
                     throw new NotFoundException($"Ошибка: Пациент с ID {patientId} не найден.");
                 }
 
-                return SuccessResultCreator.Create(PatientByIdOutDto.CreateResponse(patient));
+                return SuccessResultCreator.Create(PatientByIdOutDto.Create(patient));
             }
             catch (Exception)
             {
@@ -86,13 +86,13 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<ISuccessResult<IEnumerable<PatienByFilterOutDto>>> GetPatientByFilter(IPatientByFilterInDto patientByFilterRequest)
+        public async Task<ISuccessResult<IEnumerable<PatienByFilterOutDto>>> GetPatientByFilter(IPatientByFilterInDto doctorByFilterInDto)
         {
             try
             {
-                await _patientByFilterValidator.ValidateAndThrowAsync(patientByFilterRequest);
+                await _patientByFilterValidator.ValidateAndThrowAsync(doctorByFilterInDto);
 
-                var pageSize = patientByFilterRequest.PageSizeMax - patientByFilterRequest.PageSizeMin;
+                var pageSize = doctorByFilterInDto.PageSizeMax - doctorByFilterInDto.PageSizeMin;
 
                 var patients = _patientRepository.Entity
                     .Include(x => x.Plot)
@@ -100,14 +100,14 @@ namespace RegisterToDoctor.WebSell.Services
                     .TagWith("This is my spatial query")
                     .AsQueryable();
 
-                var sortField = patientByFilterRequest.SortField.ToString();
+                var sortField = doctorByFilterInDto.SortField.ToString();
 
                 var parameter = Expression.Parameter(typeof(Patient), "e");
                 var property = Expression.Property(parameter, sortField);
                 var conversion = Expression.Convert(property, typeof(object));
                 var orderByExpression = Expression.Lambda<Func<Patient, object>>(conversion, parameter);
 
-                if (patientByFilterRequest?.Ascending ?? false)
+                if (doctorByFilterInDto?.Ascending ?? false)
                 {
                     patients = patients.OrderByDescending(orderByExpression);
                 }
@@ -117,10 +117,10 @@ namespace RegisterToDoctor.WebSell.Services
                 }
 
                 patients = patients
-                    .Skip((patientByFilterRequest.PageNumber - 1) * pageSize)
+                    .Skip((doctorByFilterInDto.PageNumber - 1) * pageSize)
                     .Take(pageSize);
                 
-                return SuccessResultCreator.Create(patients.Select(PatienByFilterOutDto.CreateResponse));
+                return SuccessResultCreator.Create(patients.Select(PatienByFilterOutDto.Create));
             }
             catch (Exception)
             {
@@ -128,28 +128,28 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }       
 
-        public async Task<ISuccessResult<UpdatePatientOutDto>> Update(IUpdatePatientInDto updatePatientRequest)
+        public async Task<ISuccessResult<UpdatePatientOutDto>> Update(IUpdatePatientInDto updateDoctorInDto)
         {
             try
             {
-                await _updatePatientValidator.ValidateAndThrowAsync(updatePatientRequest);
+                await _updatePatientValidator.ValidateAndThrowAsync(updateDoctorInDto);
 
-                var patient = await _patientRepository.GetByIdAsync(updatePatientRequest.Id);
+                var patient = await _patientRepository.GetByIdAsync(updateDoctorInDto.Id);
 
                 if (patient == null)
                 {
-                    throw new NotFoundException($"Ошибка: Пациент с ID {updatePatientRequest.Id} не найден.");
+                    throw new NotFoundException($"Ошибка: Пациент с ID {updateDoctorInDto.Id} не найден.");
                 }
 
-                var plot = await _plotService.CheckPlot(updatePatientRequest.NumberPlot);
+                var plot = await _plotService.CheckPlot(updateDoctorInDto.NumberPlot);
 
-                ICreatePatient updatePatient = UpdaterPatient.Create(updatePatientRequest, plot.Id);
+                ICreatePatient updatePatient = UpdaterPatient.Create(updateDoctorInDto, plot.Id);
 
                 patient = UpdaterPatientHelper.Update(patient, updatePatient);
 
                 await _patientRepository.UpdateAsync(patient);
 
-                return SuccessResultCreator.Create(true, UpdatePatientOutDto.CreateResponse(patient));
+                return SuccessResultCreator.Create(true, UpdatePatientOutDto.Create(patient));
             }
             catch (Exception)
             {
@@ -172,7 +172,7 @@ namespace RegisterToDoctor.WebSell.Services
 
                 await _patientRepository.DeleteAsync(patient);
 
-                return SuccessResultCreator.Create(true, DeleteOutDto.CreateResponse(true));
+                return SuccessResultCreator.Create(true, DeleteOutDto.Create(true));
             }
             catch (Exception)
             {
