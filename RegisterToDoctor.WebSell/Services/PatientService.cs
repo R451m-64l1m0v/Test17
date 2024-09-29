@@ -44,12 +44,17 @@ namespace RegisterToDoctor.WebSell.Services
             _updatePatientValidator = updatePatientValidator;
         }
 
+        /// <summary>
+        /// Статус операции
+        /// </summary>
+        private bool IsSuccess { get; set; }
+
         public async Task<ISuccessResult<CreatePatientOutDto>> Create(ICreatePatientInDto createDoctorInDto)
         {
             try
             {
                 await _createPatientValidator.ValidateAndThrowAsync(createDoctorInDto);
-                                
+
                 var plot = await _plotService.CheckPlot(createDoctorInDto.NumberPlot);
 
                 ICreatePatient createPatient = CreatorPatient.Create(createDoctorInDto, plot.Id);
@@ -57,7 +62,7 @@ namespace RegisterToDoctor.WebSell.Services
 
                 await _patientRepository.CreateAsync(patient);
 
-                return SuccessResultCreator.Create(true, CreatePatientOutDto.Create(patient));
+                return SuccessResultCreator.Create(IsSuccess = true, CreatePatientOutDto.Create(patient));
             }
             catch (Exception)
             {
@@ -70,7 +75,7 @@ namespace RegisterToDoctor.WebSell.Services
             try
             {
                 await _guidValidator.ValidateAndThrowAsync(patientId);
-                
+
                 var patient = await _patientRepository.GetByIdAsync(patientId);
 
                 if (patient == null)
@@ -119,14 +124,14 @@ namespace RegisterToDoctor.WebSell.Services
                 patients = patients
                     .Skip((getPatientFindByFilterInDto.PageNumber - 1) * pageSize)
                     .Take(pageSize);
-                
+
                 return SuccessResultCreator.Create(patients.Select(GetPatienFindByFilterOutDto.Create));
             }
             catch (Exception)
             {
                 throw;
             }
-        }       
+        }
 
         public async Task<ISuccessResult<UpdatePatientOutDto>> Update(IUpdatePatientInDto updateDoctorInDto)
         {
@@ -149,7 +154,7 @@ namespace RegisterToDoctor.WebSell.Services
 
                 await _patientRepository.UpdateAsync(patient);
 
-                return SuccessResultCreator.Create(true, UpdatePatientOutDto.Create(patient));
+                return SuccessResultCreator.Create(IsSuccess = true, UpdatePatientOutDto.Create(patient));
             }
             catch (Exception)
             {
@@ -162,7 +167,7 @@ namespace RegisterToDoctor.WebSell.Services
             try
             {
                 await _guidValidator.ValidateAndThrowAsync(patientId);
-                
+
                 var patient = await _patientRepository.GetByIdAsync(patientId);
 
                 if (patient == null)
@@ -172,7 +177,7 @@ namespace RegisterToDoctor.WebSell.Services
 
                 await _patientRepository.DeleteAsync(patient);
 
-                return SuccessResultCreator.Create(true, DeleteOutDto.Create(true));
+                return SuccessResultCreator.Create(IsSuccess = true, DeleteOutDto.Create(true));
             }
             catch (Exception)
             {

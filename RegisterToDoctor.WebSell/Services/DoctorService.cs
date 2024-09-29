@@ -51,12 +51,17 @@ namespace RegisterToDoctor.WebSell.Services
             _updateDoctorValidator = updateDoctorValidator;
         }
 
+        /// <summary>
+        /// Статус операции
+        /// </summary>
+        private bool IsSuccess { get; set; }
+
         public async Task<ISuccessResult<CreateDoctorOutDto>> Create(ICreateDoctorInDto createDoctorInDto)
         {
             try
             {
                 await _createDoctorValidator.ValidateAndThrowAsync(createDoctorInDto);
-                                
+
                 var specializationTask = _specializationService.CheckSpecialization(createDoctorInDto.Specialization);
 
                 var officeTask = _officeService.CheckOffice(createDoctorInDto.NumberOffice);
@@ -73,10 +78,10 @@ namespace RegisterToDoctor.WebSell.Services
                 ICreateDoctor createDoctor = CreatorDoctor.Create(createDoctorInDto, specialization.Id, office.Id, plot.Id);
 
                 var doctor = СreatorDoctorHelper.Create(createDoctor);
-                
+
                 await _docRepository.CreateAsync(doctor);
 
-                return SuccessResultCreator.Create( true, CreateDoctorOutDto.Create(doctor)); ;
+                return SuccessResultCreator.Create(IsSuccess = true, CreateDoctorOutDto.Create(doctor)); ;
             }
             catch (Exception)
             {
@@ -97,7 +102,7 @@ namespace RegisterToDoctor.WebSell.Services
                     throw new NotFoundException($"Ошибка: Доктор с ID {doctorId} не найден.");
                 }
 
-                return SuccessResultCreator.Create(DoctorByIdOutDto.Create(doctor));                  
+                return SuccessResultCreator.Create(DoctorByIdOutDto.Create(doctor));
             }
             catch (Exception)
             {
@@ -110,7 +115,7 @@ namespace RegisterToDoctor.WebSell.Services
             try
             {
                 await _doctorByFilterValidator.ValidateAndThrowAsync(getDoctorFindByFilterInDto); //Validate(getDoctorFindByFilterInDto);
-                
+
                 var pageSize = getDoctorFindByFilterInDto.PageSizeMax - getDoctorFindByFilterInDto.PageSizeMin;
 
                 var doctors = _docRepository.Entity
@@ -154,14 +159,14 @@ namespace RegisterToDoctor.WebSell.Services
             try
             {
                 await _updateDoctorValidator.ValidateAndThrowAsync(updateDoctorInDto);
-                                
+
                 var doctor = await _docRepository.GetByIdAsync(updateDoctorInDto.Id);
 
                 if (doctor == null)
                 {
                     throw new NotFoundException($"Ошибка: Доктор с ID {updateDoctorInDto.Id} не найден.");
                 }
-                                
+
                 var specializationTask = _specializationService.CheckSpecialization(updateDoctorInDto.Specialization);
 
                 var officeTask = _officeService.CheckOffice(updateDoctorInDto.NumberOffice);
@@ -173,14 +178,14 @@ namespace RegisterToDoctor.WebSell.Services
                 var specialization = specializationTask.Result;
                 var office = officeTask.Result;
                 var plot = plotTask.Result;
-                
+
                 ICreateDoctor updateDoctor = UpdaterDoctor.Create(updateDoctorInDto, specialization.Id, office.Id, plot.Id);
 
-                doctor = UpdaterDoctorHelper.Update(doctor,updateDoctor);
+                doctor = UpdaterDoctorHelper.Update(doctor, updateDoctor);
 
                 await _docRepository.UpdateAsync(doctor);
 
-                return SuccessResultCreator.Create(true, UpdateDoctorOutDto.Create(doctor));
+                return SuccessResultCreator.Create(IsSuccess = true, UpdateDoctorOutDto.Create(doctor));
             }
             catch (Exception)
             {
@@ -200,15 +205,15 @@ namespace RegisterToDoctor.WebSell.Services
                 {
                     throw new NotFoundException($"Ошибка: Доктор с ID {doctorId} не найден.");
                 }
-                
+
                 await _docRepository.DeleteAsync(doctor);
-                
-                return SuccessResultCreator.Create(true, DeleteOutDto.Create(true));
+
+                return SuccessResultCreator.Create(IsSuccess = true, DeleteOutDto.Create(true));
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                throw; 
-            }            
+                throw;
+            }
         }
     }
 }

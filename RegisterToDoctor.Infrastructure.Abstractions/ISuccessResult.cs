@@ -9,7 +9,7 @@ namespace RegisterToDoctor.Infrastructure.Abstractions
     public interface ISuccessResult<TResult> where TResult : class
     {
         /// <summary>
-        /// статус опер
+        /// статус операции
         /// </summary>
         bool IsSuccess { get; }
 
