@@ -10,11 +10,11 @@ namespace RegisterToDoctor.WebSell.Validators
         public ByFilterInDtoValidator() 
         {
             RuleFor(doctor => doctor.PageNumber)
-                .GreaterThan(0)
+                .GreaterThan(ConstansForValidators.NotPositiveNumber)
                 .WithMessage($"Ошибка: {nameof(GetDoctorFindByFilterInDto.PageNumber)} должен быть больше нуля.");
 
             RuleFor(x => x.PageSizeMin)
-                .GreaterThanOrEqualTo(0)
+                .GreaterThanOrEqualTo(ConstansForValidators.NotPositiveNumber)
                 .WithMessage($"Ошибка: поле {nameof(GetDoctorFindByFilterInDto.PageSizeMin)} должно быть больше или равно нулю.");
 
             RuleFor(x => x.PageSizeMax)

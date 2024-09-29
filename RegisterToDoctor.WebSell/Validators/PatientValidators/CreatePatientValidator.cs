@@ -12,8 +12,10 @@ namespace RegisterToDoctor.WebSell.Validators.PatientValidators
                 .SetValidator(new UserEntityValidator());
 
             RuleFor(x => x.DateOfBirth)
-                .Must(IsValidAge)
-                .WithMessage(x => $"Ошибка: дата рождения {x.DateOfBirth.ToString("dd/MM/yyyy")} некорректна.");
+                .Must(IsValidMaxAge)
+                .WithMessage(x => $"Ошибка: дата рождения {x.DateOfBirth.ToString("dd/MM/yyyy")} некорректна. Возраст не может превышать 135 лет")
+                .Must(IsValidMinAge)
+                .WithMessage(x => $"Ошибка: дата рождения {x.DateOfBirth.ToString("dd/MM/yyyy")} некорректна. Возраст не может превышать сегодняшний день");
 
             RuleFor(x => x.OmsNumber)
                 .Length(ConstansForValidators.OmsLength)
@@ -22,23 +24,29 @@ namespace RegisterToDoctor.WebSell.Validators.PatientValidators
                 .WithMessage("Ошибка: в OmsNumber должно содержать только цифры.");
 
             RuleFor(x => x.DmsNumber)
-            .Must(dmsNumber => string.IsNullOrWhiteSpace(dmsNumber))
-            .WithMessage("Ошибка: в DmsNumber не должен содержать тольно пробелы.");
+                .Must(x => !string.IsNullOrWhiteSpace(x))
+                .WithMessage("Ошибка: в DmsNumber не должен содержать тольно пробелы.");
 
             RuleFor(doctor => doctor.Address)
                 .NotEmpty()
                 .WithMessage("Ошибка: Специальность не может быть пустой.")
-                .MaximumLength(100)
-                .WithMessage("Ошибка: Специальность не должна быть больше 100 символов.");           
+                .MaximumLength(ConstansForValidators.MaximumAddressLength)
+                .WithMessage("Ошибка: Специальность не должна быть больше 150 символов.");
 
             RuleFor(doctor => doctor.NumberPlot)
-                .GreaterThan(0).WithMessage("Ошибка: Номер участка должен быть больше нуля.");
+                .GreaterThan(ConstansForValidators.NotPositiveNumber).WithMessage("Ошибка: Номер участка должен быть больше нуля.");
         }
 
-        private bool IsValidAge(DateTime dateOfBirth)
+        private bool IsValidMaxAge(DateTime dateOfBirth)
         {
             var age = DateTime.Now.Year - dateOfBirth.Year;
-            return age <= ConstansForValidators.maxAge && age >= ConstansForValidators.minAge;
+            return age <= ConstansForValidators.maxAge;
+        }
+
+        private bool IsValidMinAge(DateTime dateOfBirth)
+        {
+            var age = DateTime.Now.Year - dateOfBirth.Year;
+            return age >= ConstansForValidators.minAge;
         }
     }
 }

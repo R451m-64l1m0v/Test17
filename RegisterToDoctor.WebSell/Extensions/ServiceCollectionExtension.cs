@@ -55,6 +55,7 @@ namespace RegisterToDoctor.WebSell.Extensions
 
         public static IServiceCollection AddValidators(this IServiceCollection services)
         {
+            services.AddValidatorsFromAssemblyContaining<CreateDoctorValidator>();
             services.AddControllers()
                 .AddFluentValidation(fv =>
                 {

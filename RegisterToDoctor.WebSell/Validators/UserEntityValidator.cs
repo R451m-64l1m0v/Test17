@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using RegisterToDoctor.WebSell.Interfaces;
+using RegisterToDoctor.WebSell.Сonstants;
 
 namespace RegisterToDoctor.WebSell.Validators
 {
@@ -8,15 +9,26 @@ namespace RegisterToDoctor.WebSell.Validators
         public UserEntityValidator()
         {
             RuleFor(person => person.FirstName)
-                .NotEmpty().WithMessage("Необходимо указать Имя.")
-                .MaximumLength(50).WithMessage("Имя не может быть больше 50 символов.");
+                .NotEmpty()
+                .WithMessage("Необходимо указать Имя.")
+                .MinimumLength(ConstansForValidators.MinimumFIOLength)
+                .WithMessage("Имя не может быть меньше 2 символов.")
+                .MaximumLength(ConstansForValidators.MaximumFIOLength)
+                .WithMessage("Имя не может быть больше 50 символов.");
 
             RuleFor(person => person.LastName)
-                .NotEmpty().WithMessage("Необходимо указать Фамилия.")
-                .MaximumLength(50).WithMessage("Фамилия не может быть больше 50 символов.");
+                .NotEmpty()
+                .WithMessage("Необходимо указать Фамилия.")
+                .MinimumLength(ConstansForValidators.MinimumFIOLength)
+                .WithMessage("Имя не может быть меньше 2 символов.")
+                .MaximumLength(ConstansForValidators.MaximumFIOLength)
+                .WithMessage("Фамилия не может быть больше 50 символов.");
 
             RuleFor(person => person.MiddleName)
-                .MaximumLength(50).WithMessage("Отчество не может быть больше 50 символов.")
+                .MinimumLength(ConstansForValidators.MinimumFIOLength)
+                .WithMessage("Имя не может быть меньше 2 символов.")
+                .MaximumLength(ConstansForValidators.MaximumFIOLength)
+                .WithMessage("Отчество не может быть больше 50 символов.")
                 .When(person => !string.IsNullOrEmpty(person.MiddleName));
         }     
     }

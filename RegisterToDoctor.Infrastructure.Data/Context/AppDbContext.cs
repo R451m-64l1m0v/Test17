@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RegisterToDoctor.Domain.Constants;
 using RegisterToDoctor.Domain.Entities;
 
 namespace RegisterToDoctor.Infrastructure.DataAccessLayer.Context
@@ -41,7 +42,7 @@ namespace RegisterToDoctor.Infrastructure.DataAccessLayer.Context
 
             modelBuilder.Entity<Patient>()
                 .Property(e => e.DateOfBirth)
-                .HasColumnType("DATE");
+                .HasColumnType(ContextConstants.DateColumnType);
 
             modelBuilder.Entity<Patient>()
                 .Property(x => x.OmsNumber)

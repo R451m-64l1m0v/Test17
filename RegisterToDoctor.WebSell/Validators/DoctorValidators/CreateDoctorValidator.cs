@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs.Doctor;
+using RegisterToDoctor.WebSell.Сonstants;
 
 namespace RegisterToDoctor.WebSell.Validators.DoctorValidators
 {
@@ -11,14 +12,14 @@ namespace RegisterToDoctor.WebSell.Validators.DoctorValidators
                 .SetValidator(new UserEntityValidator());
 
             RuleFor(doctor => doctor.NumberOffice)
-                .GreaterThan(0).WithMessage("Ошибка: Номер каминета должен быть больше нуля.");
+                .GreaterThan(ConstansForValidators.NotPositiveNumber).WithMessage("Ошибка: Номер кабинета должен быть больше нуля.");
 
             RuleFor(doctor => doctor.Specialization)
                 .NotEmpty().WithMessage("Ошибка: Специальность не может быть пустой.")
-                .MaximumLength(100).WithMessage("Ошибка: Специальность не должна быть больше 100 символов.");
+                .MaximumLength(ConstansForValidators.MaximumSpecializationNameLength).WithMessage("Ошибка: Специальность не должна быть больше 100 символов.");
 
             RuleFor(doctor => doctor.NumberPlot)
-                .GreaterThan(0).WithMessage("Ошибка: Номер участка должен быть больше нуля.");
+                .GreaterThan(ConstansForValidators.NotPositiveNumber).WithMessage("Ошибка: Номер участка должен быть больше нуля.");
         }
     }
 }
