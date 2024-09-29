@@ -9,7 +9,7 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Patient
         /// <summary>
         /// Id пациента
         /// </summary>
-        [JsonPropertyName("PatienId")]
+        [JsonPropertyName("Id")]
         public Guid Id { get; private set; }
 
         /// <summary>

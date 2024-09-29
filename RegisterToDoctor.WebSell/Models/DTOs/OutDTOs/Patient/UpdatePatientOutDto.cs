@@ -8,7 +8,7 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Patient
         /// <summary>
         /// Id пациента
         /// </summary>
-        [JsonPropertyName("PatientId")]
+        [JsonPropertyName("Id")]
         public Guid Id { get; private set; }
 
         public static UpdatePatientOutDto Create(Domain.Entities.Patient patient) =>

@@ -1,6 +1,4 @@
-﻿using RegisterToDoctor.Domain.Entities;
-using RegisterToDoctor.WebSell.Models.Abstractions;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using RegisterToDoctor.WebSell.Interfaces.IDTOs.IOutDTOs;
 
 namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs
