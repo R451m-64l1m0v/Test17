@@ -1,19 +1,18 @@
 ﻿using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
-using RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs.Patient;
-using RegisterToDoctor.WebSell.Models.Abstractions;
+using RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs.Doctor;
 using RegisterToDoctor.WebSell.Models.Enum;
 
-namespace RegisterToDoctor.WebSell.Models.DTOs.InDTOs.Patient
+namespace RegisterToDoctor.WebSell.Models.DTOs.InDTOs.Doctor
 {
-    public class PatientByFilterInDto : IPatientByFilterInDto
+    public class GetDoctorByFilterInDto : IGetDoctorByFilterInDto
     {
         /// <summary>
         /// Сортировачное поле
-        /// </summary>        
+        /// </summary>
         [JsonPropertyName("SortField")]
         [FromQuery]
-        public PatientSortField SortField { get; set; }
+        public DoctorSortField SortField { get; set; }
 
         /// <summary>
         /// Упорядочить

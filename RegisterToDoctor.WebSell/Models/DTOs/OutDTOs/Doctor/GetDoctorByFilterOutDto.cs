@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
-using RegisterToDoctor.Domain.Entities;
 using RegisterToDoctor.WebSell.Interfaces.IDTOs.IOutDTOs;
 
 namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Doctor
 {
-    public class DoctorByFilterOutDto : IDoctorByFilterOutDto
+    public class GetDoctorByFilterOutDto : IGetDoctorByFilterOutDto
     {
         /// <summary>
         /// Id доктора
@@ -54,7 +53,7 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Doctor
         [JsonPropertyName("UpdatedAt")]
         public DateTime? UpdatedAt { get; set; }
 
-        public static DoctorByFilterOutDto Create(Domain.Entities.Doctor doctor) => new DoctorByFilterOutDto
+        public static GetDoctorByFilterOutDto Create(Domain.Entities.Doctor doctor) => new GetDoctorByFilterOutDto
         {
             Id = doctor.Id,
             FirstName = doctor.FirstName,

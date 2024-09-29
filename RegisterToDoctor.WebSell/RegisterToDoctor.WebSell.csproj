@@ -27,4 +27,8 @@
     <ProjectReference Include="..\RegisterToDoctor.Infrastructure.Implementations\RegisterToDoctor.Infrastructure.Implementations.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Abstractions\" />
+  </ItemGroup>
+
 </Project>

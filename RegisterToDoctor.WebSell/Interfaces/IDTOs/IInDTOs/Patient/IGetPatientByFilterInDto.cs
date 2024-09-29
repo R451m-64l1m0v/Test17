@@ -2,7 +2,7 @@
 
 namespace RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs.Patient
 {
-    public interface IPatientByFilterInDto : IByFilterInDto
+    public interface IGetPatientByFilterInDto : IGetByFilterInDto
     {
         public PatientSortField SortField { get;}
     }

@@ -86,7 +86,7 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<ISuccessResult<IEnumerable<PatienByFilterOutDto>>> GetPatientByFilter(IPatientByFilterInDto doctorByFilterInDto)
+        public async Task<ISuccessResult<IEnumerable<GetPatienByFilterOutDto>>> GetPatientByFilter(IGetPatientByFilterInDto doctorByFilterInDto)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace RegisterToDoctor.WebSell.Services
                     .Skip((doctorByFilterInDto.PageNumber - 1) * pageSize)
                     .Take(pageSize);
                 
-                return SuccessResultCreator.Create(patients.Select(PatienByFilterOutDto.Create));
+                return SuccessResultCreator.Create(patients.Select(GetPatienByFilterOutDto.Create));
             }
             catch (Exception)
             {
