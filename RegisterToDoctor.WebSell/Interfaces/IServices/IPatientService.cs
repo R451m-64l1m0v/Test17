@@ -12,7 +12,7 @@ namespace RegisterToDoctor.WebSell.Interfaces.IServices
         Task<ISuccessResult<CreatePatientOutDto>> Create(ICreatePatientInDto createDoctorInDto);
         Task<ISuccessResult<UpdatePatientOutDto>> Update(IUpdatePatientInDto updateDoctorInDto);
         Task<ISuccessResult<PatientByIdOutDto>> GetById(Guid doctorId);
-        Task<ISuccessResult<IEnumerable<GetPatienByFilterOutDto>>> GetPatientByFilter(IGetPatientByFilterInDto doctorByFilterInDto);
+        Task<ISuccessResult<IEnumerable<GetPatienFindByFilterOutDto>>> GetPatientByFilter(IGetPatientFindByFilterInDto getPatientFindByFilterInDto);
         Task<ISuccessResult<DeleteOutDto>> Delete(Guid doctorId);
     }
 }

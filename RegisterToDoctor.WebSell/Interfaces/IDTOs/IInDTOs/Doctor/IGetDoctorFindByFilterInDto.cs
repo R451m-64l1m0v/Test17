@@ -4,8 +4,9 @@ using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs.Doctor
 {
-    public interface IGetDoctorByFilterInDto : IGetByFilterInDto
+    public interface IGetDoctorFindByFilterInDto : IFindByFilterInDto
     {
+        // IFindByFilterInDto
         public DoctorSortField SortField { get; }
     }
 }

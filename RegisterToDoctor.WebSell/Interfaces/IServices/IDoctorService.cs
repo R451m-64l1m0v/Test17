@@ -11,7 +11,7 @@ namespace RegisterToDoctor.WebSell.Interfaces.IServices
         Task<ISuccessResult<CreateDoctorOutDto>> Create(ICreateDoctorInDto createDoctorInDto);
         Task<ISuccessResult<DoctorByIdOutDto>> GetById(Guid doctorId);
         Task<ISuccessResult<UpdateDoctorOutDto>> Update(IUpdateDoctorInDto updateDoctorInDto);
-        Task<ISuccessResult<IEnumerable<GetDoctorByFilterOutDto>>> GetDoctorsByFilter(IGetDoctorByFilterInDto getDoctorByFilterInDto);
+        Task<ISuccessResult<IEnumerable<GetDoctorFindByFilterOutDto>>> GetDoctorsByFilter(IGetDoctorFindByFilterInDto getDoctorFindByFilterInDto);
         Task<ISuccessResult<DeleteOutDto>> Delete(Guid doctorId);
     }
 }

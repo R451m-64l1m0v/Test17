@@ -3,7 +3,7 @@ using RegisterToDoctor.WebSell.Interfaces.IDTOs.IOutDTOs;
 
 namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Doctor
 {
-    public class GetDoctorByFilterOutDto : IGetDoctorByFilterOutDto
+    public class GetDoctorFindByFilterOutDto : IGetDoctorFindByFilterOutDto
     {
         /// <summary>
         /// Id доктора
@@ -53,7 +53,7 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Doctor
         [JsonPropertyName("UpdatedAt")]
         public DateTime? UpdatedAt { get; set; }
 
-        public static GetDoctorByFilterOutDto Create(Domain.Entities.Doctor doctor) => new GetDoctorByFilterOutDto
+        public static GetDoctorFindByFilterOutDto Create(Domain.Entities.Doctor doctor) => new GetDoctorFindByFilterOutDto
         {
             Id = doctor.Id,
             FirstName = doctor.FirstName,

@@ -76,12 +76,12 @@ namespace RegisterToDoctor.WebSell.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GetPatienByFilterOutDto>>> GetPatientByFilter(
-            GetPatientByFilterInDto getPatientByFilterInDto)
+        public async Task<ActionResult<List<GetPatienFindByFilterOutDto>>> GetPatientByFilter(
+            GetPatientFindByFilterInDto getPatientFindByFilterInDto)
         {
             try
             {
-                var result = await _patientService.GetPatientByFilter(getPatientByFilterInDto);
+                var result = await _patientService.GetPatientByFilter(getPatientFindByFilterInDto);
 
                 return Ok(result);
             }

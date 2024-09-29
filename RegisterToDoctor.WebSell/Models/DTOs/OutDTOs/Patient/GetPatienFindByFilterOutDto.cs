@@ -4,7 +4,7 @@ using RegisterToDoctor.WebSell.Interfaces.IDTOs.IOutDTOs;
 
 namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Patient
 {
-    public class GetPatienByFilterOutDto : IGetPatienByFilterOutDto
+    public class GetPatienFindByFilterOutDto : IGetPatienFindByFilterOutDto
     {
         /// <summary>
         /// Id пациента
@@ -72,7 +72,7 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.OutDTOs.Patient
         [JsonPropertyName("UpdatedAt")]
         public DateTime? UpdatedAt { get; set; }
 
-        public static GetPatienByFilterOutDto Create(Domain.Entities.Patient patient) => new GetPatienByFilterOutDto
+        public static GetPatienFindByFilterOutDto Create(Domain.Entities.Patient patient) => new GetPatienFindByFilterOutDto
         {
             Id = patient.Id,
             FirstName = patient.FirstName,

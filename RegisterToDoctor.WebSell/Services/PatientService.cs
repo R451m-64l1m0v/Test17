@@ -86,13 +86,13 @@ namespace RegisterToDoctor.WebSell.Services
             }
         }
 
-        public async Task<ISuccessResult<IEnumerable<GetPatienByFilterOutDto>>> GetPatientByFilter(IGetPatientByFilterInDto doctorByFilterInDto)
+        public async Task<ISuccessResult<IEnumerable<GetPatienFindByFilterOutDto>>> GetPatientByFilter(IGetPatientFindByFilterInDto getPatientFindByFilterInDto)
         {
             try
             {
-                await _patientByFilterValidator.ValidateAndThrowAsync(doctorByFilterInDto);
+                await _patientByFilterValidator.ValidateAndThrowAsync(getPatientFindByFilterInDto);
 
-                var pageSize = doctorByFilterInDto.PageSizeMax - doctorByFilterInDto.PageSizeMin;
+                var pageSize = getPatientFindByFilterInDto.PageSizeMax - getPatientFindByFilterInDto.PageSizeMin;
 
                 var patients = _patientRepository.Entity
                     .Include(x => x.Plot)
@@ -100,14 +100,14 @@ namespace RegisterToDoctor.WebSell.Services
                     .TagWith("This is my spatial query")
                     .AsQueryable();
 
-                var sortField = doctorByFilterInDto.SortField.ToString();
+                var sortField = getPatientFindByFilterInDto.SortField.ToString();
 
                 var parameter = Expression.Parameter(typeof(Patient), "e");
                 var property = Expression.Property(parameter, sortField);
                 var conversion = Expression.Convert(property, typeof(object));
                 var orderByExpression = Expression.Lambda<Func<Patient, object>>(conversion, parameter);
 
-                if (doctorByFilterInDto?.Ascending ?? false)
+                if (getPatientFindByFilterInDto?.Ascending ?? false)
                 {
                     patients = patients.OrderByDescending(orderByExpression);
                 }
@@ -117,10 +117,10 @@ namespace RegisterToDoctor.WebSell.Services
                 }
 
                 patients = patients
-                    .Skip((doctorByFilterInDto.PageNumber - 1) * pageSize)
+                    .Skip((getPatientFindByFilterInDto.PageNumber - 1) * pageSize)
                     .Take(pageSize);
                 
-                return SuccessResultCreator.Create(patients.Select(GetPatienByFilterOutDto.Create));
+                return SuccessResultCreator.Create(patients.Select(GetPatienFindByFilterOutDto.Create));
             }
             catch (Exception)
             {

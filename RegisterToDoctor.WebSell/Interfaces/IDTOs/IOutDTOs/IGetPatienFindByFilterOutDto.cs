@@ -2,7 +2,7 @@
 
 namespace RegisterToDoctor.WebSell.Interfaces.IDTOs.IOutDTOs
 {
-    public interface IGetPatienByFilterOutDto : IUpdatePatientInDto
+    public interface IGetPatienFindByFilterOutDto : IUpdatePatientInDto
     {
     }
 }

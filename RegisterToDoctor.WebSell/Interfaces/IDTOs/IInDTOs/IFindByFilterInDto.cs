@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace RegisterToDoctor.WebSell.Interfaces.IDTOs.IInDTOs
 {
-    public interface IGetByFilterInDto
+    public interface IFindByFilterInDto
     {
         public bool Ascending { get; }
         public int PageNumber { get; }
