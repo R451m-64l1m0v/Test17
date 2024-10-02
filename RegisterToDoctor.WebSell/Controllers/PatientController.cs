@@ -77,7 +77,7 @@ namespace RegisterToDoctor.WebSell.Controllers
 
         [HttpGet]
         public async Task<ActionResult<List<GetPatienFindByFilterOutDto>>> GetPatientByFilter(
-            GetPatientFindByFilterInDto getPatientFindByFilterInDto)
+            [FromQuery] GetPatientFindByFilterInDto getPatientFindByFilterInDto)
         {
             try
             {

@@ -11,35 +11,30 @@ namespace RegisterToDoctor.WebSell.Models.DTOs.InDTOs.Patient
         /// Сортировачное поле
         /// </summary>        
         [JsonPropertyName("SortField")]
-        [FromQuery]
         public PatientSortField SortField { get; set; }
 
         /// <summary>
         /// Упорядочить
         /// </summary>        
-        [JsonPropertyName("Ascending")]
-        [FromQuery]
-        public bool Ascending { get; set; }
+        [JsonPropertyName("SortOrder")]
+        public SortOrder SortOrder { get; set; }
 
         /// <summary>
         /// Номер страницы
         /// </summary>        
         [JsonPropertyName("PageNumber")]
-        [FromQuery]
         public int PageNumber { get; set; }
 
         /// <summary>
         /// Минимальное значение количества записей на странице
         /// </summary>
         [JsonPropertyName("PageSizeMin")]
-        [FromQuery]
         public int PageSizeMin { get; set; }
 
         /// <summary>
         /// Максимальное значение количества записей на странице
         /// </summary>
-        [JsonPropertyName("PageSizeMax")]
-        [FromQuery]
-        public int PageSizeMax { get; set; }
+        [JsonPropertyName("PageSize")]
+        public int PageSize { get; set; }
     }
 }

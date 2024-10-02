@@ -17,6 +17,8 @@ using RegisterToDoctor.WebSell.Validators.PatientValidators;
 using System.Linq.Expressions;
 using RegisterToDoctor.Infrastructure.DataAccessLayer.Interfaces;
 using RegisterToDoctor.WebSell.Mapping;
+using RegisterToDoctor.WebSell.Helpers.Doctor;
+using RegisterToDoctor.WebSell.Models.DTOs.InDTOs.Doctor;
 
 namespace RegisterToDoctor.WebSell.Services
 {
@@ -96,9 +98,7 @@ namespace RegisterToDoctor.WebSell.Services
             try
             {
                 await _patientByFilterValidator.ValidateAndThrowAsync(getPatientFindByFilterInDto);
-
-                var pageSize = getPatientFindByFilterInDto.PageSizeMax - getPatientFindByFilterInDto.PageSizeMin;
-
+                
                 var patients = _patientRepository.Entity
                     .Include(x => x.Plot)
                     .AsNoTracking()
@@ -112,19 +112,12 @@ namespace RegisterToDoctor.WebSell.Services
                 var conversion = Expression.Convert(property, typeof(object));
                 var orderByExpression = Expression.Lambda<Func<Patient, object>>(conversion, parameter);
 
-                if (getPatientFindByFilterInDto?.Ascending ?? false)
-                {
-                    patients = patients.OrderByDescending(orderByExpression);
-                }
-                else
-                {
-                    patients = patients.OrderBy(orderByExpression);
-                }
+                patients = SorterUtility.PatientSorting(patients, getPatientFindByFilterInDto);
 
                 patients = patients
-                    .Skip((getPatientFindByFilterInDto.PageNumber - 1) * pageSize)
-                    .Take(pageSize);
-
+                .Skip((getPatientFindByFilterInDto.PageNumber - 1) * getPatientFindByFilterInDto.PageSize)
+                    .Take(getPatientFindByFilterInDto.PageSize);
+                
                 return SuccessResultCreator.Create(patients.Select(GetPatienFindByFilterOutDto.Create));
             }
             catch (Exception)

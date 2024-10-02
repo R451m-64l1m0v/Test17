@@ -2,13 +2,14 @@
 {
     public enum PatientSortField
     {
-        Id = 0,
-        FirstName = 1,
-        LastName = 2,
-        MiddleName = 3,
-        PlotId = 4,
-        DateOfBirth = 5,
-        Address = 6,
-        Gender = 7,
+        None = 0,
+        Id = 1,
+        FirstName = 2,
+        LastName = 3,
+        MiddleName = 4,
+        PlotNumber = 4,
+        DateOfBirth = 6,
+        Address = 7,
+        Gender = 8,
     }
 }

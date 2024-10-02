@@ -115,9 +115,7 @@ namespace RegisterToDoctor.WebSell.Services
             try
             {
                 await _doctorByFilterValidator.ValidateAndThrowAsync(getDoctorFindByFilterInDto); //Validate(getDoctorFindByFilterInDto);
-
-                var pageSize = getDoctorFindByFilterInDto.PageSizeMax - getDoctorFindByFilterInDto.PageSizeMin;
-
+                
                 var doctors = _docRepository.Entity
                     .Include(x => x.Office)
                     .Include(x => x.Specialization)
@@ -125,28 +123,14 @@ namespace RegisterToDoctor.WebSell.Services
                     .AsNoTracking()
                     .TagWith("This is my spatial query")
                     .AsQueryable();
-
-                var sortField = getDoctorFindByFilterInDto.SortField.ToString();
-
-                var parameter = Expression.Parameter(typeof(Doctor), "e");
-                var property = Expression.Property(parameter, sortField);
-                var conversion = Expression.Convert(property, typeof(object));
-                var orderByExpression = Expression.Lambda<Func<Doctor, object>>(conversion, parameter);
-
-                if (getDoctorFindByFilterInDto?.Ascending ?? false)
-                {
-                    doctors = doctors.OrderByDescending(orderByExpression);
-                }
-                else
-                {
-                    doctors = doctors.OrderBy(orderByExpression);
-                }
-
+                
+                doctors = SorterUtility.DoctorSorting(doctors, getDoctorFindByFilterInDto);
+                
                 doctors = doctors
-                    .Skip((getDoctorFindByFilterInDto.PageNumber - 1) * pageSize)
-                    .Take(pageSize);
+                    .Skip((getDoctorFindByFilterInDto.PageNumber - 1) * getDoctorFindByFilterInDto.PageSize)
+                    .Take(getDoctorFindByFilterInDto.PageSize);
 
-                return SuccessResultCreator.Create(doctors.Select(GetDoctorFindByFilterOutDto.Create));
+                return SuccessResultCreator.Create(doctors.AsEnumerable().Select(GetDoctorFindByFilterOutDto.Create));
             }
             catch (Exception)
             {

@@ -2,12 +2,13 @@
 {
     public enum DoctorSortField
     {
-        Id = 0,
-        FirstName = 1,
-        LastName = 2,
-        MiddleName = 3,
-        PlotId = 4,
-        OfficeId = 5,
-        SpecializationId = 6,
+        None = 0,
+        Id = 1,
+        FirstName = 2,
+        LastName = 3,
+        MiddleName = 4,
+        PlotNumber = 5,
+        OfficeNumber = 6,
+        SpecializationName = 7,
     }
 }

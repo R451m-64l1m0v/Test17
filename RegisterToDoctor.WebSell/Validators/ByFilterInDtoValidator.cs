@@ -13,17 +13,14 @@ namespace RegisterToDoctor.WebSell.Validators
                 .GreaterThan(ConstansForValidators.NotPositiveNumber)
                 .WithMessage($"Ошибка: {nameof(GetDoctorFindByFilterInDto.PageNumber)} должен быть больше нуля.");
 
-            RuleFor(x => x.PageSizeMin)
+            RuleFor(x => x.PageSize)
                 .GreaterThanOrEqualTo(ConstansForValidators.NotPositiveNumber)
-                .WithMessage($"Ошибка: поле {nameof(GetDoctorFindByFilterInDto.PageSizeMin)} должно быть больше или равно нулю.");
+                .WithMessage($"Ошибка: поле {nameof(GetDoctorFindByFilterInDto.PageSize)} должно быть больше или равно нулю.");
 
-            RuleFor(x => x.PageSizeMax)
-                .GreaterThan(x => x.PageSizeMin)
-                .WithMessage($"Ошибка: поле {nameof(GetDoctorFindByFilterInDto.PageSizeMax)} " +
-                             $"должно быть больше {nameof(GetDoctorFindByFilterInDto.PageSizeMin)}.")
-                .LessThanOrEqualTo(ConstansForValidators.PageSizeLimit)
-                .WithMessage($"Ошибка: поле {nameof(GetDoctorFindByFilterInDto.PageSizeMax)} " +
-                             $"не может превышать {ConstansForValidators.PageSizeLimit} на странице.");
+            RuleFor(x => x.PageSize)
+                .LessThanOrEqualTo(ConstansForValidators.MaxPageSize)
+                .WithMessage($"Ошибка: поле {nameof(GetDoctorFindByFilterInDto.PageSize)} " +
+                             $"не может превышать {ConstansForValidators.MaxPageSize} на странице.");
         }
     }
 }
