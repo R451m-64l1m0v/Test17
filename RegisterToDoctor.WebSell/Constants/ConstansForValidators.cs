@@ -2,8 +2,8 @@
 {
     public class ConstansForValidators
     {
-        public const int maxAge = 135;
-        public const int minAge = -1;
+        public const int MaxAge = 135;
+        public const int MinAge = 0;
         public const int OmsLength = 16;
         public const int MaxPageSize = 50;
         public const int MaximumSpecializationNameLength = 100;

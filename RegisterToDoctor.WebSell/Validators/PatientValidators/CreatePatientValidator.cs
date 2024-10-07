@@ -40,13 +40,13 @@ namespace RegisterToDoctor.WebSell.Validators.PatientValidators
         private bool IsValidMaxAge(DateTime dateOfBirth)
         {
             var age = DateTime.Now.Year - dateOfBirth.Year;
-            return age <= ConstansForValidators.maxAge;
+            return age <= ConstansForValidators.MaxAge;
         }
 
         private bool IsValidMinAge(DateTime dateOfBirth)
         {
-            var age = DateTime.Now.Year - dateOfBirth.Year;
-            return age >= ConstansForValidators.minAge;
+            var age = DateTime.Now.Day - dateOfBirth.Day;
+            return age >= ConstansForValidators.MinAge;
         }
     }
 }

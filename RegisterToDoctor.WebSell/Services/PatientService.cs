@@ -105,13 +105,6 @@ namespace RegisterToDoctor.WebSell.Services
                     .TagWith("This is my spatial query")
                     .AsQueryable();
 
-                var sortField = getPatientFindByFilterInDto.SortField.ToString();
-
-                var parameter = Expression.Parameter(typeof(Patient), "e");
-                var property = Expression.Property(parameter, sortField);
-                var conversion = Expression.Convert(property, typeof(object));
-                var orderByExpression = Expression.Lambda<Func<Patient, object>>(conversion, parameter);
-
                 patients = SorterUtility.PatientSorting(patients, getPatientFindByFilterInDto);
 
                 patients = patients
